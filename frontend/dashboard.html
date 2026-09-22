@@ -1,0 +1,4542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta
+    name="description"
+    content="ResolveDesk IT HelpDesk dashboard"
+>
+
+<title>
+    ResolveDesk — IT Support Command Center
+</title>
+
+<style>
+
+/* =========================================================
+   RESOLVEDESK THEME
+========================================================= */
+
+:root {
+
+    --topaz: #67AECA;
+    --amethyst: #675682;
+    --jewel: #5F0F4E;
+    --rose: #E52A6F;
+
+    --black: #09070d;
+    --black-2: #100b14;
+    --black-3: #17101d;
+
+    --white: #ffffff;
+    --off: #f7f5f8;
+
+    --gray: #b4aabd;
+    --gray-2: #7e7186;
+
+    --line: rgba(103, 174, 202, .16);
+    --line-soft: rgba(103, 174, 202, .08);
+
+    --panel: rgba(17, 11, 20, .92);
+    --panel-2: rgba(26, 16, 31, .90);
+
+    --shadow:
+        0 34px 100px
+        rgba(30, 8, 31, .48);
+
+    --radius: 22px;
+
+    --sidebar: 250px;
+}
+
+
+/* =========================================================
+   RESET
+========================================================= */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+
+    min-height: 100vh;
+
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Inter,
+        Arial,
+        sans-serif;
+
+    color: var(--white);
+
+    background:
+
+        radial-gradient(
+            circle at 88% 5%,
+            rgba(103, 174, 202, .16),
+            transparent 24%
+        ),
+
+        radial-gradient(
+            circle at 12% 72%,
+            rgba(229, 42, 111, .09),
+            transparent 24%
+        ),
+
+        radial-gradient(
+            circle at 62% 88%,
+            rgba(103, 86, 130, .13),
+            transparent 28%
+        ),
+
+        linear-gradient(
+            180deg,
+            #08060b,
+            #120b16 55%,
+            #09060d
+        );
+
+    overflow-x: hidden;
+}
+
+
+/* =========================================================
+   BACKGROUND GRID
+========================================================= */
+
+body::before {
+
+    content: "";
+
+    position: fixed;
+
+    inset: 0;
+
+    z-index: -1;
+
+    pointer-events: none;
+
+    opacity: .13;
+
+    background-image:
+
+        linear-gradient(
+            rgba(103, 174, 202, .035)
+            1px,
+            transparent 1px
+        ),
+
+        linear-gradient(
+            90deg,
+            rgba(103, 174, 202, .035)
+            1px,
+            transparent 1px
+        );
+
+    background-size:
+        64px 64px;
+
+    mask-image:
+        linear-gradient(
+            #000,
+            transparent 88%
+        );
+}
+
+
+button,
+input,
+select,
+textarea {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+
+/* =========================================================
+   SIDEBAR
+========================================================= */
+
+.sidebar {
+
+    position: fixed;
+
+    inset:
+        0 auto 0 0;
+
+    width:
+        var(--sidebar);
+
+    z-index: 50;
+
+    padding:
+        18px 14px;
+
+    background:
+        rgba(
+            8,
+            5,
+            11,
+            .93
+        );
+
+    border-right:
+        1px solid
+        rgba(
+            103,
+            174,
+            202,
+            .10
+        );
+
+    backdrop-filter:
+        blur(18px);
+}
+
+
+.brand {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding:
+        7px 9px 22px;
+}
+
+
+.brand-mark {
+
+    width: 42px;
+
+    height: 42px;
+
+    border-radius: 12px;
+
+    display: grid;
+
+    place-items: center;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--topaz),
+            var(--amethyst)
+        );
+
+    color: #fff;
+
+    font-size: 20px;
+
+    font-weight: 950;
+
+    box-shadow:
+        0 12px 32px
+        rgba(
+            103,
+            174,
+            202,
+            .18
+        );
+}
+
+
+.brand strong {
+
+    display: block;
+
+    font-size: 16px;
+
+    letter-spacing:
+        -.35px;
+}
+
+
+.brand span {
+
+    display: block;
+
+    margin-top: 3px;
+
+    color:
+        #7f7288;
+
+    font-size: 9px;
+
+    font-weight: 900;
+
+    letter-spacing:
+        .13em;
+
+    text-transform:
+        uppercase;
+}
+
+
+.nav-label {
+
+    margin:
+        12px 10px 8px;
+
+    color:
+        #64586d;
+
+    font-size: 9px;
+
+    font-weight: 950;
+
+    letter-spacing:
+        .14em;
+
+    text-transform:
+        uppercase;
+}
+
+
+.nav {
+
+    display: grid;
+
+    gap: 4px;
+}
+
+
+.nav a {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 11px;
+
+    min-height: 45px;
+
+    padding:
+        0 12px;
+
+    border-radius:
+        12px;
+
+    color:
+        #9b8fa4;
+
+    font-size:
+        13px;
+
+    font-weight:
+        760;
+
+    border:
+        1px solid
+        transparent;
+
+    transition:
+        .18s ease;
+}
+
+
+.nav a:hover {
+
+    color:
+        #fff;
+
+    background:
+        rgba(
+            103,
+            174,
+            202,
+            .055
+        );
+}
+
+
+.nav a.active {
+
+    color:
+        #fff;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(
+                103,
+                174,
+                202,
+                .13
+            ),
+            rgba(
+                103,
+                86,
+                130,
+                .10
+            )
+        );
+
+    border-color:
+        rgba(
+            103,
+            174,
+            202,
+            .18
+        );
+}
+
+
+.nav-icon {
+
+    width: 28px;
+
+    height: 28px;
+
+    border-radius:
+        8px;
+
+    display: grid;
+
+    place-items:
+        center;
+
+    background:
+        rgba(
+            103,
+            86,
+            130,
+            .08
+        );
+
+    border:
+        1px solid
+        rgba(
+            103,
+            174,
+            202,
+            .10
+        );
+
+    font-size:
+        12px;
+}
+
+
+.nav a.active
+.nav-icon {
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--topaz),
+            var(--amethyst)
+        );
+
+    color:
+        #fff;
+
+    border-color:
+        var(--topaz);
+}
+
+
+.badge {
+
+    margin-left:
+        auto;
+
+    min-width:
+        22px;
+
+    height:
+        20px;
+
+    padding:
+        0 6px;
+
+    display: grid;
+
+    place-items:
+        center;
+
+    border-radius:
+        999px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--rose),
+            var(--jewel)
+        );
+
+    color:
+        #fff;
+
+    font-size:
+        9px;
+
+    font-weight:
+        950;
+}
+
+
+.sidebar-bottom {
+
+    position:
+        absolute;
+
+    left:
+        14px;
+
+    right:
+        14px;
+
+    bottom:
+        16px;
+}
+
+
+.system-card {
+
+    padding:
+        14px;
+
+    border:
+        1px solid
+        rgba(
+            103,
+            174,
+            202,
+            .12
+        );
+
+    border-radius:
+        15px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(
+                103,
+                86,
+                130,
+                .12
+            ),
+            rgba(
+                12,
+                8,
+                15,
+                .92
+            )
+        );
+}
+
+
+.system-card small {
+
+    color:
+        #776b7f;
+
+    font-size:
+        9px;
+
+    font-weight:
+        900;
+
+    letter-spacing:
+        .11em;
+
+    text-transform:
+        uppercase;
+}
+
+
+.system-card strong {
+
+    display:
+        block;
+
+    margin-top:
+        7px;
+
+    font-size:
+        12px;
+}
+
+
+.system-card p {
+
+    margin-top:
+        5px;
+
+    color:
+        #8a7f91;
+
+    font-size:
+        10px;
+
+    line-height:
+        1.5;
+}
+
+
+/* =========================================================
+   MAIN
+========================================================= */
+
+.main {
+
+    margin-left:
+        var(--sidebar);
+
+    min-height:
+        100vh;
+}
+
+
+/* =========================================================
+   TOPBAR
+========================================================= */
+
+.topbar {
+
+    position:
+        sticky;
+
+    top:
+        0;
+
+    z-index:
+        40;
+
+    height:
+        74px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        space-between;
+
+    gap:
+        18px;
+
+    padding:
+        0 24px;
+
+    background:
+        rgba(
+            9,
+            6,
+            12,
+            .80
+        );
+
+    border-bottom:
+        1px solid
+        rgba(
+            103,
+            174,
+            202,
+            .08
+        );
+
+    backdrop-filter:
+        blur(18px);
+}
+
+
+.mobile-btn {
+
+    display:
+        none;
+
+    width:
+        42px;
+
+    height:
+        42px;
+
+    border:
+        1px solid
+        rgba(
+            103,
+            174,
+            202,
+            .14
+        );
+
+    border-radius:
+        11px;
+
+    background:
+        rgba(
+            103,
+            86,
+            130,
+            .08
+        );
+
+    color:
+        #fff;
+}
+
+
+.search {
+
+    width:
+        min(
+            470px,
+            48vw
+        );
+
+    position:
+        relative;
+}
+
+
+.search input {
+
+    width:
+        100%;
+
+    height:
+        42px;
+
+    padding:
+        0 46px 0 15px;
+
+    border:
+        1px solid
+        rgba(
+            103,
+            174,
+            202,
+            .14
+        );
+
+    border-radius:
+        11px;
+
+    outline:
+        none;
+
+    background:
+        rgba(
+            12,
+            8,
+            16,
+            .82
+        );
+
+    color:
+        #fff;
+}
+
+
+.search input:focus {
+
+    border-color:
+        var(--topaz);
+}
+
+
+.search input::placeholder {
+
+    color:
+        #7e7186;
+}
+
+
+.key {
+
+    position:
+        absolute;
+
+    right:
+        9px;
+
+    top:
+        8px;
+
+    padding:
+        5px 7px;
+
+    border-radius:
+        6px;
+
+    border:
+        1px solid
+        rgba(
+            103,
+            174,
+            202,
+            .12
+        );
+
+    background:
+        rgba(
+            103,
+            86,
+            130,
+            .08
+        );
+
+    color:
+        #8a7f91;
+
+    font-size:
+        9px;
+
+    font-weight:
+        900;
+}
+
+
+.top-actions {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    gap:
+        10px;
+}
+
+
+.icon-btn {
+
+    width:
+        40px;
+
+    height:
+        40px;
+
+    border:
+        1px solid
+        rgba(
+            103,
+            174,
+            202,
+            .12
+        );
+
+    border-radius:
+        11px;
+
+    background:
+        rgba(
+            103,
+            86,
+            130,
+            .07
+        );
+
+    color:
+        #c6bacd;
+
+    position:
+        relative;
+}
+
+.notification-center {
+    position: relative;
+}
+
+.notification-button {
+    cursor: pointer;
+}
+
+.notification-bell-icon {
+    font-size: 20px;
+    line-height: 1;
+}
+
+.notification-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+
+    min-width: 19px;
+    height: 19px;
+    padding: 0 5px;
+
+    border: 2px solid #15111c;
+    border-radius: 999px;
+
+    background: var(--rose);
+    color: #fff;
+
+    font-size: 10px;
+    font-weight: 800;
+    line-height: 15px;
+    text-align: center;
+
+    box-shadow:
+        0 6px 18px
+        rgba(229, 42, 111, .35);
+}
+
+.notification-badge[hidden] {
+    display: none;
+}
+
+.notification-panel {
+    position: absolute;
+    z-index: 1200;
+
+    top: calc(100% + 12px);
+    right: 0;
+
+    width: min(390px, calc(100vw - 32px));
+    max-height: 520px;
+
+    overflow: hidden;
+
+    border:
+        1px solid
+        rgba(103, 174, 202, .14);
+
+    border-radius: 18px;
+
+    background:
+        rgba(22, 17, 29, .98);
+
+    box-shadow:
+        0 28px 80px
+        rgba(0, 0, 0, .45);
+}
+
+.notification-panel[hidden] {
+    display: none;
+}
+
+.notification-panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+
+    padding: 18px;
+
+    border-bottom:
+        1px solid
+        rgba(255, 255, 255, .07);
+}
+
+.notification-panel-header strong {
+    display: block;
+    color: #fff;
+    font-size: 15px;
+}
+
+.notification-panel-header span {
+    display: block;
+    margin-top: 4px;
+
+    color: #8f8497;
+    font-size: 11px;
+}
+
+.notification-read-all {
+    border: 0;
+    background: transparent;
+
+    color: var(--topaz);
+
+    font: inherit;
+    font-size: 11px;
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+.notification-read-all:disabled {
+    opacity: .45;
+    cursor: default;
+}
+
+.notification-list {
+    max-height: 430px;
+    overflow-y: auto;
+}
+
+.notification-item {
+    display: flex;
+    gap: 12px;
+
+    width: 100%;
+    padding: 15px 18px;
+
+    border: 0;
+    border-bottom:
+        1px solid
+        rgba(255, 255, 255, .05);
+
+    background: transparent;
+    color: inherit;
+
+    text-align: left;
+    cursor: pointer;
+
+    transition:
+        background .18s ease;
+}
+
+.notification-item:hover {
+    background:
+        rgba(103, 174, 202, .07);
+}
+
+.notification-item.unread {
+    background:
+        rgba(229, 42, 111, .045);
+}
+
+.notification-status {
+    flex: 0 0 auto;
+
+    width: 8px;
+    height: 8px;
+
+    margin-top: 7px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(255, 255, 255, .15);
+}
+
+.notification-item.unread
+.notification-status {
+    background: var(--rose);
+
+    box-shadow:
+        0 0 0 4px
+        rgba(229, 42, 111, .08);
+}
+
+.notification-copy {
+    min-width: 0;
+    flex: 1;
+}
+
+.notification-title {
+    display: block;
+
+    color: #f7f2fa;
+
+    font-size: 13px;
+    font-weight: 750;
+}
+
+.notification-body {
+    display: block;
+
+    margin-top: 4px;
+
+    color: #a99faf;
+
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.notification-time {
+    display: block;
+
+    margin-top: 7px;
+
+    color: #716778;
+
+    font-size: 10px;
+}
+
+.notification-empty {
+    padding: 38px 20px;
+
+    color: #8f8497;
+
+    font-size: 12px;
+    text-align: center;
+}
+
+@media (max-width: 640px) {
+    .notification-panel {
+        position: fixed;
+
+        top: 72px;
+        right: 16px;
+        left: 16px;
+
+        width: auto;
+    }
+}
+
+
+.profile {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    gap:
+        10px;
+
+    padding:
+        5px 8px 5px 5px;
+
+    border:
+        1px solid
+        rgba(
+            103,
+            174,
+            202,
+            .12
+        );
+
+    border-radius:
+        12px;
+
+    background:
+        rgba(
+            103,
+            86,
+            130,
+            .07
+        );
+}
+
+
+.avatar {
+
+    width:
+        32px;
+
+    height:
+        32px;
+
+    border-radius:
+        9px;
+
+    display:
+        grid;
+
+    place-items:
+        center;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--topaz),
+            var(--amethyst)
+        );
+
+    color:
+        #fff;
+
+    font-size:
+        10px;
+
+    font-weight:
+        950;
+}
+
+
+.profile strong {
+
+    display:
+        block;
+
+    font-size:
+        11px;
+}
+
+
+.profile span {
+
+    display:
+        block;
+
+    margin-top:
+        2px;
+
+    color:
+        #82758c;
+
+    font-size:
+        9px;
+}
+
+
+/* =========================================================
+   CONTENT
+========================================================= */
+
+.content {
+
+    padding:
+        26px;
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.hero {
+
+    position:
+        relative;
+
+    overflow:
+        hidden;
+
+    padding:
+        30px;
+
+    border:
+        1px solid
+        rgba(
+            103,
+            174,
+            202,
+            .14
+        );
+
+    border-radius:
+        28px;
+
+    background:
+
+        radial-gradient(
+            circle at 88% 20%,
+            rgba(
+                103,
+                174,
+                202,
+                .16
+            ),
+            transparent 25%
+        ),
+
+        radial-gradient(
+            circle at 15% 90%,
+            rgba(
+                229,
+                42,
+                111,
+                .08
+            ),
+            transparent 24%
+        ),
+
+        linear-gradient(
+            130deg,
+            rgba(
+                19,
+                12,
+                24,
+                .98
+            ),
+            rgba(
+                31,
+                18,
+                37,
+                .96
+            ) 55%,
+            rgba(
+                11,
+                7,
+                14,
+                .98
+            )
+        );
+
+    box-shadow:
+        var(--shadow);
+}
+
+
+.hero::after {
+
+    content:
+        "";
+
+    position:
+        absolute;
+
+    width:
+        330px;
+
+    height:
+        330px;
+
+    right:
+        -120px;
+
+    bottom:
+        -185px;
+
+    border-radius:
+        50%;
+
+    border:
+        1px solid
+        rgba(
+            103,
+            174,
+            202,
+            .10
+        );
+
+    box-shadow:
+        0 0 0 34px
+        rgba(
+            103,
+            174,
+            202,
+            .018
+        ),
+        0 0 0 68px
+        rgba(
+            229,
+            42,
+            111,
+            .010
+        );
+}
+
+
+.hero-row {
+
+    position:
+        relative;
+
+    z-index:
+        1;
+
+    display:
+        flex;
+
+    justify-content:
+        space-between;
+
+    gap:
+        24px;
+}
+
+
+.eyebrow {
+
+    display:
+        inline-flex;
+
+    align-items:
+        center;
+
+    gap:
+        8px;
+
+    padding:
+        7px 10px;
+
+    border:
+        1px solid
+        rgba(
+            103,
+            174,
+            202,
+            .16
+        );
+
+    border-radius:
+        999px;
+
+    background:
+        rgba(
+            103,
+            174,
+            202,
+            .06
+        );
+
+    color:
+        #b9d9e6;
+
+    font-size:
+        9px;
+
+    font-weight:
+        950;
+
+    letter-spacing:
+        .1em;
+
+    text-transform:
+        uppercase;
+}
+
+
+.pulse {
+
+    width:
+        7px;
+
+    height:
+        7px;
+
+    border-radius:
+        50%;
+
+    background:
+        var(--topaz);
+
+    box-shadow:
+        0 0 18px
+        rgba(
+            103,
+            174,
+            202,
+            .55
+        );
+}
+
+
+.hero h1 {
+
+    margin-top:
+        15px;
+
+    max-width:
+        780px;
+
+    font-size:
+        clamp(
+            34px,
+            4.6vw,
+            58px
+        );
+
+    line-height:
+        1;
+
+    letter-spacing:
+        -2.9px;
+}
+
+
+.hero h1 span {
+
+    background:
+        linear-gradient(
+            90deg,
+            var(--topaz),
+            #b799cf,
+            var(--rose)
+        );
+
+    -webkit-background-clip:
+        text;
+
+    background-clip:
+        text;
+
+    color:
+        transparent;
+}
+
+
+.hero p {
+
+    max-width:
+        760px;
+
+    margin-top:
+        14px;
+
+    color:
+        #9b8fa4;
+
+    line-height:
+        1.75;
+
+    font-size:
+        13px;
+}
+
+
+.hero-actions {
+
+    display:
+        flex;
+
+    flex-wrap:
+        wrap;
+
+    gap:
+        10px;
+
+    margin-top:
+        21px;
+}
+
+
+.btn {
+
+    min-height:
+        42px;
+
+    padding:
+        0 15px;
+
+    border-radius:
+        11px;
+
+    display:
+        inline-flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    gap:
+        8px;
+
+    font-size:
+        12px;
+
+    font-weight:
+        850;
+
+    border:
+        1px solid
+        transparent;
+}
+
+
+.btn-primary {
+
+    background:
+        linear-gradient(
+            100deg,
+            var(--topaz),
+            var(--amethyst) 55%,
+            var(--rose)
+        );
+
+    color:
+        #fff;
+
+    box-shadow:
+        0 12px 30px
+        rgba(
+            103,
+            86,
+            130,
+            .22
+        );
+}
+
+
+.btn-secondary {
+
+    background:
+        rgba(
+            103,
+            86,
+            130,
+            .08
+        );
+
+    border-color:
+        rgba(
+            103,
+            174,
+            202,
+            .14
+        );
+
+    color:
+        #e6deea;
+}
+
+
+.hero-side {
+
+    min-width:
+        255px;
+
+    padding:
+        17px;
+
+    border:
+        1px solid
+        rgba(
+            103,
+            174,
+            202,
+            .13
+        );
+
+    border-radius:
+        18px;
+
+    background:
+        rgba(
+            12,
+            8,
+            16,
+            .46
+        );
+
+    backdrop-filter:
+        blur(10px);
+}
+
+
+.hero-side small {
+
+    color:
+        #776b80;
+
+    font-size:
+        9px;
+
+    font-weight:
+        900;
+
+    letter-spacing:
+        .1em;
+
+    text-transform:
+        uppercase;
+}
+
+
+.hero-side strong {
+
+    display:
+        block;
+
+    margin-top:
+        8px;
+
+    font-size:
+        29px;
+}
+
+
+.hero-side p {
+
+    margin-top:
+        6px;
+
+    font-size:
+        10.5px;
+
+    line-height:
+        1.5;
+}
+
+
+.hero-progress {
+
+    height:
+        7px;
+
+    margin-top:
+        13px;
+
+    border-radius:
+        999px;
+
+    background:
+        rgba(
+            255,
+            255,
+            255,
+            .06
+        );
+
+    overflow:
+        hidden;
+}
+
+
+.hero-progress span {
+
+    display:
+        block;
+
+    width:
+        84%;
+
+    height:
+        100%;
+
+    background:
+        linear-gradient(
+            90deg,
+            var(--topaz),
+            var(--rose)
+        );
+
+    border-radius:
+        inherit;
+}
+
+
+/* =========================================================
+   STATS
+========================================================= */
+
+.stat-grid {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(
+            4,
+            1fr
+        );
+
+    gap:
+        14px;
+
+    margin-top:
+        16px;
+}
+
+
+.stat {
+
+    position:
+        relative;
+
+    overflow:
+        hidden;
+
+    padding:
+        18px;
+
+    border:
+        1px solid
+        rgba(
+            103,
+            174,
+            202,
+            .12
+        );
+
+    border-radius:
+        18px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(
+                103,
+                86,
+                130,
+                .11
+            ),
+            rgba(
+                10,
+                7,
+                13,
+                .96
+            )
+        );
+}
+
+
+.stat .label {
+
+    color:
+        #766a80;
+
+    font-size:
+        9px;
+
+    font-weight:
+        950;
+
+    letter-spacing:
+        .1em;
+
+    text-transform:
+        uppercase;
+}
+
+
+.stat-row {
+
+    display:
+        flex;
+
+    align-items:
+        end;
+
+    justify-content:
+        space-between;
+
+    gap:
+        10px;
+
+    margin-top:
+        8px;
+}
+
+
+.stat strong {
+
+    font-size:
+        28px;
+
+    letter-spacing:
+        -1px;
+}
+
+
+.chip {
+
+    padding:
+        5px 7px;
+
+    border-radius:
+        999px;
+
+    background:
+        rgba(
+            103,
+            86,
+            130,
+            .12
+        );
+
+    border:
+        1px solid
+        rgba(
+            103,
+            174,
+            202,
+            .12
+        );
+
+    color:
+        #b4a8bc;
+
+    font-size:
+        8px;
+
+    font-weight:
+        950;
+}
+
+
+.chip.inverse {
+
+    background:
+        var(--rose);
+
+    color:
+        #fff;
+
+    border-color:
+        var(--rose);
+}
+
+
+.stat p {
+
+    margin-top:
+        7px;
+
+    color:
+        #82758c;
+
+    font-size:
+        10.5px;
+
+    line-height:
+        1.5;
+}
+
+
+.stat::after {
+
+    content:
+        "";
+
+    position:
+        absolute;
+
+    left:
+        0;
+
+    right:
+        0;
+
+    bottom:
+        0;
+
+    height:
+        1px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            var(--topaz),
+            var(--rose),
+            transparent
+        );
+}
+
+
+/* =========================================================
+   PANELS
+========================================================= */
+
+.dashboard-grid {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        1.25fr .75fr;
+
+    gap:
+        16px;
+
+    margin-top:
+        16px;
+}
+
+
+.panel {
+
+    overflow:
+        hidden;
+
+    border:
+        1px solid
+        rgba(
+            103,
+            174,
+            202,
+            .12
+        );
+
+    border-radius:
+        21px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(
+                103,
+                86,
+                130,
+                .10
+            ),
+            rgba(
+                9,
+                6,
+                12,
+                .97
+            )
+        );
+}
+
+
+.panel-head {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        space-between;
+
+    gap:
+        16px;
+
+    padding:
+        17px 18px;
+
+    border-bottom:
+        1px solid
+        rgba(
+            103,
+            174,
+            202,
+            .08
+        );
+}
+
+
+.panel-title strong {
+
+    display:
+        block;
+
+    font-size:
+        14px;
+}
+
+
+.panel-title span {
+
+    display:
+        block;
+
+    margin-top:
+        4px;
+
+    color:
+        #776b80;
+
+    font-size:
+        10px;
+}
+
+
+.panel-action {
+
+    color:
+        #92c4d8;
+
+    font-size:
+        10px;
+
+    font-weight:
+        900;
+}
+
+
+/* =========================================================
+   CHART
+========================================================= */
+
+.chart-wrap {
+
+    padding:
+        18px;
+}
+
+
+.chart {
+
+    position:
+        relative;
+
+    height:
+        235px;
+
+    border-radius:
+        16px;
+
+    overflow:
+        hidden;
+
+    background:
+
+        linear-gradient(
+            rgba(
+                103,
+                174,
+                202,
+                .04
+            )
+            1px,
+            transparent 1px
+        ),
+
+        linear-gradient(
+            90deg,
+            rgba(
+                103,
+                174,
+                202,
+                .04
+            )
+            1px,
+            transparent 1px
+        );
+
+    background-size:
+        100% 25%,
+        12.5% 100%;
+}
+
+
+.area {
+
+    position:
+        absolute;
+
+    inset:
+        22px 14px 18px;
+}
+
+
+.area svg {
+
+    width:
+        100%;
+
+    height:
+        100%;
+}
+
+
+.chart-labels {
+
+    display:
+        flex;
+
+    justify-content:
+        space-between;
+
+    margin-top:
+        10px;
+
+    color:
+        #7e7186;
+
+    font-size:
+        9px;
+}
+
+
+/* =========================================================
+   PRIORITY QUEUE
+========================================================= */
+
+.queue {
+
+    padding:
+        12px;
+}
+
+
+.ticket {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        auto 1fr auto;
+
+    gap:
+        11px;
+
+    align-items:
+        center;
+
+    padding:
+        12px;
+
+    border:
+        1px solid
+        transparent;
+
+    border-radius:
+        14px;
+}
+
+
+.ticket:hover {
+
+    background:
+        rgba(
+            103,
+            86,
+            130,
+            .07
+        );
+
+    border-color:
+        rgba(
+            103,
+            174,
+            202,
+            .10
+        );
+}
+
+
+.priority {
+
+    width:
+        34px;
+
+    height:
+        34px;
+
+    border-radius:
+        10px;
+
+    display:
+        grid;
+
+    place-items:
+        center;
+
+    background:
+        rgba(
+            103,
+            86,
+            130,
+            .12
+        );
+
+    border:
+        1px solid
+        rgba(
+            103,
+            174,
+            202,
+            .14
+        );
+
+    color:
+        #d9cfdf;
+
+    font-size:
+        10px;
+
+    font-weight:
+        950;
+}
+
+
+.priority.critical {
+
+    background:
+        var(--rose);
+
+    color:
+        #fff;
+
+    border-color:
+        var(--rose);
+}
+
+
+.ticket strong {
+
+    display:
+        block;
+
+    font-size:
+        11.5px;
+}
+
+
+.ticket .meta {
+
+    display:
+        flex;
+
+    flex-wrap:
+        wrap;
+
+    gap:
+        7px;
+
+    margin-top:
+        5px;
+
+    color:
+        #766a80;
+
+    font-size:
+        9px;
+}
+
+
+.sla {
+
+    text-align:
+        right;
+}
+
+
+.sla strong {
+
+    font-size:
+        10px;
+}
+
+
+.sla span {
+
+    display:
+        block;
+
+    margin-top:
+        4px;
+
+    color:
+        #776b80;
+
+    font-size:
+        8.5px;
+}
+
+
+.sla.urgent strong {
+
+    color:
+        #ff8bb4;
+}
+
+
+.sla.normal strong {
+
+    color:
+        #9ecfe3;
+}
+
+
+/* =========================================================
+   BOTTOM GRID
+========================================================= */
+
+.bottom-grid {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        1fr 1fr 1fr;
+
+    gap:
+        16px;
+
+    margin-top:
+        16px;
+}
+
+
+/* =========================================================
+   TECHNICIAN WORKLOAD
+========================================================= */
+
+.workload {
+
+    padding:
+        14px 16px;
+}
+
+
+.person {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        auto 1fr auto;
+
+    gap:
+        10px;
+
+    align-items:
+        center;
+
+    padding:
+        9px 0;
+}
+
+
+.person-avatar {
+
+    width:
+        31px;
+
+    height:
+        31px;
+
+    border-radius:
+        9px;
+
+    display:
+        grid;
+
+    place-items:
+        center;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(
+                103,
+                174,
+                202,
+                .16
+            ),
+            rgba(
+                103,
+                86,
+                130,
+                .18
+            )
+        );
+
+    border:
+        1px solid
+        rgba(
+            103,
+            174,
+            202,
+            .12
+        );
+
+    color:
+        #fff;
+
+    font-size:
+        9px;
+
+    font-weight:
+        950;
+}
+
+
+.person strong {
+
+    display:
+        block;
+
+    font-size:
+        10.5px;
+}
+
+
+.person span {
+
+    display:
+        block;
+
+    margin-top:
+        3px;
+
+    color:
+        #7f7288;
+
+    font-size:
+        8.5px;
+}
+
+
+.load {
+
+    width:
+        72px;
+}
+
+
+.load-bar {
+
+    height:
+        5px;
+
+    border-radius:
+        999px;
+
+    background:
+        rgba(
+            255,
+            255,
+            255,
+            .06
+        );
+
+    overflow:
+        hidden;
+}
+
+
+.load-bar i {
+
+    display:
+        block;
+
+    height:
+        100%;
+
+    background:
+        linear-gradient(
+            90deg,
+            var(--topaz),
+            var(--rose)
+        );
+
+    border-radius:
+        inherit;
+}
+
+
+.load small {
+
+    display:
+        block;
+
+    text-align:
+        right;
+
+    margin-top:
+        3px;
+
+    color:
+        #776b80;
+
+    font-size:
+        8px;
+}
+
+
+/* =========================================================
+   DONUT
+========================================================= */
+
+.donut-area {
+
+    padding:
+        18px;
+
+    display:
+        grid;
+
+    grid-template-columns:
+        150px 1fr;
+
+    gap:
+        20px;
+
+    align-items:
+        center;
+}
+
+
+.donut-box {
+
+    position:
+        relative;
+
+    display:
+        grid;
+
+    place-items:
+        center;
+}
+
+
+.donut {
+
+    width:
+        140px;
+
+    height:
+        140px;
+
+    border-radius:
+        50%;
+
+    background:
+        conic-gradient(
+            var(--topaz) 0 39%,
+            var(--amethyst) 39% 63%,
+            var(--rose) 63% 83%,
+            var(--jewel) 83% 100%
+        );
+
+    display:
+        grid;
+
+    place-items:
+        center;
+}
+
+
+.donut::after {
+
+    content:
+        "";
+
+    width:
+        92px;
+
+    height:
+        92px;
+
+    border-radius:
+        50%;
+
+    background:
+        #0d0910;
+
+    border:
+        1px solid
+        rgba(
+            103,
+            174,
+            202,
+            .10
+        );
+}
+
+
+.donut-center {
+
+    position:
+        absolute;
+
+    text-align:
+        center;
+}
+
+
+.donut-center strong {
+
+    display:
+        block;
+
+    font-size:
+        23px;
+}
+
+
+.donut-center span {
+
+    display:
+        block;
+
+    margin-top:
+        3px;
+
+    color:
+        #7f7288;
+
+    font-size:
+        8.5px;
+}
+
+
+.legend {
+
+    display:
+        grid;
+
+    gap:
+        10px;
+}
+
+
+.legend-row {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        space-between;
+
+    color:
+        #9b8fa4;
+
+    font-size:
+        9.5px;
+}
+
+
+.legend-row span:first-child {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    gap:
+        8px;
+}
+
+
+.legend-row i {
+
+    width:
+        8px;
+
+    height:
+        8px;
+
+    border-radius:
+        50%;
+}
+
+
+/* =========================================================
+   ACTIVITY
+========================================================= */
+
+.activity {
+
+    padding:
+        13px 16px;
+}
+
+
+.activity-item {
+
+    position:
+        relative;
+
+    display:
+        grid;
+
+    grid-template-columns:
+        auto 1fr;
+
+    gap:
+        10px;
+
+    padding:
+        8px 0 10px;
+}
+
+
+.activity-item:not(:last-child)::after {
+
+    content:
+        "";
+
+    position:
+        absolute;
+
+    left:
+        14px;
+
+    top:
+        35px;
+
+    bottom:
+        -4px;
+
+    width:
+        1px;
+
+    background:
+        rgba(
+            103,
+            174,
+            202,
+            .10
+        );
+}
+
+
+.activity-icon {
+
+    width:
+        29px;
+
+    height:
+        29px;
+
+    border-radius:
+        8px;
+
+    display:
+        grid;
+
+    place-items:
+        center;
+
+    background:
+        rgba(
+            103,
+            86,
+            130,
+            .12
+        );
+
+    border:
+        1px solid
+        rgba(
+            103,
+            174,
+            202,
+            .10
+        );
+
+    color:
+        #bcdce8;
+
+    font-size:
+        9px;
+
+    z-index:
+        1;
+}
+
+
+.activity-item strong {
+
+    font-size:
+        9.8px;
+}
+
+
+.activity-item p {
+
+    margin-top:
+        3px;
+
+    color:
+        #81758a;
+
+    font-size:
+        8.7px;
+
+    line-height:
+        1.45;
+}
+
+
+.activity-item time {
+
+    display:
+        block;
+
+    margin-top:
+        4px;
+
+    color:
+        #65596d;
+
+    font-size:
+        8px;
+}
+
+
+/* =========================================================
+   MODAL
+========================================================= */
+
+.modal-backdrop {
+
+    position:
+        fixed;
+
+    inset:
+        0;
+
+    z-index:
+        100;
+
+    display:
+        none;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    padding:
+        20px;
+
+    background:
+        rgba(
+            0,
+            0,
+            0,
+            .82
+        );
+
+    backdrop-filter:
+        blur(9px);
+}
+
+
+.modal-backdrop.open {
+
+    display:
+        flex;
+}
+
+
+.modal {
+
+    width:
+        min(
+            700px,
+            100%
+        );
+
+    max-height:
+        90vh;
+
+    overflow:
+        auto;
+
+    border:
+        1px solid
+        rgba(
+            103,
+            174,
+            202,
+            .14
+        );
+
+    border-radius:
+        22px;
+
+    background:
+        #0d0910;
+
+    box-shadow:
+        0 40px 120px
+        rgba(
+            0,
+            0,
+            0,
+            .70
+        );
+}
+
+
+.modal-head {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        space-between;
+
+    padding:
+        18px 20px;
+
+    border-bottom:
+        1px solid
+        rgba(
+            103,
+            174,
+            202,
+            .10
+        );
+}
+
+
+.modal-head h2 {
+
+    font-size:
+        18px;
+}
+
+
+.modal-head p {
+
+    margin-top:
+        4px;
+
+    color:
+        #81738b;
+
+    font-size:
+        10px;
+}
+
+
+.close {
+
+    width:
+        36px;
+
+    height:
+        36px;
+
+    border:
+        1px solid
+        rgba(
+            103,
+            174,
+            202,
+            .12
+        );
+
+    border-radius:
+        9px;
+
+    background:
+        rgba(
+            103,
+            86,
+            130,
+            .10
+        );
+
+    color:
+        #fff;
+}
+
+
+.form {
+
+    padding:
+        20px;
+
+    display:
+        grid;
+
+    gap:
+        15px;
+}
+
+
+.form-grid {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap:
+        12px;
+}
+
+
+.field label {
+
+    display:
+        block;
+
+    margin-bottom:
+        7px;
+
+    color:
+        #9b8fa4;
+
+    font-size:
+        10px;
+
+    font-weight:
+        800;
+}
+
+
+.field input,
+.field select,
+.field textarea {
+
+    width:
+        100%;
+
+    padding:
+        12px;
+
+    border:
+        1px solid
+        rgba(
+            103,
+            174,
+            202,
+            .14
+        );
+
+    border-radius:
+        11px;
+
+    background:
+        rgba(
+            103,
+            86,
+            130,
+            .08
+        );
+
+    color:
+        #fff;
+
+    outline:
+        none;
+}
+
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+
+    border-color:
+        var(--topaz);
+}
+
+
+.field textarea {
+
+    min-height:
+        120px;
+
+    resize:
+        vertical;
+}
+
+
+.modal-actions {
+
+    display:
+        flex;
+
+    justify-content:
+        flex-end;
+
+    gap:
+        10px;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+.sidebar-backdrop {
+
+    display:
+        none;
+}
+
+
+@media (
+    max-width: 1180px
+) {
+
+    .stat-grid {
+
+        grid-template-columns:
+            repeat(
+                2,
+                1fr
+            );
+    }
+
+
+    .bottom-grid {
+
+        grid-template-columns:
+            1fr 1fr;
+    }
+
+
+    .bottom-grid
+    .panel:last-child {
+
+        grid-column:
+            1 / -1;
+    }
+}
+
+
+@media (
+    max-width: 900px
+) {
+
+    .sidebar {
+
+        transform:
+            translateX(-100%);
+
+        transition:
+            .2s ease;
+    }
+
+
+    .sidebar.open {
+
+        transform:
+            none;
+    }
+
+
+    .sidebar-backdrop {
+
+        position:
+            fixed;
+
+        inset:
+            0;
+
+        z-index:
+            45;
+
+        background:
+            rgba(
+                0,
+                0,
+                0,
+                .64
+            );
+    }
+
+
+    .sidebar-backdrop.open {
+
+        display:
+            block;
+    }
+
+
+    .main {
+
+        margin-left:
+            0;
+    }
+
+
+    .mobile-btn {
+
+        display:
+            grid;
+
+        place-items:
+            center;
+    }
+
+
+    .dashboard-grid {
+
+        grid-template-columns:
+            1fr;
+    }
+
+
+    .hero-row {
+
+        flex-direction:
+            column;
+    }
+
+
+    .hero-side {
+
+        width:
+            100%;
+
+        min-width:
+            0;
+    }
+}
+
+
+@media (
+    max-width: 680px
+) {
+
+    .content {
+
+        padding:
+            16px;
+    }
+
+
+    .topbar {
+
+        padding:
+            0 14px;
+    }
+
+
+    .search {
+
+        display:
+            none;
+    }
+
+
+    .profile-copy {
+
+        display:
+            none;
+    }
+
+
+    .hero {
+
+        padding:
+            21px;
+    }
+
+
+    .hero h1 {
+
+        font-size:
+            38px;
+
+        letter-spacing:
+            -2px;
+    }
+
+
+    .stat-grid,
+    .bottom-grid {
+
+        grid-template-columns:
+            1fr;
+    }
+
+
+    .bottom-grid
+    .panel:last-child {
+
+        grid-column:
+            auto;
+    }
+
+
+    .donut-area {
+
+        grid-template-columns:
+            1fr;
+
+        justify-items:
+            center;
+    }
+
+
+    .legend {
+
+        width:
+            100%;
+    }
+
+
+    .form-grid {
+
+        grid-template-columns:
+            1fr;
+    }
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     SIDEBAR
+========================================================= -->
+
+<aside
+    class="sidebar"
+    id="sidebar"
+>
+
+    <div class="brand">
+
+        <div class="brand-mark">
+            R
+        </div>
+
+        <div>
+
+            <strong>
+                ResolveDesk
+            </strong>
+
+            <span>
+                IT Service Management
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <div class="nav-label">
+        Workspace
+    </div>
+
+
+    <nav class="nav">
+
+        <a
+            class="active"
+            href="/dashboard.html"
+        >
+            <span class="nav-icon">
+                ⌂
+            </span>
+
+            Dashboard
+        </a>
+
+
+        <a href="/tickets.html">
+
+            <span class="nav-icon">
+                ◫
+            </span>
+
+            Tickets
+
+            <span class="badge">
+                24
+            </span>
+
+        </a>
+
+
+        <a href="/my-queue.html">
+
+            <span class="nav-icon">
+                ◎
+            </span>
+
+            My Queue
+
+            <span class="badge">
+                8
+            </span>
+
+        </a>
+
+
+        <a href="/sla-monitor.html">
+
+            <span class="nav-icon">
+                ⏱
+            </span>
+
+            SLA Monitor
+
+            <span class="badge">
+                2
+            </span>
+
+        </a>
+
+
+        <a href="/knowledge-base.html">
+
+            <span class="nav-icon">
+                ▤
+            </span>
+
+            Knowledge Base
+
+        </a>
+
+    </nav>
+
+
+    <div class="nav-label">
+        Management
+    </div>
+
+
+    <nav class="nav">
+
+        <a href="/users.html">
+
+            <span class="nav-icon">
+                ♙
+            </span>
+
+            Users
+
+        </a>
+
+
+        <a href="/technicians.html">
+
+            <span class="nav-icon">
+                ♟
+            </span>
+
+            Technicians
+
+        </a>
+
+
+        <a href="/departments.html">
+
+            <span class="nav-icon">
+                ▦
+            </span>
+
+            Departments
+
+        </a>
+
+
+        <a href="/reports.html">
+
+            <span class="nav-icon">
+                ▥
+            </span>
+
+            Reports
+
+        </a>
+
+
+        <a href="/activity-log.html">
+
+            <span class="nav-icon">
+                ◷
+            </span>
+
+            Audit Log
+
+        </a>
+
+
+        <a href="/settings.html">
+
+            <span class="nav-icon">
+                ⚙
+            </span>
+
+            Settings
+
+        </a>
+
+    </nav>
+
+
+    <div class="sidebar-bottom">
+
+        <div class="system-card">
+
+            <small>
+                System Status
+            </small>
+
+            <strong>
+                All services operational
+            </strong>
+
+            <p>
+                API, database and notification
+                services are online.
+            </p>
+
+        </div>
+
+    </div>
+
+</aside>
+
+
+<div
+    class="sidebar-backdrop"
+    id="sidebarBackdrop"
+></div>
+
+
+<!-- =========================================================
+     MAIN
+========================================================= -->
+
+<main class="main">
+
+
+<!-- =========================================================
+     TOPBAR
+========================================================= -->
+
+<header class="topbar">
+
+    <div
+        style="
+            display:flex;
+            align-items:center;
+            gap:12px;
+        "
+    >
+
+        <button
+            class="mobile-btn"
+            id="menuBtn"
+            type="button"
+        >
+            ☰
+        </button>
+
+
+        <div class="search">
+
+            <input
+                id="globalSearch"
+                type="search"
+                placeholder="
+                    Search tickets,
+                    users,
+                    knowledge base...
+                "
+            >
+
+            <span class="key">
+                ⌘ K
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <div class="top-actions">
+
+
+        <button
+            class="icon-btn"
+            type="button"
+        >
+            ?
+        </button>
+
+
+       <div
+    class="notification-center"
+    id="notificationCenter"
+>
+    <button
+        class="icon-btn notification-button"
+        id="notificationBell"
+        type="button"
+        aria-label="Notifications"
+        aria-expanded="false"
+    >
+        <span class="notification-bell-icon">
+            ♢
+        </span>
+
+        <span
+            class="notification-badge"
+            id="notificationBadge"
+            hidden
+        >
+            0
+        </span>
+    </button>
+
+    <div
+        class="notification-panel"
+        id="notificationPanel"
+        hidden
+    >
+        <div class="notification-panel-header">
+            <div>
+                <strong>Notifications</strong>
+                <span id="notificationSummary">
+                    You're all caught up
+                </span>
+            </div>
+
+            <button
+                class="notification-read-all"
+                id="notificationReadAll"
+                type="button"
+            >
+                Mark all as read
+            </button>
+        </div>
+
+        <div
+            class="notification-list"
+            id="notificationList"
+        >
+            <div class="notification-empty">
+                No notifications yet.
+            </div>
+        </div>
+    </div>
+</div>
+
+
+        <div class="profile">
+
+            <div class="avatar">
+                HH
+            </div>
+
+            <div class="profile-copy">
+
+                <strong>
+                    Haziq Hanif
+                </strong>
+
+                <span>
+                    Administrator
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<!-- =========================================================
+     CONTENT
+========================================================= -->
+
+<div class="content">
+
+
+<!-- =========================================================
+     HERO
+========================================================= -->
+
+<section class="hero">
+
+    <div class="hero-row">
+
+
+        <div>
+
+            <div class="eyebrow">
+
+                <span class="pulse"></span>
+
+                IT Support Command Center
+
+            </div>
+
+
+            <h1>
+
+                Support operations,
+
+                <span>
+                    without the clutter.
+                </span>
+
+            </h1>
+
+
+            <p>
+
+                Manage tickets,
+                technicians,
+                SLA deadlines,
+                support conversations
+                and service activity
+                in one clean workspace.
+
+            </p>
+
+
+            <div class="hero-actions">
+
+                <button
+                    class="btn btn-primary"
+                    id="createTicketBtn"
+                    type="button"
+                >
+                    ＋ Create Ticket
+                </button>
+
+
+                <a
+                    class="btn btn-secondary"
+                    href="/my-queue.html"
+                >
+                    View My Queue
+                </a>
+
+
+                <a
+                    class="btn btn-secondary"
+                    href="/sla-monitor.html"
+                >
+                    SLA Monitor
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <aside class="hero-side">
+
+            <small>
+                SLA Health
+            </small>
+
+            <strong>
+                84%
+            </strong>
+
+            <p>
+
+                Most active tickets
+                remain inside their
+                response and resolution
+                targets.
+
+            </p>
+
+            <div class="hero-progress">
+
+                <span></span>
+
+            </div>
+
+        </aside>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     STAT CARDS
+========================================================= -->
+
+<section class="stat-grid">
+
+
+    <article class="stat">
+
+        <span class="label">
+            Open Tickets
+        </span>
+
+        <div class="stat-row">
+
+            <strong>
+                24
+            </strong>
+
+            <span class="chip">
+                +6 today
+            </span>
+
+        </div>
+
+        <p>
+            New and unassigned
+            support requests.
+        </p>
+
+    </article>
+
+
+    <article class="stat">
+
+        <span class="label">
+            In Progress
+        </span>
+
+        <div class="stat-row">
+
+            <strong>
+                11
+            </strong>
+
+            <span class="chip">
+                45.8%
+            </span>
+
+        </div>
+
+        <p>
+            Tickets currently
+            being handled.
+        </p>
+
+    </article>
+
+
+    <article class="stat">
+
+        <span class="label">
+            Resolved Today
+        </span>
+
+        <div class="stat-row">
+
+            <strong>
+                18
+            </strong>
+
+            <span class="chip">
+                +12.5%
+            </span>
+
+        </div>
+
+        <p>
+            Issues completed
+            since midnight.
+        </p>
+
+    </article>
+
+
+    <article class="stat">
+
+        <span class="label">
+            SLA Breaches
+        </span>
+
+        <div class="stat-row">
+
+            <strong>
+                2
+            </strong>
+
+            <span class="chip inverse">
+                ACTION
+            </span>
+
+        </div>
+
+        <p>
+            Tickets outside
+            their target deadline.
+        </p>
+
+    </article>
+
+</section>
+
+
+<!-- =========================================================
+     DASHBOARD MAIN GRID
+========================================================= -->
+
+<section class="dashboard-grid">
+
+
+<!-- =========================================================
+     TICKET CHART
+========================================================= -->
+
+<article class="panel">
+
+    <div class="panel-head">
+
+        <div class="panel-title">
+
+            <strong>
+                Ticket Volume
+            </strong>
+
+            <span>
+                Created vs resolved
+                over the last 7 days
+            </span>
+
+        </div>
+
+
+        <a
+            class="panel-action"
+            href="/reports.html"
+        >
+            View report ↗
+        </a>
+
+    </div>
+
+
+    <div class="chart-wrap">
+
+
+        <div class="chart">
+
+            <div class="area">
+
+                <svg
+                    viewBox="
+                        0 0 700 210
+                    "
+                    preserveAspectRatio="
+                        none
+                    "
+                >
+
+                    <defs>
+
+                        <linearGradient
+                            id="topazFill"
+                            x1="0"
+                            y1="0"
+                            x2="0"
+                            y2="1"
+                        >
+
+                            <stop
+                                offset="0%"
+                                stop-color="#67AECA"
+                                stop-opacity=".16"
+                            />
+
+                            <stop
+                                offset="100%"
+                                stop-color="#67AECA"
+                                stop-opacity="0"
+                            />
+
+                        </linearGradient>
+
+
+                        <linearGradient
+                            id="roseFill"
+                            x1="0"
+                            y1="0"
+                            x2="0"
+                            y2="1"
+                        >
+
+                            <stop
+                                offset="0%"
+                                stop-color="#E52A6F"
+                                stop-opacity=".12"
+                            />
+
+                            <stop
+                                offset="100%"
+                                stop-color="#E52A6F"
+                                stop-opacity="0"
+                            />
+
+                        </linearGradient>
+
+                    </defs>
+
+
+                    <path
+                        d="
+                            M0,155
+                            C80,145
+                            100,82
+                            175,100
+                            S280,168
+                            350,113
+                            S450,38
+                            525,72
+                            S625,120
+                            700,52
+                            L700,210
+                            L0,210
+                            Z
+                        "
+                        fill="
+                            url(#topazFill)
+                        "
+                    />
+
+
+                    <path
+                        d="
+                            M0,155
+                            C80,145
+                            100,82
+                            175,100
+                            S280,168
+                            350,113
+                            S450,38
+                            525,72
+                            S625,120
+                            700,52
+                        "
+                        fill="none"
+                        stroke="#67AECA"
+                        stroke-width="3.4"
+                        stroke-linecap="round"
+                    />
+
+
+                    <path
+                        d="
+                            M0,175
+                            C70,167
+                            125,128
+                            175,139
+                            S275,182
+                            350,144
+                            S470,95
+                            525,112
+                            S620,141
+                            700,94
+                            L700,210
+                            L0,210
+                            Z
+                        "
+                        fill="
+                            url(#roseFill)
+                        "
+                    />
+
+
+                    <path
+                        d="
+                            M0,175
+                            C70,167
+                            125,128
+                            175,139
+                            S275,182
+                            350,144
+                            S470,95
+                            525,112
+                            S620,141
+                            700,94
+                        "
+                        fill="none"
+                        stroke="#E52A6F"
+                        stroke-width="2.5"
+                        stroke-linecap="round"
+                    />
+
+                </svg>
+
+            </div>
+
+        </div>
+
+
+        <div class="chart-labels">
+
+            <span>Mon</span>
+            <span>Tue</span>
+            <span>Wed</span>
+            <span>Thu</span>
+            <span>Fri</span>
+            <span>Sat</span>
+            <span>Sun</span>
+
+        </div>
+
+    </div>
+
+</article>
+
+
+<!-- =========================================================
+     PRIORITY QUEUE
+========================================================= -->
+
+<article class="panel">
+
+    <div class="panel-head">
+
+        <div class="panel-title">
+
+            <strong>
+                Priority Queue
+            </strong>
+
+            <span>
+                Tickets that need
+                attention first
+            </span>
+
+        </div>
+
+
+        <a
+            class="panel-action"
+            href="/my-queue.html"
+        >
+            Open queue ↗
+        </a>
+
+    </div>
+
+
+    <div class="queue">
+        <div class="live-loading">
+            Loading priority queue...
+        </div>
+</div>
+
+</article>
+
+</section>
+
+
+<!-- =========================================================
+     BOTTOM GRID
+========================================================= -->
+
+<section class="bottom-grid">
+
+
+<!-- =========================================================
+     TECHNICIAN WORKLOAD
+========================================================= -->
+
+<article class="panel">
+
+    <div class="panel-head">
+
+        <div class="panel-title">
+
+            <strong>
+                Technician Workload
+            </strong>
+
+            <span>
+                Active assigned tickets
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <div class="workload">
+        <div class="live-loading">
+            Loading technician workload...
+        </div>
+</div>
+
+</article>
+
+
+<!-- =========================================================
+     CATEGORIES
+========================================================= -->
+
+<article class="panel">
+
+    <div class="panel-head">
+
+        <div class="panel-title">
+
+            <strong>
+                Ticket Categories
+            </strong>
+
+            <span>
+                Distribution this month
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <div class="donut-area">
+
+        <div class="donut-box">
+
+            <div class="donut"></div>
+
+            <div class="donut-center">
+
+                <strong>
+                    126
+                </strong>
+
+                <span>
+                    Total tickets
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="legend">
+
+            <div class="legend-row">
+
+                <span>
+
+                    <i
+                        style="
+                            background:
+                            var(--topaz);
+                        "
+                    ></i>
+
+                    Network
+
+                </span>
+
+                <strong>
+                    39%
+                </strong>
+
+            </div>
+
+
+            <div class="legend-row">
+
+                <span>
+
+                    <i
+                        style="
+                            background:
+                            var(--amethyst);
+                        "
+                    ></i>
+
+                    Software
+
+                </span>
+
+                <strong>
+                    24%
+                </strong>
+
+            </div>
+
+
+            <div class="legend-row">
+
+                <span>
+
+                    <i
+                        style="
+                            background:
+                            var(--rose);
+                        "
+                    ></i>
+
+                    Hardware
+
+                </span>
+
+                <strong>
+                    20%
+                </strong>
+
+            </div>
+
+
+            <div class="legend-row">
+
+                <span>
+
+                    <i
+                        style="
+                            background:
+                            var(--jewel);
+                        "
+                    ></i>
+
+                    Access
+
+                </span>
+
+                <strong>
+                    17%
+                </strong>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</article>
+
+
+<!-- =========================================================
+     ACTIVITY
+========================================================= -->
+
+<article class="panel">
+
+    <div class="panel-head">
+
+        <div class="panel-title">
+
+            <strong>
+                Recent Activity
+            </strong>
+
+            <span>
+                Latest system actions
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <div class="activity">
+        <div class="live-loading">
+            Loading recent activity...
+        </div>
+</div>
+
+</article>
+
+</section>
+
+</div>
+
+</main>
+
+
+<!-- =========================================================
+     CREATE TICKET
+     Handled by /js/create-ticket-nav.js
+========================================================= -->
+
+<!-- =========================================================
+     JAVASCRIPT
+========================================================= -->
+
+<script>
+
+
+/* =========================================================
+   MOBILE SIDEBAR
+========================================================= */
+
+const sidebar =
+    document.getElementById(
+        "sidebar"
+    );
+
+
+const sidebarBackdrop =
+    document.getElementById(
+        "sidebarBackdrop"
+    );
+
+
+const menuBtn =
+    document.getElementById(
+        "menuBtn"
+    );
+
+
+function closeSidebar() {
+
+    sidebar.classList.remove(
+        "open"
+    );
+
+    sidebarBackdrop.classList.remove(
+        "open"
+    );
+}
+
+
+menuBtn.addEventListener(
+    "click",
+    () => {
+
+        sidebar.classList.toggle(
+            "open"
+        );
+
+        sidebarBackdrop.classList.toggle(
+            "open"
+        );
+    }
+);
+
+
+sidebarBackdrop.addEventListener(
+    "click",
+    closeSidebar
+);
+
+
+/* =========================================================
+   CREATE TICKET
+   Navigation is handled by /js/create-ticket-nav.js
+========================================================= */
+
+/* =========================================================
+   KEYBOARD SHORTCUTS
+========================================================= */
+
+document.addEventListener(
+    "keydown",
+    event => {
+
+        if (
+            event.key ===
+            "Escape"
+        ) {
+            closeSidebar();
+        }
+
+
+        if (
+            (
+                event.metaKey ||
+                event.ctrlKey
+            ) &&
+            event.key
+                .toLowerCase() ===
+                "k"
+        ) {
+
+            event.preventDefault();
+
+            document
+                .getElementById(
+                    "globalSearch"
+                )
+                ?.focus();
+        }
+    }
+);
+
+
+/* =========================================================
+   CREATE TICKET SUBMIT
+   Live create-ticket flow is handled outside this dashboard.
+========================================================= */
+
+</script>
+
+<script src="/js/auth-session.js"></script>
+<script src="/js/create-ticket-nav.js"></script>
+<script src="/js/dashboard-live.js"></script>
+<script src="/js/notifications.js"></script>
+<script src="/js/role-navigation.js"></script>
+</body>
+</html>

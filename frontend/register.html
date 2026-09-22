@@ -1,0 +1,2736 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>ResolveDesk — Create Account</title>
+
+<style>
+
+/* =========================================================
+   RESOLVEDESK REGISTER
+========================================================= */
+
+:root {
+    --topaz: #67AECA;
+    --amethyst: #675682;
+    --jewel: #5F0F4E;
+    --rose: #E52A6F;
+
+    --bg: #070509;
+    --bg2: #120914;
+
+    --text: #ffffff;
+    --muted: #8d8194;
+
+    --line: rgba(103,174,202,.14);
+    --line-soft: rgba(255,255,255,.055);
+
+    --shadow:
+        0 40px 120px
+        rgba(0,0,0,.55);
+}
+
+
+/* =========================================================
+   RESET
+========================================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    min-height: 100%;
+}
+
+body {
+    min-height: 100vh;
+
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Inter,
+        Arial,
+        sans-serif;
+
+    color: var(--text);
+
+    background:
+        radial-gradient(
+            circle at 10% 8%,
+            rgba(103,174,202,.19),
+            transparent 25%
+        ),
+        radial-gradient(
+            circle at 90% 92%,
+            rgba(229,42,111,.12),
+            transparent 28%
+        ),
+        radial-gradient(
+            circle at 76% 12%,
+            rgba(103,86,130,.16),
+            transparent 30%
+        ),
+        linear-gradient(
+            135deg,
+            #060407,
+            #0b0710 48%,
+            var(--bg2)
+        );
+
+    overflow-x: hidden;
+}
+
+body::before {
+    content: "";
+
+    position: fixed;
+    inset: 0;
+
+    z-index: -1;
+
+    opacity: .15;
+
+    pointer-events: none;
+
+    background-image:
+        linear-gradient(
+            rgba(103,174,202,.04) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            90deg,
+            rgba(103,174,202,.04) 1px,
+            transparent 1px
+        );
+
+    background-size:
+        60px 60px;
+
+    mask-image:
+        radial-gradient(
+            circle at center,
+            black 20%,
+            transparent 86%
+        );
+}
+
+button,
+input,
+select {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+
+/* =========================================================
+   PAGE
+========================================================= */
+
+.page {
+    min-height: 100vh;
+
+    display: grid;
+
+    grid-template-columns:
+        minmax(
+            390px,
+            .83fr
+        )
+        minmax(
+            0,
+            1.17fr
+        );
+}
+
+
+/* =========================================================
+   LEFT PANEL
+========================================================= */
+
+.info-side {
+    position: relative;
+
+    min-height: 100vh;
+
+    padding:
+        38px
+        clamp(
+            36px,
+            5vw,
+            78px
+        );
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    overflow: hidden;
+
+    border-right:
+        1px solid
+        rgba(103,174,202,.07);
+}
+
+.info-side::before {
+    content: "";
+
+    position: absolute;
+
+    width: 420px;
+    height: 420px;
+
+    left: -190px;
+    bottom: -190px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(95,15,78,.24),
+            transparent 68%
+        );
+
+    filter:
+        blur(10px);
+}
+
+.info-side::after {
+    content: "";
+
+    position: absolute;
+
+    width: 300px;
+    height: 300px;
+
+    right: -120px;
+    top: 150px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(103,174,202,.12),
+            transparent 70%
+        );
+}
+
+
+/* =========================================================
+   BRAND
+========================================================= */
+
+.brand {
+    position: relative;
+
+    z-index: 2;
+
+    width: max-content;
+
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+}
+
+.brand-mark {
+    width: 46px;
+    height: 46px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 14px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--topaz),
+            var(--amethyst) 55%,
+            var(--rose)
+        );
+
+    font-size: 21px;
+    font-weight: 950;
+
+    box-shadow:
+        0 18px 45px
+        rgba(103,86,130,.30);
+}
+
+.brand strong {
+    display: block;
+
+    font-size: 17px;
+}
+
+.brand span {
+    display: block;
+
+    margin-top: 3px;
+
+    color: #796e81;
+
+    font-size: 8px;
+    font-weight: 900;
+
+    letter-spacing: .14em;
+
+    text-transform: uppercase;
+}
+
+
+/* =========================================================
+   LEFT COPY
+========================================================= */
+
+.info-content {
+    position: relative;
+
+    z-index: 2;
+
+    max-width: 550px;
+
+    margin:
+        60px 0;
+}
+
+.pill {
+    display: inline-flex;
+    align-items: center;
+
+    gap: 8px;
+
+    padding:
+        7px 11px;
+
+    border:
+        1px solid
+        rgba(103,174,202,.17);
+
+    border-radius: 999px;
+
+    background:
+        rgba(103,174,202,.055);
+
+    color: #b8dce9;
+
+    font-size: 8.5px;
+    font-weight: 950;
+
+    letter-spacing: .11em;
+
+    text-transform: uppercase;
+}
+
+.pill::before {
+    content: "";
+
+    width: 7px;
+    height: 7px;
+
+    border-radius: 50%;
+
+    background:
+        var(--topaz);
+
+    box-shadow:
+        0 0 14px
+        rgba(103,174,202,.75);
+}
+
+.info-content h1 {
+    margin-top: 18px;
+
+    font-size:
+        clamp(
+            42px,
+            5vw,
+            68px
+        );
+
+    line-height: 1;
+
+    letter-spacing:
+        -3.5px;
+}
+
+.info-content h1 span {
+    background:
+        linear-gradient(
+            90deg,
+            var(--topaz),
+            #a795c0,
+            var(--rose)
+        );
+
+    -webkit-background-clip:
+        text;
+
+    background-clip:
+        text;
+
+    color: transparent;
+}
+
+.info-content > p {
+    margin-top: 20px;
+
+    max-width: 520px;
+
+    color: #908495;
+
+    font-size: 12.5px;
+
+    line-height: 1.8;
+}
+
+
+/* =========================================================
+   PROCESS
+========================================================= */
+
+.process {
+    display: grid;
+
+    gap: 9px;
+
+    margin-top: 28px;
+}
+
+.process-item {
+    padding: 12px;
+
+    display: grid;
+
+    grid-template-columns:
+        32px 1fr;
+
+    gap: 11px;
+
+    border:
+        1px solid
+        rgba(103,174,202,.075);
+
+    border-radius: 13px;
+
+    background:
+        rgba(103,86,130,.035);
+}
+
+.process-number {
+    width: 32px;
+    height: 32px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 9px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(103,174,202,.12),
+            rgba(103,86,130,.18)
+        );
+
+    color: #b9dce8;
+
+    font-size: 8px;
+
+    font-weight: 950;
+}
+
+.process-item strong {
+    display: block;
+
+    font-size: 9px;
+}
+
+.process-item span {
+    display: block;
+
+    margin-top: 4px;
+
+    color: #706578;
+
+    font-size: 8px;
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   FOOT
+========================================================= */
+
+.info-footer {
+    position: relative;
+
+    z-index: 2;
+
+    display: flex;
+    align-items: center;
+
+    gap: 7px;
+
+    color: #62586a;
+
+    font-size: 8px;
+}
+
+.live-dot {
+    width: 7px;
+    height: 7px;
+
+    border-radius: 50%;
+
+    background:
+        var(--topaz);
+
+    box-shadow:
+        0 0 12px
+        rgba(103,174,202,.7);
+}
+
+
+/* =========================================================
+   FORM SIDE
+========================================================= */
+
+.form-side {
+    min-height: 100vh;
+
+    padding:
+        35px
+        clamp(
+            24px,
+            5vw,
+            72px
+        );
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(8,5,11,.48),
+            rgba(8,5,11,.84)
+        );
+}
+
+.form-shell {
+    width:
+        min(
+            720px,
+            100%
+        );
+}
+
+
+/* =========================================================
+   MOBILE BRAND
+========================================================= */
+
+.mobile-brand {
+    display: none;
+
+    align-items: center;
+
+    gap: 10px;
+
+    margin-bottom: 22px;
+}
+
+.mobile-brand .brand-mark {
+    width: 40px;
+    height: 40px;
+
+    font-size: 18px;
+}
+
+
+/* =========================================================
+   FORM CARD
+========================================================= */
+
+.form-card {
+    position: relative;
+
+    overflow: hidden;
+
+    padding: 31px;
+
+    border:
+        1px solid
+        rgba(103,174,202,.14);
+
+    border-radius: 27px;
+
+    background:
+        linear-gradient(
+            150deg,
+            rgba(18,11,22,.94),
+            rgba(8,5,11,.97)
+        );
+
+    box-shadow:
+        var(--shadow);
+
+    backdrop-filter:
+        blur(24px);
+}
+
+.form-card::before {
+    content: "";
+
+    position: absolute;
+
+    width: 240px;
+    height: 240px;
+
+    right: -110px;
+    top: -125px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(103,174,202,.12),
+            transparent 68%
+        );
+}
+
+
+/* =========================================================
+   FORM HEADER
+========================================================= */
+
+.form-header {
+    position: relative;
+
+    z-index: 2;
+
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 18px;
+}
+
+.form-label {
+    color: #9acbdb;
+
+    font-size: 8px;
+    font-weight: 950;
+
+    letter-spacing: .13em;
+
+    text-transform: uppercase;
+}
+
+.form-header h2 {
+    margin-top: 8px;
+
+    font-size: 30px;
+
+    letter-spacing:
+        -1.3px;
+}
+
+.form-header p {
+    max-width: 470px;
+
+    margin-top: 7px;
+
+    color: #807489;
+
+    font-size: 9.5px;
+    line-height: 1.6;
+}
+
+.role-chip {
+    padding:
+        7px 9px;
+
+    flex-shrink: 0;
+
+    border:
+        1px solid
+        rgba(103,174,202,.13);
+
+    border-radius: 999px;
+
+    background:
+        rgba(103,174,202,.05);
+
+    color: #a8d3e2;
+
+    font-size: 7.5px;
+
+    font-weight: 950;
+
+    text-transform: uppercase;
+
+    letter-spacing: .08em;
+}
+
+
+/* =========================================================
+   APPROVAL NOTICE
+========================================================= */
+
+.approval-notice {
+    position: relative;
+
+    z-index: 2;
+
+    margin-top: 19px;
+
+    padding: 12px;
+
+    display: flex;
+
+    gap: 10px;
+
+    border:
+        1px solid
+        rgba(103,174,202,.10);
+
+    border-radius: 12px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(103,174,202,.055),
+            rgba(103,86,130,.055)
+        );
+}
+
+.notice-icon {
+    width: 31px;
+    height: 31px;
+
+    flex-shrink: 0;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 9px;
+
+    background:
+        rgba(103,174,202,.075);
+
+    color: #afd8e6;
+
+    font-size: 10px;
+}
+
+.approval-notice strong {
+    display: block;
+
+    font-size: 8.7px;
+}
+
+.approval-notice p {
+    margin-top: 3px;
+
+    color: #716578;
+
+    font-size: 7.7px;
+    line-height: 1.55;
+}
+
+
+/* =========================================================
+   FORM
+========================================================= */
+
+.form {
+    position: relative;
+
+    z-index: 2;
+
+    margin-top: 20px;
+}
+
+.form-grid {
+    display: grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap:
+        0 12px;
+}
+
+.field {
+    margin-bottom: 14px;
+}
+
+.field label {
+    display: block;
+
+    margin-bottom: 7px;
+
+    color: #a398a7;
+
+    font-size: 8.7px;
+    font-weight: 850;
+}
+
+.required {
+    color:
+        var(--rose);
+}
+
+.input-shell {
+    position: relative;
+}
+
+.input-icon {
+    position: absolute;
+
+    left: 13px;
+    top: 50%;
+
+    transform:
+        translateY(-50%);
+
+    color: #6d6275;
+
+    font-size: 10px;
+
+    pointer-events: none;
+}
+
+.field input,
+.field select {
+    width: 100%;
+    height: 46px;
+
+    padding:
+        0 40px
+        0 37px;
+
+    border:
+        1px solid
+        rgba(103,174,202,.12);
+
+    border-radius: 11px;
+
+    outline: none;
+
+    background:
+        rgba(103,86,130,.055);
+
+    color: #fff;
+
+    transition:
+        .18s ease;
+}
+
+.field select {
+    padding-right:
+        12px;
+}
+
+.field input:focus,
+.field select:focus {
+    border-color:
+        rgba(103,174,202,.55);
+
+    background:
+        rgba(103,174,202,.05);
+
+    box-shadow:
+        0 0 0 4px
+        rgba(103,174,202,.04);
+}
+
+.field input::placeholder {
+    color: #62576a;
+}
+
+.field-note {
+    margin-top: 6px;
+
+    color: #62576a;
+
+    font-size: 7.4px;
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   PASSWORD TOGGLE
+========================================================= */
+
+.password-toggle {
+    position: absolute;
+
+    right: 7px;
+    top: 50%;
+
+    transform:
+        translateY(-50%);
+
+    width: 34px;
+    height: 32px;
+
+    display: grid;
+    place-items: center;
+
+    border: 0;
+
+    border-radius: 8px;
+
+    background:
+        transparent;
+
+    color: #807489;
+
+    font-size: 8px;
+}
+
+.password-toggle:hover {
+    color: #fff;
+
+    background:
+        rgba(103,174,202,.05);
+}
+
+
+/* =========================================================
+   STRENGTH
+========================================================= */
+
+.strength {
+    margin-top: 7px;
+}
+
+.strength-track {
+    height: 5px;
+
+    overflow: hidden;
+
+    border-radius: 999px;
+
+    background:
+        rgba(255,255,255,.06);
+}
+
+.strength-bar {
+    display: block;
+
+    width: 0;
+    height: 100%;
+
+    border-radius: inherit;
+
+    background:
+        linear-gradient(
+            90deg,
+            var(--topaz),
+            var(--amethyst),
+            var(--rose)
+        );
+
+    transition:
+        .2s ease;
+}
+
+.strength-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-top: 5px;
+
+    color: #655a6d;
+
+    font-size: 7.3px;
+}
+
+
+/* =========================================================
+   PASSWORD REQUIREMENTS
+========================================================= */
+
+.password-rules {
+    display: grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap: 6px;
+
+    margin:
+        8px 0 14px;
+}
+
+.rule {
+    display: flex;
+    align-items: center;
+
+    gap: 6px;
+
+    color: #64596c;
+
+    font-size: 7.4px;
+}
+
+.rule::before {
+    content: "";
+
+    width: 6px;
+    height: 6px;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+
+    background:
+        #54495b;
+}
+
+.rule.pass {
+    color: #9fcbd9;
+}
+
+.rule.pass::before {
+    background:
+        var(--topaz);
+
+    box-shadow:
+        0 0 8px
+        rgba(103,174,202,.45);
+}
+
+
+/* =========================================================
+   AGREEMENT
+========================================================= */
+
+.agreement {
+    display: flex;
+    align-items: flex-start;
+
+    gap: 8px;
+
+    margin-top: 2px;
+
+    color: #75697e;
+
+    font-size: 8px;
+    line-height: 1.55;
+}
+
+.agreement input {
+    margin-top: 2px;
+
+    accent-color:
+        var(--topaz);
+}
+
+.agreement a {
+    color: #a3d0df;
+}
+
+
+/* =========================================================
+   MESSAGE
+========================================================= */
+
+.message {
+    display: none;
+
+    margin-top: 13px;
+
+    padding: 11px 12px;
+
+    border-radius: 10px;
+
+    font-size: 8.5px;
+
+    line-height: 1.55;
+}
+
+.message.show {
+    display: block;
+}
+
+.message.error {
+    color: #f1a6c0;
+
+    border:
+        1px solid
+        rgba(229,42,111,.16);
+
+    background:
+        rgba(229,42,111,.06);
+}
+
+.message.success {
+    color: #b9dde9;
+
+    border:
+        1px solid
+        rgba(103,174,202,.15);
+
+    background:
+        rgba(103,174,202,.055);
+}
+
+
+/* =========================================================
+   BUTTON
+========================================================= */
+
+.register-button {
+    width: 100%;
+    height: 49px;
+
+    margin-top: 17px;
+
+    border: 0;
+
+    border-radius: 12px;
+
+    background:
+        linear-gradient(
+            100deg,
+            var(--topaz),
+            var(--amethyst) 55%,
+            var(--rose)
+        );
+
+    color: #fff;
+
+    box-shadow:
+        0 15px 35px
+        rgba(103,86,130,.27);
+
+    font-size: 9.5px;
+
+    font-weight: 950;
+
+    transition:
+        .18s ease;
+}
+
+.register-button:hover {
+    transform:
+        translateY(-1px);
+
+    box-shadow:
+        0 20px 45px
+        rgba(103,86,130,.35);
+}
+
+.register-button:disabled {
+    cursor: not-allowed;
+
+    opacity: .6;
+
+    transform: none;
+}
+
+
+/* =========================================================
+   LOGIN
+========================================================= */
+
+.signin {
+    margin-top: 19px;
+
+    padding-top: 17px;
+
+    text-align: center;
+
+    border-top:
+        1px solid var(--line-soft);
+
+    color: #716578;
+
+    font-size: 8.5px;
+}
+
+.signin a {
+    color: #a5d1df;
+
+    font-weight: 900;
+}
+
+.signin a:hover {
+    color: #fff;
+}
+
+
+/* =========================================================
+   SUCCESS MODAL
+========================================================= */
+
+.modal-backdrop {
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 100;
+
+    display: none;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+
+    background:
+        rgba(0,0,0,.82);
+
+    backdrop-filter:
+        blur(10px);
+}
+
+.modal-backdrop.open {
+    display: flex;
+}
+
+.success-modal {
+    position: relative;
+
+    overflow: hidden;
+
+    width:
+        min(
+            470px,
+            100%
+        );
+
+    padding: 30px;
+
+    text-align: center;
+
+    border:
+        1px solid
+        rgba(103,174,202,.16);
+
+    border-radius: 23px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #120c16,
+            #09060c
+        );
+
+    box-shadow:
+        0 40px 120px
+        rgba(0,0,0,.7);
+}
+
+.success-modal::before {
+    content: "";
+
+    position: absolute;
+
+    width: 190px;
+    height: 190px;
+
+    right: -80px;
+    top: -100px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(103,174,202,.12),
+            transparent 70%
+        );
+}
+
+.success-icon {
+    position: relative;
+
+    z-index: 2;
+
+    width: 64px;
+    height: 64px;
+
+    margin:
+        0 auto;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 19px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--topaz),
+            var(--amethyst),
+            var(--rose)
+        );
+
+    font-size: 23px;
+
+    font-weight: 950;
+
+    box-shadow:
+        0 17px 40px
+        rgba(103,86,130,.27);
+}
+
+.success-modal h3 {
+    position: relative;
+
+    z-index: 2;
+
+    margin-top: 16px;
+
+    font-size: 21px;
+}
+
+.success-modal p {
+    position: relative;
+
+    z-index: 2;
+
+    margin-top: 9px;
+
+    color: #8e8295;
+
+    font-size: 9.5px;
+
+    line-height: 1.7;
+}
+
+.pending-box {
+    position: relative;
+
+    z-index: 2;
+
+    margin-top: 16px;
+
+    padding: 12px;
+
+    border:
+        1px solid
+        rgba(103,174,202,.11);
+
+    border-radius: 11px;
+
+    background:
+        rgba(103,174,202,.04);
+}
+
+.pending-box small {
+    color: #675b70;
+
+    font-size: 7px;
+
+    text-transform: uppercase;
+
+    font-weight: 900;
+
+    letter-spacing: .08em;
+}
+
+.pending-box strong {
+    display: block;
+
+    margin-top: 5px;
+
+    color: #b7dbe7;
+
+    font-size: 9px;
+}
+
+.continue-button {
+    position: relative;
+
+    z-index: 2;
+
+    width: 100%;
+    height: 44px;
+
+    margin-top: 18px;
+
+    border: 0;
+
+    border-radius: 11px;
+
+    background:
+        linear-gradient(
+            100deg,
+            var(--topaz),
+            var(--amethyst),
+            var(--rose)
+        );
+
+    color: #fff;
+
+    font-size: 9px;
+
+    font-weight: 900;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 1050px) {
+
+    .page {
+        grid-template-columns:
+            1fr;
+    }
+
+    .info-side {
+        display: none;
+    }
+
+    .form-side {
+        padding:
+            28px 20px;
+    }
+
+    .mobile-brand {
+        display: flex;
+    }
+}
+
+@media (max-width: 640px) {
+
+    .form-side {
+        align-items: flex-start;
+
+        padding:
+            23px 15px;
+    }
+
+    .form-card {
+        padding: 22px;
+
+        border-radius: 21px;
+    }
+
+    .form-header {
+        flex-direction: column;
+    }
+
+    .form-grid,
+    .password-rules {
+        grid-template-columns:
+            1fr;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+
+<main class="page">
+
+
+<!-- =========================================================
+     LEFT
+========================================================= -->
+
+<section class="info-side">
+
+
+    <a
+        class="brand"
+        href="/login.html"
+    >
+
+        <div class="brand-mark">
+            R
+        </div>
+
+
+        <div>
+
+            <strong>
+                ResolveDesk
+            </strong>
+
+            <span>
+                IT Service Management
+            </span>
+
+        </div>
+
+    </a>
+
+
+    <div class="info-content">
+
+        <div class="pill">
+            Staff Access
+        </div>
+
+
+        <h1>
+
+            Your support
+
+            <span>
+                starts here.
+            </span>
+
+        </h1>
+
+
+        <p>
+
+            Request a ResolveDesk account
+            to report technology issues,
+            follow ticket progress,
+            communicate with IT
+            and access support knowledge.
+
+        </p>
+
+
+        <div class="process">
+
+
+            <div class="process-item">
+
+                <div class="process-number">
+                    01
+                </div>
+
+                <div>
+
+                    <strong>
+                        Submit registration
+                    </strong>
+
+                    <span>
+                        Provide your work identity and department.
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="process-item">
+
+                <div class="process-number">
+                    02
+                </div>
+
+                <div>
+
+                    <strong>
+                        Administrator review
+                    </strong>
+
+                    <span>
+                        New accounts remain pending until approved.
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="process-item">
+
+                <div class="process-number">
+                    03
+                </div>
+
+                <div>
+
+                    <strong>
+                        Access ResolveDesk
+                    </strong>
+
+                    <span>
+                        Sign in and start submitting support requests.
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="info-footer">
+
+        <span class="live-dot"></span>
+
+        Protected internal registration
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     FORM
+========================================================= -->
+
+<section class="form-side">
+
+
+<div class="form-shell">
+
+
+    <div class="mobile-brand">
+
+        <div class="brand-mark">
+            R
+        </div>
+
+        <div>
+
+            <strong>
+                ResolveDesk
+            </strong>
+
+            <span>
+                IT Service Management
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <section class="form-card">
+
+
+        <header class="form-header">
+
+            <div>
+
+                <div class="form-label">
+                    Account Registration
+                </div>
+
+
+                <h2>
+                    Join ResolveDesk.
+                </h2>
+
+
+                <p>
+
+                    Register a staff account
+                    to access your organization's
+                    IT support workspace.
+
+                </p>
+
+            </div>
+
+
+            <span class="role-chip">
+                Staff Account
+            </span>
+
+        </header>
+
+
+        <div class="approval-notice">
+
+            <div class="notice-icon">
+                ◆
+            </div>
+
+
+            <div>
+
+                <strong>
+                    Administrator approval required
+                </strong>
+
+                <p>
+                    Registration creates a pending STAFF account. An administrator must approve it before normal access is enabled.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <form
+            class="form"
+            id="registerForm"
+            novalidate
+        >
+
+
+            <div class="form-grid">
+
+
+                <div class="field">
+
+                    <label for="fullName">
+                        Full name
+                        <span class="required">*</span>
+                    </label>
+
+
+                    <div class="input-shell">
+
+                        <span class="input-icon">
+                            ◉
+                        </span>
+
+
+                        <input
+                            id="fullName"
+                            name="fullName"
+                            type="text"
+                            autocomplete="name"
+                            maxlength="150"
+                            placeholder="Your full name"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <div class="field">
+
+                    <label for="email">
+                        Work email
+                        <span class="required">*</span>
+                    </label>
+
+
+                    <div class="input-shell">
+
+                        <span class="input-icon">
+                            @
+                        </span>
+
+
+                        <input
+                            id="email"
+                            name="email"
+                            type="email"
+                            autocomplete="email"
+                            maxlength="255"
+                            placeholder="name@company.com"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="form-grid">
+
+
+                <div class="field">
+
+                    <label for="department">
+                        Department
+                        <span class="required">*</span>
+                    </label>
+
+
+                    <div class="input-shell">
+
+                        <span class="input-icon">
+                            ▦
+                        </span>
+
+
+                        <select
+                            id="department"
+                            name="department"
+                            required
+                        >
+
+                            <option value="">
+                                Select department
+                            </option>
+
+                            <option value="Information Technology">
+                                Information Technology
+                            </option>
+
+                            <option value="Finance">
+                                Finance
+                            </option>
+
+                            <option value="Human Resources">
+                                Human Resources
+                            </option>
+
+                            <option value="Operations">
+                                Operations
+                            </option>
+
+                            <option value="Sales">
+                                Sales
+                            </option>
+
+                            <option value="Management">
+                                Management
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+
+                <div class="field">
+
+                    <label for="jobTitle">
+                        Job title
+                    </label>
+
+
+                    <div class="input-shell">
+
+                        <span class="input-icon">
+                            ◫
+                        </span>
+
+
+                        <input
+                            id="jobTitle"
+                            name="jobTitle"
+                            type="text"
+                            maxlength="120"
+                            placeholder="Example: Executive"
+                        >
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="form-grid">
+
+
+                <div class="field">
+
+                    <label for="password">
+                        Password
+                        <span class="required">*</span>
+                    </label>
+
+
+                    <div class="input-shell">
+
+                        <span class="input-icon">
+                            ◆
+                        </span>
+
+
+                        <input
+                            id="password"
+                            name="password"
+                            type="password"
+                            autocomplete="new-password"
+                            placeholder="Create password"
+                            required
+                        >
+
+
+                        <button
+                            class="password-toggle"
+                            data-target="password"
+                            type="button"
+                        >
+                            SHOW
+                        </button>
+
+                    </div>
+
+
+                    <div class="strength">
+
+                        <div class="strength-track">
+
+                            <span
+                                class="strength-bar"
+                                id="strengthBar"
+                            ></span>
+
+                        </div>
+
+
+                        <div class="strength-info">
+
+                            <span id="strengthText">
+                                Password strength
+                            </span>
+
+                            <span id="strengthScore">
+                                0%
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="field">
+
+                    <label for="confirmPassword">
+                        Confirm password
+                        <span class="required">*</span>
+                    </label>
+
+
+                    <div class="input-shell">
+
+                        <span class="input-icon">
+                            ◆
+                        </span>
+
+
+                        <input
+                            id="confirmPassword"
+                            name="confirmPassword"
+                            type="password"
+                            autocomplete="new-password"
+                            placeholder="Repeat password"
+                            required
+                        >
+
+
+                        <button
+                            class="password-toggle"
+                            data-target="confirmPassword"
+                            type="button"
+                        >
+                            SHOW
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="password-rules">
+
+                <div
+                    class="rule"
+                    id="ruleLength"
+                >
+                    At least 8 characters
+                </div>
+
+
+                <div
+                    class="rule"
+                    id="ruleUppercase"
+                >
+                    One uppercase letter
+                </div>
+
+
+                <div
+                    class="rule"
+                    id="ruleNumber"
+                >
+                    One number
+                </div>
+
+
+                <div
+                    class="rule"
+                    id="ruleSpecial"
+                >
+                    One special character
+                </div>
+
+            </div>
+
+
+            <label class="agreement">
+
+                <input
+                    id="agreement"
+                    type="checkbox"
+                >
+
+                <span>
+
+                    I confirm that the information provided is correct and understand that this account requires administrator approval before access is activated.
+
+                </span>
+
+            </label>
+
+
+            <div
+                class="message"
+                id="message"
+                role="status"
+            ></div>
+
+
+            <button
+                class="register-button"
+                id="registerButton"
+                type="submit"
+            >
+                Submit Registration Request
+            </button>
+
+
+            <div class="signin">
+
+                Already have an account?
+
+                <a href="/login.html">
+                    Sign in
+                </a>
+
+            </div>
+
+        </form>
+
+    </section>
+
+</div>
+
+</section>
+
+</main>
+
+
+<!-- =========================================================
+     SUCCESS
+========================================================= -->
+
+<div
+    class="modal-backdrop"
+    id="successModal"
+>
+
+    <div class="success-modal">
+
+        <div class="success-icon">
+            ✓
+        </div>
+
+
+        <h3>
+            Registration submitted.
+        </h3>
+
+
+        <p>
+
+            Your ResolveDesk account request
+            has been created.
+            An administrator must approve
+            the account before normal access
+            becomes available.
+
+        </p>
+
+
+        <div class="pending-box">
+
+            <small>
+                Account status
+            </small>
+
+            <strong>
+                Pending Administrator Approval
+            </strong>
+
+        </div>
+
+
+        <button
+            class="continue-button"
+            id="continueButton"
+            type="button"
+        >
+            Continue to Sign In
+        </button>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* =========================================================
+   BACKEND AUTHENTICATION
+   ResolveDesk uses the live server session.
+========================================================= */
+
+
+/* =========================================================
+   ELEMENTS
+========================================================= */
+
+const registerForm =
+    document.getElementById(
+        "registerForm"
+    );
+
+
+const fullNameInput =
+    document.getElementById(
+        "fullName"
+    );
+
+
+const emailInput =
+    document.getElementById(
+        "email"
+    );
+
+
+const departmentInput =
+    document.getElementById(
+        "department"
+    );
+
+
+const jobTitleInput =
+    document.getElementById(
+        "jobTitle"
+    );
+
+
+const passwordInput =
+    document.getElementById(
+        "password"
+    );
+
+
+const confirmPasswordInput =
+    document.getElementById(
+        "confirmPassword"
+    );
+
+
+const agreement =
+    document.getElementById(
+        "agreement"
+    );
+
+
+const registerButton =
+    document.getElementById(
+        "registerButton"
+    );
+
+
+const message =
+    document.getElementById(
+        "message"
+    );
+
+
+const successModal =
+    document.getElementById(
+        "successModal"
+    );
+
+
+/* =========================================================
+   PASSWORD TOGGLE
+========================================================= */
+
+document
+    .querySelectorAll(
+        ".password-toggle"
+    )
+    .forEach(
+        button => {
+
+            button.addEventListener(
+                "click",
+                () => {
+
+                    const target =
+                        document.getElementById(
+                            button.dataset.target
+                        );
+
+
+                    const visible =
+                        target.type ===
+                        "text";
+
+
+                    target.type =
+                        visible
+                            ? "password"
+                            : "text";
+
+
+                    button.textContent =
+                        visible
+                            ? "SHOW"
+                            : "HIDE";
+                }
+            );
+        }
+    );
+
+
+/* =========================================================
+   EMAIL
+========================================================= */
+
+function validEmail(
+    email
+) {
+
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+        .test(
+            email
+        );
+}
+
+
+/* =========================================================
+   PASSWORD RULES
+========================================================= */
+
+function getPasswordRules(
+    password
+) {
+
+    return {
+
+        length:
+            password.length >= 10,
+
+        uppercase:
+            /[A-Z]/.test(
+                password
+            ),
+
+        number:
+            /[0-9]/.test(
+                password
+            ),
+
+        special:
+            /[^A-Za-z0-9]/.test(
+                password
+            )
+
+    };
+}
+
+
+function updatePasswordStrength() {
+
+    const password =
+        passwordInput.value;
+
+
+    const rules =
+        getPasswordRules(
+            password
+        );
+
+
+    const entries =
+        Object.values(
+            rules
+        );
+
+
+    const passed =
+        entries.filter(
+            Boolean
+        ).length;
+
+
+    const percent =
+        passed *
+        25;
+
+
+    document.getElementById(
+        "strengthBar"
+    ).style.width =
+        `${percent}%`;
+
+
+    document.getElementById(
+        "strengthScore"
+    ).textContent =
+        `${percent}%`;
+
+
+    let label =
+        "Password strength";
+
+
+    if (
+        password
+    ) {
+
+        if (
+            passed <=
+            1
+        ) {
+
+            label =
+                "Weak";
+
+        } else if (
+            passed ===
+            2
+        ) {
+
+            label =
+                "Fair";
+
+        } else if (
+            passed ===
+            3
+        ) {
+
+            label =
+                "Strong";
+
+        } else {
+
+            label =
+                "Excellent";
+        }
+    }
+
+
+    document.getElementById(
+        "strengthText"
+    ).textContent =
+        label;
+
+
+    document.getElementById(
+        "ruleLength"
+    ).classList.toggle(
+        "pass",
+        rules.length
+    );
+
+
+    document.getElementById(
+        "ruleUppercase"
+    ).classList.toggle(
+        "pass",
+        rules.uppercase
+    );
+
+
+    document.getElementById(
+        "ruleNumber"
+    ).classList.toggle(
+        "pass",
+        rules.number
+    );
+
+
+    document.getElementById(
+        "ruleSpecial"
+    ).classList.toggle(
+        "pass",
+        rules.special
+    );
+}
+
+
+passwordInput.addEventListener(
+    "input",
+    updatePasswordStrength
+);
+
+
+/* =========================================================
+   MESSAGES
+========================================================= */
+
+function showMessage(
+    text,
+    type = "error"
+) {
+
+    message.textContent =
+        text;
+
+
+    message.className =
+        `message show ${type}`;
+}
+
+
+function clearMessage() {
+
+    message.textContent =
+        "";
+
+
+    message.className =
+        "message";
+}
+
+
+/* =========================================================
+   VALIDATE
+========================================================= */
+
+function validateForm() {
+
+    const fullName =
+        fullNameInput
+            .value
+            .trim();
+
+
+    const email =
+        emailInput
+            .value
+            .trim()
+            .toLowerCase();
+
+
+    const department =
+        departmentInput.value;
+
+
+    const password =
+        passwordInput.value;
+
+
+    const confirm =
+        confirmPasswordInput.value;
+
+
+    if (
+        fullName.length <
+        2
+    ) {
+
+        showMessage(
+            "Enter your full name."
+        );
+
+
+        fullNameInput.focus();
+
+
+        return null;
+    }
+
+
+    if (
+        !validEmail(
+            email
+        )
+    ) {
+
+        showMessage(
+            "Enter a valid work email address."
+        );
+
+
+        emailInput.focus();
+
+
+        return null;
+    }
+
+
+    if (
+        !department
+    ) {
+
+        showMessage(
+            "Select your department."
+        );
+
+
+        departmentInput.focus();
+
+
+        return null;
+    }
+
+
+    const rules =
+        getPasswordRules(
+            password
+        );
+
+
+    if (
+        !Object.values(
+            rules
+        ).every(
+            Boolean
+        )
+    ) {
+
+        showMessage(
+            "Password must satisfy all security requirements."
+        );
+
+
+        passwordInput.focus();
+
+
+        return null;
+    }
+
+
+    if (
+        password !==
+        confirm
+    ) {
+
+        showMessage(
+            "Passwords do not match."
+        );
+
+
+        confirmPasswordInput.focus();
+
+
+        return null;
+    }
+
+
+    if (
+        !agreement.checked
+    ) {
+
+        showMessage(
+            "Confirm the registration declaration before continuing."
+        );
+
+
+        return null;
+    }
+
+
+    return {
+
+        fullName,
+
+        email,
+
+        department,
+
+        jobTitle:
+            jobTitleInput
+                .value
+                .trim(),
+
+        password
+
+    };
+}
+
+
+/* =========================================================
+   REGISTER
+========================================================= */
+
+registerForm.addEventListener(
+    "submit",
+    async event => {
+
+        event.preventDefault();
+
+
+        clearMessage();
+
+
+        const form =
+            validateForm();
+
+
+        if (
+            !form
+        ) {
+
+            return;
+        }
+
+
+        registerButton.disabled =
+            true;
+
+
+        registerButton.textContent =
+            "Submitting Request...";
+
+
+        try {
+
+            /* =============================================
+               BACKEND AUTHENTICATION
+
+               POST /api/auth/register
+            ============================================= */
+
+            const response =
+                await fetch(
+                    "/api/auth/register",
+                    {
+                        method:
+                            "POST",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        credentials:
+                            "include",
+
+                        body:
+                            JSON.stringify(
+                                {
+                                    fullName:
+                                        form.fullName,
+
+                                    email:
+                                        form.email,
+
+                                    department:
+                                        form.department,
+
+                                    jobTitle:
+                                        form.jobTitle,
+
+                                    password:
+                                        form.password
+                                }
+                            )
+                    }
+                );
+
+
+            const data =
+                await response.json();
+
+
+            if (
+                !response.ok
+            ) {
+
+                throw new Error(
+                    data.message ||
+                    "Registration failed."
+                );
+            }
+
+
+            sessionStorage.setItem(
+                "resolvedesk_registered_email",
+                form.email
+            );
+
+
+            successModal.classList.add(
+                "open"
+            );
+
+
+            document.body.style.overflow =
+                "hidden";
+
+        } catch (
+            error
+        ) {
+
+            showMessage(
+                error.message ||
+                "Unable to submit registration."
+            );
+
+
+            registerButton.disabled =
+                false;
+
+
+            registerButton.textContent =
+                "Submit Registration Request";
+        }
+    }
+);
+
+
+/* =========================================================
+   CONTINUE
+========================================================= */
+
+document
+    .getElementById(
+        "continueButton"
+    )
+    .addEventListener(
+        "click",
+        () => {
+
+            window.location.href =
+                "/login.html";
+        }
+    );
+
+</script>
+
+</body>
+</html>

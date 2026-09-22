@@ -1,0 +1,4390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>
+    ResolveDesk — Tickets
+</title>
+
+<style>
+
+/* =========================================================
+   RESOLVEDESK THEME
+========================================================= */
+
+:root {
+
+    --topaz: #67AECA;
+    --amethyst: #675682;
+    --jewel: #5F0F4E;
+    --rose: #E52A6F;
+
+    --bg: #08060b;
+    --bg-2: #120b16;
+
+    --text: #ffffff;
+    --muted: #9b8fa4;
+
+    --line:
+        rgba(
+            103,
+            174,
+            202,
+            .14
+        );
+
+    --panel:
+        rgba(
+            16,
+            10,
+            20,
+            .94
+        );
+
+    --sidebar:
+        250px;
+
+    --shadow:
+        0 30px 90px
+        rgba(
+            25,
+            5,
+            30,
+            .45
+        );
+}
+
+
+/* =========================================================
+   RESET
+========================================================= */
+
+* {
+
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+html {
+
+    scroll-behavior: smooth;
+}
+
+
+body {
+
+    min-height: 100vh;
+
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Inter,
+        Arial,
+        sans-serif;
+
+    color:
+        var(--text);
+
+    background:
+
+        radial-gradient(
+            circle at 88% 6%,
+            rgba(
+                103,
+                174,
+                202,
+                .15
+            ),
+            transparent 25%
+        ),
+
+        radial-gradient(
+            circle at 10% 78%,
+            rgba(
+                229,
+                42,
+                111,
+                .08
+            ),
+            transparent 24%
+        ),
+
+        radial-gradient(
+            circle at 58% 92%,
+            rgba(
+                103,
+                86,
+                130,
+                .13
+            ),
+            transparent 30%
+        ),
+
+        linear-gradient(
+            180deg,
+            var(--bg),
+            var(--bg-2) 55%,
+            var(--bg)
+        );
+
+    overflow-x:
+        hidden;
+}
+
+
+body::before {
+
+    content: "";
+
+    position:
+        fixed;
+
+    inset:
+        0;
+
+    z-index:
+        -1;
+
+    pointer-events:
+        none;
+
+    opacity:
+        .13;
+
+    background-image:
+
+        linear-gradient(
+            rgba(
+                103,
+                174,
+                202,
+                .035
+            )
+            1px,
+            transparent 1px
+        ),
+
+        linear-gradient(
+            90deg,
+            rgba(
+                103,
+                174,
+                202,
+                .035
+            )
+            1px,
+            transparent 1px
+        );
+
+    background-size:
+        64px 64px;
+
+    mask-image:
+        linear-gradient(
+            #000,
+            transparent 90%
+        );
+}
+
+
+button,
+input,
+select,
+textarea {
+
+    font: inherit;
+}
+
+
+button {
+
+    cursor: pointer;
+}
+
+
+a {
+
+    color: inherit;
+    text-decoration: none;
+}
+
+
+/* =========================================================
+   SIDEBAR
+========================================================= */
+
+.sidebar {
+
+    position:
+        fixed;
+
+    inset:
+        0 auto 0 0;
+
+    width:
+        var(--sidebar);
+
+    z-index:
+        50;
+
+    padding:
+        18px 14px;
+
+    background:
+        rgba(
+            8,
+            5,
+            11,
+            .94
+        );
+
+    border-right:
+        1px solid
+        rgba(
+            103,
+            174,
+            202,
+            .09
+        );
+
+    backdrop-filter:
+        blur(20px);
+}
+
+
+.brand {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    gap:
+        12px;
+
+    padding:
+        7px 9px 22px;
+}
+
+
+.brand-mark {
+
+    width:
+        42px;
+
+    height:
+        42px;
+
+    display:
+        grid;
+
+    place-items:
+        center;
+
+    border-radius:
+        12px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--topaz),
+            var(--amethyst) 60%,
+            var(--rose)
+        );
+
+    font-size:
+        20px;
+
+    font-weight:
+        950;
+
+    box-shadow:
+        0 14px 34px
+        rgba(
+            103,
+            86,
+            130,
+            .25
+        );
+}
+
+
+.brand strong {
+
+    display:
+        block;
+
+    font-size:
+        16px;
+}
+
+
+.brand span {
+
+    display:
+        block;
+
+    margin-top:
+        3px;
+
+    color:
+        #7d7085;
+
+    font-size:
+        9px;
+
+    font-weight:
+        900;
+
+    letter-spacing:
+        .12em;
+
+    text-transform:
+        uppercase;
+}
+
+
+.nav-label {
+
+    margin:
+        12px 10px 8px;
+
+    color:
+        #615568;
+
+    font-size:
+        9px;
+
+    font-weight:
+        950;
+
+    letter-spacing:
+        .14em;
+
+    text-transform:
+        uppercase;
+}
+
+
+.nav {
+
+    display:
+        grid;
+
+    gap:
+        4px;
+}
+
+
+.nav a {
+
+    min-height:
+        45px;
+
+    padding:
+        0 12px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    gap:
+        11px;
+
+    border:
+        1px solid
+        transparent;
+
+    border-radius:
+        12px;
+
+    color:
+        #988ba0;
+
+    font-size:
+        13px;
+
+    font-weight:
+        760;
+
+    transition:
+        .18s ease;
+}
+
+
+.nav a:hover {
+
+    color:
+        #fff;
+
+    background:
+        rgba(
+            103,
+            174,
+            202,
+            .05
+        );
+}
+
+
+.nav a.active {
+
+    color:
+        #fff;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(
+                103,
+                174,
+                202,
+                .13
+            ),
+            rgba(
+                103,
+                86,
+                130,
+                .10
+            )
+        );
+
+    border-color:
+        rgba(
+            103,
+            174,
+            202,
+            .18
+        );
+}
+
+
+.nav-icon {
+
+    width:
+        28px;
+
+    height:
+        28px;
+
+    border-radius:
+        8px;
+
+    display:
+        grid;
+
+    place-items:
+        center;
+
+    background:
+        rgba(
+            103,
+            86,
+            130,
+            .08
+        );
+
+    border:
+        1px solid
+        rgba(
+            103,
+            174,
+            202,
+            .09
+        );
+
+    font-size:
+        12px;
+}
+
+
+.nav a.active
+.nav-icon {
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--topaz),
+            var(--amethyst)
+        );
+
+    color:
+        #fff;
+}
+
+
+.nav-badge {
+
+    margin-left:
+        auto;
+
+    min-width:
+        22px;
+
+    height:
+        20px;
+
+    padding:
+        0 6px;
+
+    display:
+        grid;
+
+    place-items:
+        center;
+
+    border-radius:
+        999px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--rose),
+            var(--jewel)
+        );
+
+    font-size:
+        9px;
+
+    font-weight:
+        950;
+}
+
+
+.sidebar-bottom {
+
+    position:
+        absolute;
+
+    left:
+        14px;
+
+    right:
+        14px;
+
+    bottom:
+        16px;
+}
+
+
+.system-card {
+
+    padding:
+        14px;
+
+    border:
+        1px solid
+        rgba(
+            103,
+            174,
+            202,
+            .11
+        );
+
+    border-radius:
+        15px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(
+                103,
+                86,
+                130,
+                .11
+            ),
+            rgba(
+                10,
+                6,
+                13,
+                .90
+            )
+        );
+}
+
+
+.system-card small {
+
+    color:
+        #746779;
+
+    font-size:
+        9px;
+
+    font-weight:
+        900;
+
+    text-transform:
+        uppercase;
+
+    letter-spacing:
+        .10em;
+}
+
+
+.system-card strong {
+
+    display:
+        block;
+
+    margin-top:
+        7px;
+
+    font-size:
+        12px;
+}
+
+
+.system-card p {
+
+    margin-top:
+        5px;
+
+    color:
+        #81748a;
+
+    font-size:
+        10px;
+
+    line-height:
+        1.5;
+}
+
+
+/* =========================================================
+   MAIN
+========================================================= */
+
+.main {
+
+    margin-left:
+        var(--sidebar);
+
+    min-height:
+        100vh;
+}
+
+
+/* =========================================================
+   TOPBAR
+========================================================= */
+
+.topbar {
+
+    position:
+        sticky;
+
+    top:
+        0;
+
+    z-index:
+        40;
+
+    height:
+        74px;
+
+    padding:
+        0 24px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        space-between;
+
+    gap:
+        18px;
+
+    background:
+        rgba(
+            9,
+            6,
+            12,
+            .80
+        );
+
+    border-bottom:
+        1px solid
+        rgba(
+            103,
+            174,
+            202,
+            .08
+        );
+
+    backdrop-filter:
+        blur(18px);
+}
+
+
+.mobile-btn {
+
+    display:
+        none;
+
+    width:
+        42px;
+
+    height:
+        42px;
+
+    border:
+        1px solid
+        var(--line);
+
+    border-radius:
+        11px;
+
+    background:
+        rgba(
+            103,
+            86,
+            130,
+            .08
+        );
+
+    color:
+        #fff;
+}
+
+
+.top-search {
+
+    width:
+        min(
+            470px,
+            46vw
+        );
+
+    position:
+        relative;
+}
+
+
+.top-search input {
+
+    width:
+        100%;
+
+    height:
+        42px;
+
+    padding:
+        0 15px;
+
+    border:
+        1px solid
+        var(--line);
+
+    border-radius:
+        11px;
+
+    outline:
+        none;
+
+    background:
+        rgba(
+            12,
+            8,
+            16,
+            .82
+        );
+
+    color:
+        #fff;
+}
+
+
+.top-search input:focus {
+
+    border-color:
+        var(--topaz);
+}
+
+
+.top-search input::placeholder {
+
+    color:
+        #75687e;
+}
+
+
+.top-actions {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    gap:
+        10px;
+}
+
+
+.icon-btn {
+
+    width:
+        40px;
+
+    height:
+        40px;
+
+    border:
+        1px solid
+        var(--line);
+
+    border-radius:
+        11px;
+
+    background:
+        rgba(
+            103,
+            86,
+            130,
+            .07
+        );
+
+    color:
+        #c7bacd;
+}
+
+
+.profile {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    gap:
+        10px;
+
+    padding:
+        5px 8px 5px 5px;
+
+    border:
+        1px solid
+        var(--line);
+
+    border-radius:
+        12px;
+
+    background:
+        rgba(
+            103,
+            86,
+            130,
+            .07
+        );
+}
+
+
+.avatar {
+
+    width:
+        32px;
+
+    height:
+        32px;
+
+    border-radius:
+        9px;
+
+    display:
+        grid;
+
+    place-items:
+        center;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--topaz),
+            var(--amethyst)
+        );
+
+    font-size:
+        10px;
+
+    font-weight:
+        950;
+}
+
+
+.profile strong {
+
+    display:
+        block;
+
+    font-size:
+        11px;
+}
+
+
+.profile span {
+
+    display:
+        block;
+
+    margin-top:
+        2px;
+
+    color:
+        #82758c;
+
+    font-size:
+        9px;
+}
+
+
+/* =========================================================
+   CONTENT
+========================================================= */
+
+.content {
+
+    padding:
+        26px;
+}
+
+
+/* =========================================================
+   PAGE HERO
+========================================================= */
+
+.page-hero {
+
+    position:
+        relative;
+
+    overflow:
+        hidden;
+
+    padding:
+        27px;
+
+    border:
+        1px solid
+        var(--line);
+
+    border-radius:
+        26px;
+
+    background:
+
+        radial-gradient(
+            circle at 90% 10%,
+            rgba(
+                103,
+                174,
+                202,
+                .15
+            ),
+            transparent 27%
+        ),
+
+        radial-gradient(
+            circle at 8% 100%,
+            rgba(
+                229,
+                42,
+                111,
+                .08
+            ),
+            transparent 26%
+        ),
+
+        linear-gradient(
+            135deg,
+            rgba(
+                20,
+                12,
+                25,
+                .98
+            ),
+            rgba(
+                11,
+                7,
+                14,
+                .98
+            )
+        );
+
+    box-shadow:
+        var(--shadow);
+}
+
+
+.page-hero::after {
+
+    content:
+        "";
+
+    position:
+        absolute;
+
+    width:
+        280px;
+
+    height:
+        280px;
+
+    right:
+        -120px;
+
+    bottom:
+        -170px;
+
+    border-radius:
+        50%;
+
+    border:
+        1px solid
+        rgba(
+            103,
+            174,
+            202,
+            .12
+        );
+
+    box-shadow:
+        0 0 0 32px
+        rgba(
+            103,
+            86,
+            130,
+            .025
+        ),
+        0 0 0 62px
+        rgba(
+            229,
+            42,
+            111,
+            .012
+        );
+}
+
+
+.hero-row {
+
+    position:
+        relative;
+
+    z-index:
+        1;
+
+    display:
+        flex;
+
+    align-items:
+        flex-end;
+
+    justify-content:
+        space-between;
+
+    gap:
+        24px;
+}
+
+
+.eyebrow {
+
+    display:
+        inline-flex;
+
+    align-items:
+        center;
+
+    gap:
+        8px;
+
+    padding:
+        7px 10px;
+
+    border-radius:
+        999px;
+
+    border:
+        1px solid
+        rgba(
+            103,
+            174,
+            202,
+            .16
+        );
+
+    background:
+        rgba(
+            103,
+            174,
+            202,
+            .06
+        );
+
+    color:
+        #b9dce8;
+
+    font-size:
+        9px;
+
+    font-weight:
+        950;
+
+    letter-spacing:
+        .11em;
+
+    text-transform:
+        uppercase;
+}
+
+
+.hero-dot {
+
+    width:
+        7px;
+
+    height:
+        7px;
+
+    border-radius:
+        50%;
+
+    background:
+        var(--topaz);
+
+    box-shadow:
+        0 0 16px
+        rgba(
+            103,
+            174,
+            202,
+            .6
+        );
+}
+
+
+.page-hero h1 {
+
+    margin-top:
+        13px;
+
+    font-size:
+        clamp(
+            32px,
+            4vw,
+            50px
+        );
+
+    letter-spacing:
+        -2.2px;
+}
+
+
+.page-hero h1 span {
+
+    background:
+        linear-gradient(
+            90deg,
+            var(--topaz),
+            #b79ac9,
+            var(--rose)
+        );
+
+    background-clip:
+        text;
+
+    -webkit-background-clip:
+        text;
+
+    color:
+        transparent;
+}
+
+
+.page-hero p {
+
+    max-width:
+        750px;
+
+    margin-top:
+        11px;
+
+    color:
+        #96899e;
+
+    line-height:
+        1.7;
+
+    font-size:
+        12.5px;
+}
+
+
+.primary-button {
+
+    min-height:
+        44px;
+
+    padding:
+        0 16px;
+
+    border:
+        none;
+
+    border-radius:
+        12px;
+
+    background:
+        linear-gradient(
+            100deg,
+            var(--topaz),
+            var(--amethyst) 56%,
+            var(--rose)
+        );
+
+    color:
+        #fff;
+
+    font-size:
+        12px;
+
+    font-weight:
+        900;
+
+    box-shadow:
+        0 13px 30px
+        rgba(
+            103,
+            86,
+            130,
+            .26
+        );
+}
+
+
+/* =========================================================
+   STATS
+========================================================= */
+
+.stats {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(
+            5,
+            1fr
+        );
+
+    gap:
+        12px;
+
+    margin-top:
+        16px;
+}
+
+
+.stat {
+
+    padding:
+        17px;
+
+    border:
+        1px solid
+        var(--line);
+
+    border-radius:
+        17px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(
+                103,
+                86,
+                130,
+                .10
+            ),
+            rgba(
+                10,
+                7,
+                13,
+                .96
+            )
+        );
+}
+
+
+.stat small {
+
+    display:
+        block;
+
+    color:
+        #776a80;
+
+    font-size:
+        8.5px;
+
+    font-weight:
+        950;
+
+    letter-spacing:
+        .10em;
+
+    text-transform:
+        uppercase;
+}
+
+
+.stat strong {
+
+    display:
+        block;
+
+    margin-top:
+        7px;
+
+    font-size:
+        25px;
+
+    letter-spacing:
+        -1px;
+}
+
+
+.stat span {
+
+    display:
+        block;
+
+    margin-top:
+        5px;
+
+    color:
+        #73667c;
+
+    font-size:
+        9px;
+}
+
+
+/* =========================================================
+   TOOLBAR
+========================================================= */
+
+.toolbar {
+
+    margin-top:
+        16px;
+
+    padding:
+        14px;
+
+    display:
+        grid;
+
+    grid-template-columns:
+        minmax(
+            260px,
+            1fr
+        )
+        repeat(
+            3,
+            165px
+        )
+        auto;
+
+    gap:
+        10px;
+
+    border:
+        1px solid
+        var(--line);
+
+    border-radius:
+        18px;
+
+    background:
+        rgba(
+            13,
+            8,
+            16,
+            .82
+        );
+
+    backdrop-filter:
+        blur(12px);
+}
+
+
+.toolbar input,
+.toolbar select {
+
+    width:
+        100%;
+
+    height:
+        42px;
+
+    padding:
+        0 12px;
+
+    border:
+        1px solid
+        var(--line);
+
+    border-radius:
+        11px;
+
+    background:
+        rgba(
+            103,
+            86,
+            130,
+            .07
+        );
+
+    color:
+        #fff;
+
+    outline:
+        none;
+}
+
+
+.toolbar input:focus,
+.toolbar select:focus {
+
+    border-color:
+        var(--topaz);
+}
+
+
+.toolbar input::placeholder {
+
+    color:
+        #75677e;
+}
+
+
+.reset-button {
+
+    height:
+        42px;
+
+    padding:
+        0 13px;
+
+    border:
+        1px solid
+        var(--line);
+
+    border-radius:
+        11px;
+
+    background:
+        rgba(
+            103,
+            86,
+            130,
+            .08
+        );
+
+    color:
+        #c5b9cb;
+
+    font-size:
+        11px;
+
+    font-weight:
+        850;
+}
+
+
+/* =========================================================
+   TABLE PANEL
+========================================================= */
+
+.table-panel {
+
+    margin-top:
+        16px;
+
+    overflow:
+        hidden;
+
+    border:
+        1px solid
+        var(--line);
+
+    border-radius:
+        21px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(
+                103,
+                86,
+                130,
+                .09
+            ),
+            rgba(
+                9,
+                6,
+                12,
+                .97
+            )
+        );
+}
+
+
+.table-header {
+
+    padding:
+        17px 18px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        space-between;
+
+    gap:
+        15px;
+
+    border-bottom:
+        1px solid
+        rgba(
+            103,
+            174,
+            202,
+            .08
+        );
+}
+
+
+.table-header strong {
+
+    font-size:
+        14px;
+}
+
+
+.table-header p {
+
+    margin-top:
+        4px;
+
+    color:
+        #796d82;
+
+    font-size:
+        10px;
+}
+
+
+.results-count {
+
+    padding:
+        7px 10px;
+
+    border:
+        1px solid
+        rgba(
+            103,
+            174,
+            202,
+            .11
+        );
+
+    border-radius:
+        999px;
+
+    color:
+        #a8d3e3;
+
+    background:
+        rgba(
+            103,
+            174,
+            202,
+            .055
+        );
+
+    font-size:
+        9px;
+
+    font-weight:
+        900;
+}
+
+
+.table-wrapper {
+
+    overflow-x:
+        auto;
+}
+
+
+table {
+
+    width:
+        100%;
+
+    border-collapse:
+        collapse;
+
+    min-width:
+        1050px;
+}
+
+
+thead th {
+
+    padding:
+        12px 14px;
+
+    text-align:
+        left;
+
+    color:
+        #75697e;
+
+    font-size:
+        8.5px;
+
+    font-weight:
+        950;
+
+    letter-spacing:
+        .08em;
+
+    text-transform:
+        uppercase;
+
+    border-bottom:
+        1px solid
+        rgba(
+            103,
+            174,
+            202,
+            .07
+        );
+
+    background:
+        rgba(
+            7,
+            5,
+            9,
+            .40
+        );
+}
+
+
+tbody td {
+
+    padding:
+        14px;
+
+    border-bottom:
+        1px solid
+        rgba(
+            103,
+            174,
+            202,
+            .055
+        );
+
+    color:
+        #c6bbc9;
+
+    font-size:
+        10.5px;
+
+    vertical-align:
+        middle;
+}
+
+
+tbody tr {
+
+    transition:
+        .16s ease;
+}
+
+
+tbody tr:hover {
+
+    background:
+        rgba(
+            103,
+            174,
+            202,
+            .035
+        );
+}
+
+
+tbody tr:last-child td {
+
+    border-bottom:
+        none;
+}
+
+
+.ticket-id {
+
+    color:
+        #a4d1e1;
+
+    font-weight:
+        900;
+}
+
+
+.subject strong {
+
+    display:
+        block;
+
+    color:
+        #fff;
+
+    font-size:
+        11px;
+}
+
+
+.subject span {
+
+    display:
+        block;
+
+    max-width:
+        290px;
+
+    margin-top:
+        4px;
+
+    color:
+        #73677c;
+
+    font-size:
+        9px;
+
+    white-space:
+        nowrap;
+
+    overflow:
+        hidden;
+
+    text-overflow:
+        ellipsis;
+}
+
+
+.status,
+.priority {
+
+    display:
+        inline-flex;
+
+    align-items:
+        center;
+
+    gap:
+        6px;
+
+    padding:
+        6px 8px;
+
+    border-radius:
+        999px;
+
+    border:
+        1px solid
+        transparent;
+
+    font-size:
+        8px;
+
+    font-weight:
+        950;
+
+    text-transform:
+        uppercase;
+
+    letter-spacing:
+        .05em;
+}
+
+
+.status::before,
+.priority::before {
+
+    content:
+        "";
+
+    width:
+        6px;
+
+    height:
+        6px;
+
+    border-radius:
+        50%;
+}
+
+
+.status.open {
+
+    color:
+        #b9deeb;
+
+    background:
+        rgba(
+            103,
+            174,
+            202,
+            .07
+        );
+
+    border-color:
+        rgba(
+            103,
+            174,
+            202,
+            .13
+        );
+}
+
+
+.status.open::before {
+
+    background:
+        var(--topaz);
+}
+
+
+.status.in-progress {
+
+    color:
+        #c7b8d7;
+
+    background:
+        rgba(
+            103,
+            86,
+            130,
+            .13
+        );
+
+    border-color:
+        rgba(
+            103,
+            86,
+            130,
+            .22
+        );
+}
+
+
+.status.in-progress::before {
+
+    background:
+        #9a84b9;
+}
+
+
+.status.pending {
+
+    color:
+        #e7a9c0;
+
+    background:
+        rgba(
+            95,
+            15,
+            78,
+            .18
+        );
+
+    border-color:
+        rgba(
+            229,
+            42,
+            111,
+            .13
+        );
+}
+
+
+.status.pending::before {
+
+    background:
+        var(--jewel);
+}
+
+
+.status.resolved {
+
+    color:
+        #d6f0f8;
+
+    background:
+        rgba(
+            103,
+            174,
+            202,
+            .10
+        );
+
+    border-color:
+        rgba(
+            103,
+            174,
+            202,
+            .15
+        );
+}
+
+
+.status.resolved::before {
+
+    background:
+        #d6f0f8;
+}
+
+
+.priority.critical {
+
+    color:
+        #ffc0d5;
+
+    background:
+        rgba(
+            229,
+            42,
+            111,
+            .10
+        );
+
+    border-color:
+        rgba(
+            229,
+            42,
+            111,
+            .18
+        );
+}
+
+
+.priority.critical::before {
+
+    background:
+        var(--rose);
+}
+
+
+.priority.high {
+
+    color:
+        #d9b7d3;
+
+    background:
+        rgba(
+            95,
+            15,
+            78,
+            .17
+        );
+
+    border-color:
+        rgba(
+            95,
+            15,
+            78,
+            .32
+        );
+}
+
+
+.priority.high::before {
+
+    background:
+        #b04b8b;
+}
+
+
+.priority.medium {
+
+    color:
+        #c1dfea;
+
+    background:
+        rgba(
+            103,
+            174,
+            202,
+            .07
+        );
+
+    border-color:
+        rgba(
+            103,
+            174,
+            202,
+            .12
+        );
+}
+
+
+.priority.medium::before {
+
+    background:
+        var(--topaz);
+}
+
+
+.priority.low {
+
+    color:
+        #aa9caf;
+
+    background:
+        rgba(
+            103,
+            86,
+            130,
+            .08
+        );
+
+    border-color:
+        rgba(
+            103,
+            86,
+            130,
+            .14
+        );
+}
+
+
+.priority.low::before {
+
+    background:
+        #766584;
+}
+
+
+.sla-time {
+
+    font-weight:
+        850;
+}
+
+
+.sla-time.danger {
+
+    color:
+        #ff83ad;
+}
+
+
+.sla-time.safe {
+
+    color:
+        #a8d4e4;
+}
+
+
+.action-button {
+
+    min-height:
+        34px;
+
+    padding:
+        0 11px;
+
+    border:
+        1px solid
+        var(--line);
+
+    border-radius:
+        9px;
+
+    background:
+        rgba(
+            103,
+            86,
+            130,
+            .08
+        );
+
+    color:
+        #c8bdcd;
+
+    font-size:
+        9px;
+
+    font-weight:
+        850;
+}
+
+
+.action-button:hover {
+
+    border-color:
+        var(--topaz);
+
+    color:
+        #fff;
+}
+
+
+/* =========================================================
+   EMPTY STATE
+========================================================= */
+
+.empty-state {
+
+    display:
+        none;
+
+    padding:
+        60px 20px;
+
+    text-align:
+        center;
+}
+
+
+.empty-icon {
+
+    width:
+        54px;
+
+    height:
+        54px;
+
+    margin:
+        0 auto;
+
+    display:
+        grid;
+
+    place-items:
+        center;
+
+    border-radius:
+        16px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(
+                103,
+                174,
+                202,
+                .12
+            ),
+            rgba(
+                103,
+                86,
+                130,
+                .12
+            )
+        );
+
+    font-size:
+        22px;
+}
+
+
+.empty-state h3 {
+
+    margin-top:
+        15px;
+
+    font-size:
+        16px;
+}
+
+
+.empty-state p {
+
+    margin-top:
+        6px;
+
+    color:
+        #786b80;
+
+    font-size:
+        10px;
+}
+
+
+/* =========================================================
+   MODAL
+========================================================= */
+
+.modal-backdrop {
+
+    position:
+        fixed;
+
+    inset:
+        0;
+
+    z-index:
+        100;
+
+    display:
+        none;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    padding:
+        20px;
+
+    background:
+        rgba(
+            0,
+            0,
+            0,
+            .78
+        );
+
+    backdrop-filter:
+        blur(10px);
+}
+
+
+.modal-backdrop.open {
+
+    display:
+        flex;
+}
+
+
+.modal {
+
+    width:
+        min(
+            700px,
+            100%
+        );
+
+    max-height:
+        90vh;
+
+    overflow:
+        auto;
+
+    border:
+        1px solid
+        rgba(
+            103,
+            174,
+            202,
+            .14
+        );
+
+    border-radius:
+        22px;
+
+    background:
+        #0d0910;
+
+    box-shadow:
+        0 40px 120px
+        rgba(
+            0,
+            0,
+            0,
+            .70
+        );
+}
+
+
+.modal-head {
+
+    padding:
+        18px 20px;
+
+    display:
+        flex;
+
+    justify-content:
+        space-between;
+
+    align-items:
+        center;
+
+    border-bottom:
+        1px solid
+        rgba(
+            103,
+            174,
+            202,
+            .09
+        );
+}
+
+
+.modal-head h2 {
+
+    font-size:
+        18px;
+}
+
+
+.modal-head p {
+
+    margin-top:
+        4px;
+
+    color:
+        #80738a;
+
+    font-size:
+        10px;
+}
+
+
+.close-button {
+
+    width:
+        36px;
+
+    height:
+        36px;
+
+    border:
+        1px solid
+        var(--line);
+
+    border-radius:
+        9px;
+
+    background:
+        rgba(
+            103,
+            86,
+            130,
+            .09
+        );
+
+    color:
+        #fff;
+}
+
+
+.form {
+
+    padding:
+        20px;
+
+    display:
+        grid;
+
+    gap:
+        15px;
+}
+
+
+.form-grid {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap:
+        12px;
+}
+
+
+.field label {
+
+    display:
+        block;
+
+    margin-bottom:
+        7px;
+
+    color:
+        #a99eae;
+
+    font-size:
+        10px;
+
+    font-weight:
+        800;
+}
+
+
+.field input,
+.field select,
+.field textarea {
+
+    width:
+        100%;
+
+    padding:
+        12px;
+
+    border:
+        1px solid
+        var(--line);
+
+    border-radius:
+        11px;
+
+    background:
+        rgba(
+            103,
+            86,
+            130,
+            .08
+        );
+
+    color:
+        #fff;
+
+    outline:
+        none;
+}
+
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+
+    border-color:
+        var(--topaz);
+}
+
+
+.field textarea {
+
+    min-height:
+        120px;
+
+    resize:
+        vertical;
+}
+
+
+.modal-actions {
+
+    display:
+        flex;
+
+    justify-content:
+        flex-end;
+
+    gap:
+        10px;
+}
+
+
+.secondary-button {
+
+    min-height:
+        42px;
+
+    padding:
+        0 14px;
+
+    border:
+        1px solid
+        var(--line);
+
+    border-radius:
+        11px;
+
+    background:
+        rgba(
+            103,
+            86,
+            130,
+            .08
+        );
+
+    color:
+        #c5bacb;
+
+    font-size:
+        11px;
+
+    font-weight:
+        850;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+.sidebar-backdrop {
+
+    display:
+        none;
+}
+
+
+@media (
+    max-width: 1200px
+) {
+
+    .stats {
+
+        grid-template-columns:
+            repeat(
+                3,
+                1fr
+            );
+    }
+
+
+    .toolbar {
+
+        grid-template-columns:
+            1fr 1fr 1fr;
+    }
+
+
+    .toolbar
+    .ticket-search {
+
+        grid-column:
+            1 / -1;
+    }
+}
+
+
+@media (
+    max-width: 900px
+) {
+
+    .sidebar {
+
+        transform:
+            translateX(-100%);
+
+        transition:
+            .2s ease;
+    }
+
+
+    .sidebar.open {
+
+        transform:
+            none;
+    }
+
+
+    .sidebar-backdrop {
+
+        position:
+            fixed;
+
+        inset:
+            0;
+
+        z-index:
+            45;
+
+        background:
+            rgba(
+                0,
+                0,
+                0,
+                .64
+            );
+    }
+
+
+    .sidebar-backdrop.open {
+
+        display:
+            block;
+    }
+
+
+    .main {
+
+        margin-left:
+            0;
+    }
+
+
+    .mobile-btn {
+
+        display:
+            grid;
+
+        place-items:
+            center;
+    }
+
+
+    .hero-row {
+
+        align-items:
+            flex-start;
+
+        flex-direction:
+            column;
+    }
+
+
+    .stats {
+
+        grid-template-columns:
+            repeat(
+                2,
+                1fr
+            );
+    }
+
+
+    .toolbar {
+
+        grid-template-columns:
+            1fr 1fr;
+    }
+
+
+    .toolbar
+    .ticket-search {
+
+        grid-column:
+            1 / -1;
+    }
+}
+
+
+@media (
+    max-width: 650px
+) {
+
+    .content {
+
+        padding:
+            16px;
+    }
+
+
+    .topbar {
+
+        padding:
+            0 14px;
+    }
+
+
+    .top-search {
+
+        display:
+            none;
+    }
+
+
+    .profile-copy {
+
+        display:
+            none;
+    }
+
+
+    .page-hero {
+
+        padding:
+            21px;
+    }
+
+
+    .page-hero h1 {
+
+        font-size:
+            36px;
+    }
+
+
+    .stats {
+
+        grid-template-columns:
+            1fr;
+    }
+
+
+    .toolbar {
+
+        grid-template-columns:
+            1fr;
+    }
+
+
+    .toolbar
+    .ticket-search {
+
+        grid-column:
+            auto;
+    }
+
+
+    .form-grid {
+
+        grid-template-columns:
+            1fr;
+    }
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     SIDEBAR
+========================================================= -->
+
+<aside
+    class="sidebar"
+    id="sidebar"
+>
+
+    <div class="brand">
+
+        <div class="brand-mark">
+            R
+        </div>
+
+        <div>
+
+            <strong>
+                ResolveDesk
+            </strong>
+
+            <span>
+                IT Service Management
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <div class="nav-label">
+        Workspace
+    </div>
+
+
+    <nav class="nav">
+
+        <a href="/dashboard.html">
+
+            <span class="nav-icon">
+                ⌂
+            </span>
+
+            Dashboard
+
+        </a>
+
+
+        <a
+            class="active"
+            href="/tickets.html"
+        >
+
+            <span class="nav-icon">
+                ◫
+            </span>
+
+            Tickets
+
+            <span
+                class="nav-badge"
+                id="ticketNavCount"
+            >
+                0
+            </span>
+
+        </a>
+
+
+        <a href="/my-queue.html">
+
+            <span class="nav-icon">
+                ◎
+            </span>
+
+            My Queue
+
+        </a>
+
+
+        <a href="/sla-monitor.html">
+
+            <span class="nav-icon">
+                ⏱
+            </span>
+
+            SLA Monitor
+
+        </a>
+
+
+        <a href="/knowledge-base.html">
+
+            <span class="nav-icon">
+                ▤
+            </span>
+
+            Knowledge Base
+
+        </a>
+
+    </nav>
+
+
+    <div class="nav-label">
+        Management
+    </div>
+
+
+    <nav class="nav">
+
+        <a href="/users.html">
+            <span class="nav-icon">♙</span>
+            Users
+        </a>
+
+
+        <a href="/technicians.html">
+            <span class="nav-icon">♟</span>
+            Technicians
+        </a>
+
+
+        <a href="/departments.html">
+            <span class="nav-icon">▦</span>
+            Departments
+        </a>
+
+
+        <a href="/reports.html">
+            <span class="nav-icon">▥</span>
+            Reports
+        </a>
+
+
+        <a href="/activity-log.html">
+            <span class="nav-icon">◷</span>
+            Audit Log
+        </a>
+
+
+        <a href="/settings.html">
+            <span class="nav-icon">⚙</span>
+            Settings
+        </a>
+
+    </nav>
+
+
+    <div class="sidebar-bottom">
+
+        <div class="system-card">
+
+            <small>
+                Ticket Service
+            </small>
+
+            <strong>
+                Queue operational
+            </strong>
+
+            <p>
+                Ticket intake and SLA
+                monitoring services
+                are online.
+            </p>
+
+        </div>
+
+    </div>
+
+</aside>
+
+
+<div
+    class="sidebar-backdrop"
+    id="sidebarBackdrop"
+></div>
+
+
+<!-- =========================================================
+     MAIN
+========================================================= -->
+
+<main class="main">
+
+
+<header class="topbar">
+
+    <div
+        style="
+            display:flex;
+            align-items:center;
+            gap:12px;
+        "
+    >
+
+        <button
+            class="mobile-btn"
+            id="menuBtn"
+            type="button"
+        >
+            ☰
+        </button>
+
+
+        <div class="top-search">
+
+            <input
+                type="search"
+                id="globalSearch"
+                placeholder="
+                    Search ResolveDesk...
+                "
+            >
+
+        </div>
+
+    </div>
+
+
+    <div class="top-actions">
+
+        <button
+            class="icon-btn"
+            type="button"
+        >
+            ?
+        </button>
+
+
+        <button
+            class="icon-btn"
+            type="button"
+        >
+            ●
+        </button>
+
+
+        <div class="profile">
+
+            <div class="avatar">
+                HH
+            </div>
+
+            <div class="profile-copy">
+
+                <strong>
+                    Haziq Hanif
+                </strong>
+
+                <span>
+                    Administrator
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<div class="content">
+
+
+<!-- =========================================================
+     HERO
+========================================================= -->
+
+<section class="page-hero">
+
+    <div class="hero-row">
+
+
+        <div>
+
+            <div class="eyebrow">
+
+                <span class="hero-dot"></span>
+
+                Ticket Operations
+
+            </div>
+
+
+            <h1>
+
+                Every issue.
+
+                <span>
+                    One clear queue.
+                </span>
+
+            </h1>
+
+
+            <p>
+
+                Search, prioritise,
+                assign and resolve
+                support requests while
+                keeping SLA deadlines
+                and ownership visible.
+
+            </p>
+
+        </div>
+
+
+        <button
+            class="primary-button"
+            id="newTicketButton"
+            type="button"
+        >
+            ＋ New Ticket
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     STATS
+========================================================= -->
+
+<section class="stats">
+
+
+    <article class="stat">
+
+        <small>
+            Total Tickets
+        </small>
+
+        <strong id="totalTickets">
+            0
+        </strong>
+
+        <span>
+            All support requests
+        </span>
+
+    </article>
+
+
+    <article class="stat">
+
+        <small>
+            Open
+        </small>
+
+        <strong id="openTickets">
+            0
+        </strong>
+
+        <span>
+            Awaiting progress
+        </span>
+
+    </article>
+
+
+    <article class="stat">
+
+        <small>
+            In Progress
+        </small>
+
+        <strong id="progressTickets">
+            0
+        </strong>
+
+        <span>
+            Technician assigned
+        </span>
+
+    </article>
+
+
+    <article class="stat">
+
+        <small>
+            Resolved
+        </small>
+
+        <strong id="resolvedTickets">
+            0
+        </strong>
+
+        <span>
+            Completed requests
+        </span>
+
+    </article>
+
+
+    <article class="stat">
+
+        <small>
+            SLA Risk
+        </small>
+
+        <strong id="slaRiskTickets">
+            0
+        </strong>
+
+        <span>
+            Under 60 minutes
+        </span>
+
+    </article>
+
+</section>
+
+
+<!-- =========================================================
+     FILTERS
+========================================================= -->
+
+<section class="toolbar">
+
+
+    <input
+        class="ticket-search"
+        id="searchInput"
+        type="search"
+        placeholder="
+            Search ticket ID,
+            subject,
+            requester...
+        "
+    >
+
+
+    <select id="statusFilter">
+
+        <option value="">
+            All Status
+        </option>
+
+        <option value="open">
+            Open
+        </option>
+
+        <option value="in-progress">
+            In Progress
+        </option>
+
+        <option value="pending">
+            Pending
+        </option>
+
+        <option value="resolved">
+            Resolved
+        </option>
+
+    </select>
+
+
+    <select id="priorityFilter">
+
+        <option value="">
+            All Priority
+        </option>
+
+        <option value="critical">
+            Critical
+        </option>
+
+        <option value="high">
+            High
+        </option>
+
+        <option value="medium">
+            Medium
+        </option>
+
+        <option value="low">
+            Low
+        </option>
+
+    </select>
+
+
+    <select id="categoryFilter">
+
+        <option value="">
+            All Categories
+        </option>
+
+        <option value="network">
+            Network
+        </option>
+
+        <option value="software">
+            Software
+        </option>
+
+        <option value="hardware">
+            Hardware
+        </option>
+
+        <option value="access">
+            Access
+        </option>
+
+        <option value="email">
+            Email
+        </option>
+
+    </select>
+
+
+    <button
+        class="reset-button"
+        id="resetFilters"
+        type="button"
+    >
+        Reset
+    </button>
+
+</section>
+
+
+<!-- =========================================================
+     TICKETS TABLE
+========================================================= -->
+
+<section class="table-panel">
+
+
+    <div class="table-header">
+
+        <div>
+
+            <strong>
+                Support Tickets
+            </strong>
+
+            <p>
+                Live support request
+                workspace
+            </p>
+
+        </div>
+
+
+        <div
+            class="results-count"
+            id="resultsCount"
+        >
+            0 tickets
+        </div>
+
+    </div>
+
+
+    <div class="table-wrapper">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Ticket
+                    </th>
+
+                    <th>
+                        Request
+                    </th>
+
+                    <th>
+                        Status
+                    </th>
+
+                    <th>
+                        Priority
+                    </th>
+
+                    <th>
+                        Category
+                    </th>
+
+                    <th>
+                        Technician
+                    </th>
+
+                    <th>
+                        SLA
+                    </th>
+
+                    <th>
+                        Action
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody id="ticketRows">
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    <div
+        class="empty-state"
+        id="emptyState"
+    >
+
+        <div class="empty-icon">
+            ◫
+        </div>
+
+        <h3>
+            No tickets found
+        </h3>
+
+        <p>
+            Try changing your
+            search or filters.
+        </p>
+
+    </div>
+
+</section>
+
+</div>
+
+</main>
+
+
+<!-- =========================================================
+     CREATE TICKET MODAL
+========================================================= -->
+
+<div
+    class="modal-backdrop"
+    id="ticketModal"
+>
+
+    <div class="modal">
+
+
+        <div class="modal-head">
+
+            <div>
+
+                <h2>
+                    Create Ticket
+                </h2>
+
+                <p>
+                    Submit a new IT
+                    support request.
+                </p>
+
+            </div>
+
+
+            <button
+                class="close-button"
+                id="closeModal"
+                type="button"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <form
+            class="form"
+            id="createTicketForm"
+        >
+
+
+            <div class="field">
+
+                <label>
+                    Subject
+                </label>
+
+                <input
+                    id="subject"
+                    required
+                    placeholder="
+                        Example:
+                        Office WiFi unavailable
+                    "
+                >
+
+            </div>
+
+
+            <div class="form-grid">
+
+
+                <div class="field">
+
+                    <label>
+                        Requester
+                    </label>
+
+                    <input
+                        id="requester"
+                        required
+                        placeholder="
+                            Staff name
+                        "
+                    >
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>
+                        Department
+                    </label>
+
+                    <select id="department">
+
+                        <option>
+                            Information Technology
+                        </option>
+
+                        <option>
+                            Finance
+                        </option>
+
+                        <option>
+                            Human Resources
+                        </option>
+
+                        <option>
+                            Sales
+                        </option>
+
+                        <option>
+                            Operations
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <div class="form-grid">
+
+
+                <div class="field">
+
+                    <label>
+                        Category
+                    </label>
+
+                    <select id="category">
+
+                        <option value="network">
+                            Network
+                        </option>
+
+                        <option value="software">
+                            Software
+                        </option>
+
+                        <option value="hardware">
+                            Hardware
+                        </option>
+
+                        <option value="access">
+                            Access
+                        </option>
+
+                        <option value="email">
+                            Email
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>
+                        Priority
+                    </label>
+
+                    <select id="priority">
+
+                        <option value="medium">
+                            Medium
+                        </option>
+
+                        <option value="low">
+                            Low
+                        </option>
+
+                        <option value="high">
+                            High
+                        </option>
+
+                        <option value="critical">
+                            Critical
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    Description
+                </label>
+
+                <textarea
+                    id="description"
+                    placeholder="
+                        Describe the problem
+                        and troubleshooting
+                        already attempted...
+                    "
+                ></textarea>
+
+            </div>
+
+
+            <div class="modal-actions">
+
+                <button
+                    class="secondary-button"
+                    id="cancelModal"
+                    type="button"
+                >
+                    Cancel
+                </button>
+
+
+                <button
+                    class="primary-button"
+                    type="submit"
+                >
+                    Create Ticket
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* =========================================================
+   TICKET STATE
+   Live data is loaded by /js/tickets-live.js
+========================================================= */
+
+let tickets = [];
+
+
+/* =========================================================
+   HELPERS
+========================================================= */
+
+function escapeHtml(
+    value
+) {
+
+    return String(
+        value ?? ""
+    )
+        .replaceAll(
+            "&",
+            "&amp;"
+        )
+        .replaceAll(
+            "<",
+            "&lt;"
+        )
+        .replaceAll(
+            ">",
+            "&gt;"
+        )
+        .replaceAll(
+            '"',
+            "&quot;"
+        )
+        .replaceAll(
+            "'",
+            "&#039;"
+        );
+}
+
+
+function labelFromValue(
+    value
+) {
+
+    return String(
+        value || ""
+    )
+        .split("-")
+        .map(
+            word =>
+                word.charAt(
+                    0
+                )
+                    .toUpperCase() +
+                word.slice(
+                    1
+                )
+        )
+        .join(
+            " "
+        );
+}
+
+
+function formatSla(
+    minutes
+) {
+
+    if (
+        minutes === null ||
+        minutes === undefined
+    ) {
+
+        return {
+            text:
+                "Completed",
+
+            className:
+                "safe"
+        };
+    }
+
+
+    const hours =
+        Math.floor(
+            minutes / 60
+        );
+
+
+    const mins =
+        minutes % 60;
+
+
+    return {
+
+        text:
+            `${hours
+                .toString()
+                .padStart(
+                    2,
+                    "0"
+                )}:${mins
+                .toString()
+                .padStart(
+                    2,
+                    "0"
+                )}:00`,
+
+        className:
+            minutes <= 60
+                ? "danger"
+                : "safe"
+    };
+}
+
+
+/* =========================================================
+   RENDER
+========================================================= */
+
+function getFilteredTickets() {
+
+    const search =
+        document
+            .getElementById(
+                "searchInput"
+            )
+            .value
+            .trim()
+            .toLowerCase();
+
+
+    const status =
+        document
+            .getElementById(
+                "statusFilter"
+            )
+            .value;
+
+
+    const priority =
+        document
+            .getElementById(
+                "priorityFilter"
+            )
+            .value;
+
+
+    const category =
+        document
+            .getElementById(
+                "categoryFilter"
+            )
+            .value;
+
+
+    return tickets.filter(
+        ticket => {
+
+            const searchable =
+                [
+                    ticket.id,
+                    ticket.subject,
+                    ticket.requester,
+                    ticket.department,
+                    ticket.technician
+                ]
+                    .join(
+                        " "
+                    )
+                    .toLowerCase();
+
+
+            const matchesSearch =
+                !search ||
+                searchable.includes(
+                    search
+                );
+
+
+            const matchesStatus =
+                !status ||
+                ticket.status ===
+                    status;
+
+
+            const matchesPriority =
+                !priority ||
+                ticket.priority ===
+                    priority;
+
+
+            const matchesCategory =
+                !category ||
+                ticket.category ===
+                    category;
+
+
+            return (
+                matchesSearch &&
+                matchesStatus &&
+                matchesPriority &&
+                matchesCategory
+            );
+        }
+    );
+}
+
+
+function renderTickets() {
+
+    const rows =
+        document.getElementById(
+            "ticketRows"
+        );
+
+
+    const emptyState =
+        document.getElementById(
+            "emptyState"
+        );
+
+
+    const filtered =
+        getFilteredTickets();
+
+
+    document.getElementById(
+        "resultsCount"
+    ).textContent =
+        `${filtered.length} ticket${
+            filtered.length === 1
+                ? ""
+                : "s"
+        }`;
+
+
+    if (
+        filtered.length === 0
+    ) {
+
+        rows.innerHTML =
+            "";
+
+        emptyState.style.display =
+            "block";
+
+        return;
+    }
+
+
+    emptyState.style.display =
+        "none";
+
+
+    rows.innerHTML =
+        filtered
+            .map(
+                ticket => {
+
+                    const sla =
+                        formatSla(
+                            ticket.slaMinutes
+                        );
+
+
+                    return `
+
+                    <tr>
+
+                        <td>
+
+                            <span
+                                class="ticket-id"
+                            >
+                                ${escapeHtml(
+                                    ticket.id
+                                )}
+                            </span>
+
+                        </td>
+
+
+                        <td>
+
+                            <div
+                                class="subject"
+                            >
+
+                                <strong>
+
+                                    ${escapeHtml(
+                                        ticket.subject
+                                    )}
+
+                                </strong>
+
+                                <span>
+
+                                    ${escapeHtml(
+                                        ticket.requester
+                                    )}
+                                    ·
+                                    ${escapeHtml(
+                                        ticket.department
+                                    )}
+
+                                </span>
+
+                            </div>
+
+                        </td>
+
+
+                        <td>
+
+                            <span
+                                class="
+                                    status
+                                    ${escapeHtml(
+                                        ticket.status
+                                    )}
+                                "
+                            >
+
+                                ${escapeHtml(
+                                    labelFromValue(
+                                        ticket.status
+                                    )
+                                )}
+
+                            </span>
+
+                        </td>
+
+
+                        <td>
+
+                            <span
+                                class="
+                                    priority
+                                    ${escapeHtml(
+                                        ticket.priority
+                                    )}
+                                "
+                            >
+
+                                ${escapeHtml(
+                                    ticket.priority
+                                )}
+
+                            </span>
+
+                        </td>
+
+
+                        <td>
+
+                            ${escapeHtml(
+                                labelFromValue(
+                                    ticket.category
+                                )
+                            )}
+
+                        </td>
+
+
+                        <td>
+
+                            ${escapeHtml(
+                                ticket.technician
+                            )}
+
+                        </td>
+
+
+                        <td>
+
+                            <span
+                                class="
+                                    sla-time
+                                    ${sla.className}
+                                "
+                            >
+
+                                ${sla.text}
+
+                            </span>
+
+                        </td>
+
+
+                        <td>
+
+                            <button
+                                class="
+                                    action-button
+                                "
+                                type="button"
+                                onclick="
+                                    openTicket(
+                                        '${escapeHtml(
+                                            ticket.id
+                                        )}'
+                                    )
+                                "
+                            >
+                                View →
+                            </button>
+
+                        </td>
+
+                    </tr>
+
+                    `;
+                }
+            )
+            .join(
+                ""
+            );
+}
+
+
+/* =========================================================
+   STATS
+========================================================= */
+
+function updateStats() {
+
+    document.getElementById(
+        "totalTickets"
+    ).textContent =
+        tickets.length;
+
+
+    document.getElementById(
+        "ticketNavCount"
+    ).textContent =
+        tickets.length;
+
+
+    document.getElementById(
+        "openTickets"
+    ).textContent =
+        tickets.filter(
+            ticket =>
+                ticket.status ===
+                "open"
+        ).length;
+
+
+    document.getElementById(
+        "progressTickets"
+    ).textContent =
+        tickets.filter(
+            ticket =>
+                ticket.status ===
+                "in-progress"
+        ).length;
+
+
+    document.getElementById(
+        "resolvedTickets"
+    ).textContent =
+        tickets.filter(
+            ticket =>
+                ticket.status ===
+                "resolved"
+        ).length;
+
+
+    document.getElementById(
+        "slaRiskTickets"
+    ).textContent =
+        tickets.filter(
+            ticket =>
+                Number.isFinite(
+                    ticket.slaMinutes
+                ) &&
+                ticket.slaMinutes <=
+                    60
+        ).length;
+}
+
+
+/* =========================================================
+   FILTER EVENTS
+========================================================= */
+
+[
+    "searchInput",
+    "statusFilter",
+    "priorityFilter",
+    "categoryFilter"
+]
+.forEach(
+    id => {
+
+        document
+            .getElementById(
+                id
+            )
+            .addEventListener(
+                id ===
+                    "searchInput"
+                    ? "input"
+                    : "change",
+                renderTickets
+            );
+    }
+);
+
+
+document
+    .getElementById(
+        "resetFilters"
+    )
+    .addEventListener(
+        "click",
+        () => {
+
+            document.getElementById(
+                "searchInput"
+            ).value =
+                "";
+
+
+            document.getElementById(
+                "statusFilter"
+            ).value =
+                "";
+
+
+            document.getElementById(
+                "priorityFilter"
+            ).value =
+                "";
+
+
+            document.getElementById(
+                "categoryFilter"
+            ).value =
+                "";
+
+
+            renderTickets();
+        }
+    );
+
+
+/* =========================================================
+   OPEN TICKET
+========================================================= */
+
+function openTicket(
+    ticketId
+) {
+
+    window.location.href =
+        `/ticket-detail.html?id=${encodeURIComponent(
+            ticketId
+        )}`;
+}
+
+
+/* =========================================================
+   MODAL
+========================================================= */
+
+const modal =
+    document.getElementById(
+        "ticketModal"
+    );
+
+
+function openModal() {
+
+    modal.classList.add(
+        "open"
+    );
+
+    document.body.style.overflow =
+        "hidden";
+}
+
+
+function closeModal() {
+
+    modal.classList.remove(
+        "open"
+    );
+
+    document.body.style.overflow =
+        "";
+}
+
+
+document
+    .getElementById(
+        "newTicketButton"
+    )
+    .addEventListener(
+        "click",
+        openModal
+    );
+
+
+document
+    .getElementById(
+        "closeModal"
+    )
+    .addEventListener(
+        "click",
+        closeModal
+    );
+
+
+document
+    .getElementById(
+        "cancelModal"
+    )
+    .addEventListener(
+        "click",
+        closeModal
+    );
+
+
+modal.addEventListener(
+    "click",
+    event => {
+
+        if (
+            event.target ===
+            modal
+        ) {
+
+            closeModal();
+        }
+    }
+);
+
+
+/* =========================================================
+   CREATE TICKET
+
+   Ticket creation now uses /create-ticket.html.
+   Live navigation is handled by /js/tickets-live.js.
+========================================================= */
+
+
+/* =========================================================
+   MOBILE SIDEBAR
+========================================================= */
+
+const sidebar =
+    document.getElementById(
+        "sidebar"
+    );
+
+
+const sidebarBackdrop =
+    document.getElementById(
+        "sidebarBackdrop"
+    );
+
+
+document
+    .getElementById(
+        "menuBtn"
+    )
+    .addEventListener(
+        "click",
+        () => {
+
+            sidebar.classList.toggle(
+                "open"
+            );
+
+            sidebarBackdrop.classList.toggle(
+                "open"
+            );
+        }
+    );
+
+
+sidebarBackdrop.addEventListener(
+    "click",
+    () => {
+
+        sidebar.classList.remove(
+            "open"
+        );
+
+        sidebarBackdrop.classList.remove(
+            "open"
+        );
+    }
+);
+
+
+/* =========================================================
+   ESCAPE
+========================================================= */
+
+document.addEventListener(
+    "keydown",
+    event => {
+
+        if (
+            event.key ===
+            "Escape"
+        ) {
+
+            closeModal();
+        }
+    }
+);
+
+
+/* =========================================================
+   INITIAL LOAD
+========================================================= */
+
+updateStats();
+
+renderTickets();
+
+</script>
+
+
+<script src="/js/auth-session.js"></script>
+
+
+<script src="/js/create-ticket-nav.js"></script>
+
+<script src="/js/tickets-live.js"></script>
+<script src="/js/role-navigation.js"></script>
+</body>
+</html>

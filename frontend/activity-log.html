@@ -1,0 +1,3834 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>ResolveDesk — Audit Log</title>
+
+<style>
+
+/* =========================================================
+   THEME
+========================================================= */
+
+:root {
+    --topaz: #67AECA;
+    --amethyst: #675682;
+    --jewel: #5F0F4E;
+    --rose: #E52A6F;
+
+    --bg: #08060b;
+    --bg2: #120b16;
+
+    --text: #ffffff;
+    --muted: #95899d;
+
+    --line: rgba(103,174,202,.14);
+    --line-soft: rgba(103,174,202,.07);
+
+    --sidebar: 250px;
+
+    --shadow:
+        0 30px 90px
+        rgba(25,5,30,.45);
+}
+
+
+/* =========================================================
+   RESET
+========================================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    min-height: 100vh;
+
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Inter,
+        Arial,
+        sans-serif;
+
+    color: var(--text);
+
+    background:
+        radial-gradient(
+            circle at 88% 5%,
+            rgba(103,174,202,.16),
+            transparent 25%
+        ),
+        radial-gradient(
+            circle at 10% 82%,
+            rgba(229,42,111,.08),
+            transparent 25%
+        ),
+        radial-gradient(
+            circle at 62% 94%,
+            rgba(103,86,130,.14),
+            transparent 30%
+        ),
+        linear-gradient(
+            180deg,
+            var(--bg),
+            var(--bg2) 55%,
+            var(--bg)
+        );
+
+    overflow-x: hidden;
+}
+
+body::before {
+    content: "";
+
+    position: fixed;
+    inset: 0;
+
+    z-index: -1;
+
+    pointer-events: none;
+
+    opacity: .13;
+
+    background-image:
+        linear-gradient(
+            rgba(103,174,202,.035) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            90deg,
+            rgba(103,174,202,.035) 1px,
+            transparent 1px
+        );
+
+    background-size: 64px 64px;
+
+    mask-image:
+        linear-gradient(
+            #000,
+            transparent 90%
+        );
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+button,
+input,
+select {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+
+/* =========================================================
+   SIDEBAR
+========================================================= */
+
+.sidebar {
+    position: fixed;
+
+    inset:
+        0 auto 0 0;
+
+    width: var(--sidebar);
+
+    z-index: 50;
+
+    padding: 18px 14px;
+
+    background:
+        rgba(8,5,11,.94);
+
+    border-right:
+        1px solid
+        rgba(103,174,202,.09);
+
+    backdrop-filter: blur(20px);
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    padding:
+        7px 9px 22px;
+}
+
+.brand-mark {
+    width: 42px;
+    height: 42px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 12px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--topaz),
+            var(--amethyst) 58%,
+            var(--rose)
+        );
+
+    font-size: 20px;
+    font-weight: 950;
+
+    box-shadow:
+        0 14px 34px
+        rgba(103,86,130,.25);
+}
+
+.brand strong {
+    display: block;
+
+    font-size: 16px;
+}
+
+.brand span {
+    display: block;
+
+    margin-top: 3px;
+
+    color: #7d7085;
+
+    font-size: 9px;
+    font-weight: 900;
+
+    letter-spacing: .12em;
+
+    text-transform: uppercase;
+}
+
+.nav-label {
+    margin:
+        12px 10px 8px;
+
+    color: #615568;
+
+    font-size: 9px;
+    font-weight: 950;
+
+    letter-spacing: .14em;
+
+    text-transform: uppercase;
+}
+
+.nav {
+    display: grid;
+
+    gap: 4px;
+}
+
+.nav a {
+    min-height: 45px;
+
+    padding:
+        0 12px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 11px;
+
+    border:
+        1px solid transparent;
+
+    border-radius: 12px;
+
+    color: #988ba0;
+
+    font-size: 13px;
+    font-weight: 760;
+
+    transition: .18s ease;
+}
+
+.nav a:hover {
+    color: #fff;
+
+    background:
+        rgba(103,174,202,.05);
+}
+
+.nav a.active {
+    color: #fff;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(103,174,202,.13),
+            rgba(103,86,130,.10)
+        );
+
+    border-color:
+        rgba(103,174,202,.18);
+}
+
+.nav-icon {
+    width: 28px;
+    height: 28px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 8px;
+
+    background:
+        rgba(103,86,130,.08);
+
+    border:
+        1px solid
+        rgba(103,174,202,.09);
+
+    font-size: 12px;
+}
+
+.nav a.active .nav-icon {
+    background:
+        linear-gradient(
+            135deg,
+            var(--topaz),
+            var(--amethyst)
+        );
+}
+
+.sidebar-bottom {
+    position: absolute;
+
+    left: 14px;
+    right: 14px;
+    bottom: 16px;
+}
+
+.system-card {
+    padding: 14px;
+
+    border:
+        1px solid
+        rgba(103,174,202,.11);
+
+    border-radius: 15px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(103,86,130,.11),
+            rgba(10,6,13,.9)
+        );
+}
+
+.system-card small {
+    color: #746779;
+
+    font-size: 9px;
+    font-weight: 900;
+
+    letter-spacing: .10em;
+
+    text-transform: uppercase;
+}
+
+.system-card strong {
+    display: block;
+
+    margin-top: 7px;
+
+    font-size: 12px;
+}
+
+.system-card p {
+    margin-top: 5px;
+
+    color: #81748a;
+
+    font-size: 10px;
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   MAIN
+========================================================= */
+
+.main {
+    margin-left:
+        var(--sidebar);
+
+    min-height: 100vh;
+}
+
+
+/* =========================================================
+   TOPBAR
+========================================================= */
+
+.topbar {
+    position: sticky;
+    top: 0;
+
+    z-index: 40;
+
+    height: 74px;
+
+    padding:
+        0 24px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 16px;
+
+    background:
+        rgba(9,6,12,.8);
+
+    border-bottom:
+        1px solid
+        rgba(103,174,202,.08);
+
+    backdrop-filter:
+        blur(18px);
+}
+
+.mobile-btn {
+    display: none;
+
+    width: 42px;
+    height: 42px;
+
+    border:
+        1px solid var(--line);
+
+    border-radius: 11px;
+
+    background:
+        rgba(103,86,130,.08);
+
+    color: #fff;
+}
+
+.search {
+    width:
+        min(
+            470px,
+            46vw
+        );
+}
+
+.search input {
+    width: 100%;
+    height: 42px;
+
+    padding:
+        0 14px;
+
+    border:
+        1px solid var(--line);
+
+    border-radius: 11px;
+
+    outline: none;
+
+    background:
+        rgba(12,8,16,.82);
+
+    color: #fff;
+}
+
+.search input:focus {
+    border-color:
+        var(--topaz);
+}
+
+.search input::placeholder {
+    color: #73667b;
+}
+
+.top-actions {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+}
+
+.icon-btn {
+    width: 40px;
+    height: 40px;
+
+    border:
+        1px solid var(--line);
+
+    border-radius: 11px;
+
+    background:
+        rgba(103,86,130,.07);
+
+    color: #c5bacb;
+}
+
+.profile {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    padding:
+        5px 8px 5px 5px;
+
+    border:
+        1px solid var(--line);
+
+    border-radius: 12px;
+
+    background:
+        rgba(103,86,130,.07);
+}
+
+.avatar {
+    width: 32px;
+    height: 32px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 9px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--topaz),
+            var(--amethyst)
+        );
+
+    font-size: 10px;
+    font-weight: 950;
+}
+
+.profile strong {
+    display: block;
+
+    font-size: 11px;
+}
+
+.profile span {
+    display: block;
+
+    margin-top: 2px;
+
+    color: #82758c;
+
+    font-size: 9px;
+}
+
+
+/* =========================================================
+   CONTENT
+========================================================= */
+
+.content {
+    padding: 26px;
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.hero {
+    position: relative;
+
+    overflow: hidden;
+
+    padding: 28px;
+
+    border:
+        1px solid var(--line);
+
+    border-radius: 26px;
+
+    background:
+        radial-gradient(
+            circle at 88% 10%,
+            rgba(103,174,202,.16),
+            transparent 27%
+        ),
+        radial-gradient(
+            circle at 8% 100%,
+            rgba(229,42,111,.08),
+            transparent 27%
+        ),
+        linear-gradient(
+            135deg,
+            rgba(20,12,25,.98),
+            rgba(10,7,13,.98)
+        );
+
+    box-shadow:
+        var(--shadow);
+}
+
+.hero-row {
+    position: relative;
+
+    z-index: 2;
+
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+
+    gap: 22px;
+}
+
+.eyebrow {
+    display: inline-flex;
+    align-items: center;
+
+    gap: 8px;
+
+    padding:
+        7px 10px;
+
+    border:
+        1px solid
+        rgba(103,174,202,.16);
+
+    border-radius: 999px;
+
+    background:
+        rgba(103,174,202,.06);
+
+    color: #b9dce8;
+
+    font-size: 9px;
+    font-weight: 950;
+
+    letter-spacing: .11em;
+
+    text-transform: uppercase;
+}
+
+.eyebrow::before {
+    content: "";
+
+    width: 7px;
+    height: 7px;
+
+    border-radius: 50%;
+
+    background:
+        var(--topaz);
+
+    box-shadow:
+        0 0 16px
+        rgba(103,174,202,.6);
+}
+
+.hero h1 {
+    margin-top: 13px;
+
+    font-size:
+        clamp(
+            34px,
+            4vw,
+            52px
+        );
+
+    letter-spacing:
+        -2.3px;
+}
+
+.hero h1 span {
+    background:
+        linear-gradient(
+            90deg,
+            var(--topaz),
+            #b79ac9,
+            var(--rose)
+        );
+
+    -webkit-background-clip:
+        text;
+
+    background-clip:
+        text;
+
+    color:
+        transparent;
+}
+
+.hero p {
+    max-width: 720px;
+
+    margin-top: 11px;
+
+    color: #95899d;
+
+    font-size: 12.5px;
+    line-height: 1.7;
+}
+
+.export-button {
+    min-height: 44px;
+
+    padding:
+        0 16px;
+
+    border: 0;
+
+    border-radius: 12px;
+
+    background:
+        linear-gradient(
+            100deg,
+            var(--topaz),
+            var(--amethyst) 56%,
+            var(--rose)
+        );
+
+    color: #fff;
+
+    font-size: 10px;
+    font-weight: 900;
+
+    box-shadow:
+        0 13px 30px
+        rgba(103,86,130,.26);
+}
+
+
+/* =========================================================
+   STATS
+========================================================= */
+
+.stats {
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            4,
+            1fr
+        );
+
+    gap: 13px;
+
+    margin-top: 16px;
+}
+
+.stat {
+    position: relative;
+
+    overflow: hidden;
+
+    padding: 17px;
+
+    border:
+        1px solid var(--line);
+
+    border-radius: 17px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(103,86,130,.10),
+            rgba(10,7,13,.96)
+        );
+}
+
+.stat small {
+    display: block;
+
+    color: #766a80;
+
+    font-size: 8.5px;
+    font-weight: 950;
+
+    letter-spacing: .09em;
+
+    text-transform: uppercase;
+}
+
+.stat strong {
+    display: block;
+
+    margin-top: 7px;
+
+    font-size: 27px;
+
+    letter-spacing: -1px;
+}
+
+.stat p {
+    margin-top: 5px;
+
+    color: #776b80;
+
+    font-size: 9px;
+}
+
+.stat.security::after {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    height: 2px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            var(--rose),
+            var(--jewel),
+            transparent
+        );
+}
+
+
+/* =========================================================
+   FILTERS
+========================================================= */
+
+.filters {
+    margin-top: 16px;
+
+    padding: 13px;
+
+    display: grid;
+
+    grid-template-columns:
+        minmax(
+            240px,
+            1fr
+        )
+        165px
+        180px
+        170px
+        auto;
+
+    gap: 10px;
+
+    border:
+        1px solid var(--line);
+
+    border-radius: 17px;
+
+    background:
+        rgba(13,8,16,.82);
+}
+
+.filters input,
+.filters select {
+    width: 100%;
+    height: 42px;
+
+    padding:
+        0 12px;
+
+    border:
+        1px solid var(--line);
+
+    border-radius: 10px;
+
+    outline: none;
+
+    background:
+        rgba(103,86,130,.07);
+
+    color: #fff;
+}
+
+.filters input:focus,
+.filters select:focus {
+    border-color:
+        var(--topaz);
+}
+
+.filters input::placeholder {
+    color: #73667b;
+}
+
+.reset-button {
+    min-height: 42px;
+
+    padding:
+        0 13px;
+
+    border:
+        1px solid var(--line);
+
+    border-radius: 10px;
+
+    background:
+        rgba(103,86,130,.08);
+
+    color: #c4b8ca;
+
+    font-size: 9px;
+    font-weight: 900;
+}
+
+
+/* =========================================================
+   PANEL
+========================================================= */
+
+.panel {
+    margin-top: 16px;
+
+    overflow: hidden;
+
+    border:
+        1px solid var(--line);
+
+    border-radius: 20px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(103,86,130,.09),
+            rgba(9,6,12,.97)
+        );
+}
+
+.panel-head {
+    padding:
+        16px 18px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 14px;
+
+    border-bottom:
+        1px solid var(--line-soft);
+}
+
+.panel-title strong {
+    display: block;
+
+    font-size: 13px;
+}
+
+.panel-title span {
+    display: block;
+
+    margin-top: 4px;
+
+    color: #74677d;
+
+    font-size: 9.5px;
+}
+
+.result-count {
+    padding:
+        6px 9px;
+
+    border:
+        1px solid
+        rgba(103,174,202,.12);
+
+    border-radius: 999px;
+
+    background:
+        rgba(103,174,202,.055);
+
+    color: #a7d4e4;
+
+    font-size: 8px;
+    font-weight: 900;
+}
+
+
+/* =========================================================
+   AUDIT TABLE
+========================================================= */
+
+.table-wrap {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+
+    min-width: 1150px;
+
+    border-collapse: collapse;
+}
+
+thead th {
+    padding:
+        12px 14px;
+
+    text-align: left;
+
+    color: #75697e;
+
+    font-size: 8px;
+    font-weight: 950;
+
+    letter-spacing: .08em;
+
+    text-transform: uppercase;
+
+    border-bottom:
+        1px solid var(--line-soft);
+
+    background:
+        rgba(7,5,9,.38);
+}
+
+tbody td {
+    padding:
+        13px 14px;
+
+    color: #c6bbc9;
+
+    font-size: 9.5px;
+
+    border-bottom:
+        1px solid
+        rgba(103,174,202,.055);
+
+    vertical-align: middle;
+}
+
+tbody tr:hover {
+    background:
+        rgba(103,174,202,.03);
+}
+
+tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+
+/* =========================================================
+   ACTOR
+========================================================= */
+
+.actor {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+}
+
+.actor-avatar {
+    width: 34px;
+    height: 34px;
+
+    display: grid;
+    place-items: center;
+
+    flex-shrink: 0;
+
+    border-radius: 10px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(103,174,202,.18),
+            rgba(103,86,130,.20)
+        );
+
+    border:
+        1px solid var(--line);
+
+    font-size: 8px;
+    font-weight: 950;
+}
+
+.actor strong {
+    display: block;
+
+    color: #fff;
+
+    font-size: 10px;
+}
+
+.actor span {
+    display: block;
+
+    margin-top: 3px;
+
+    color: #776b80;
+
+    font-size: 8px;
+}
+
+
+/* =========================================================
+   EVENT TYPE
+========================================================= */
+
+.event {
+    display: inline-flex;
+    align-items: center;
+
+    gap: 6px;
+
+    padding:
+        6px 8px;
+
+    border-radius: 999px;
+
+    font-size: 7.5px;
+    font-weight: 950;
+
+    text-transform: uppercase;
+
+    letter-spacing: .05em;
+}
+
+.event::before {
+    content: "";
+
+    width: 6px;
+    height: 6px;
+
+    border-radius: 50%;
+}
+
+.event.auth {
+    color: #b9deeb;
+
+    border:
+        1px solid
+        rgba(103,174,202,.13);
+
+    background:
+        rgba(103,174,202,.07);
+}
+
+.event.auth::before {
+    background:
+        var(--topaz);
+}
+
+.event.ticket {
+    color: #cbb8d8;
+
+    border:
+        1px solid
+        rgba(103,86,130,.22);
+
+    background:
+        rgba(103,86,130,.13);
+}
+
+.event.ticket::before {
+    background:
+        var(--amethyst);
+}
+
+.event.user {
+    color: #f2abc4;
+
+    border:
+        1px solid
+        rgba(229,42,111,.14);
+
+    background:
+        rgba(229,42,111,.07);
+}
+
+.event.user::before {
+    background:
+        var(--rose);
+}
+
+.event.sla {
+    color: #d7aed0;
+
+    border:
+        1px solid
+        rgba(95,15,78,.30);
+
+    background:
+        rgba(95,15,78,.18);
+}
+
+.event.sla::before {
+    background:
+        var(--jewel);
+}
+
+.event.system {
+    color: #aaa0af;
+
+    border:
+        1px solid
+        rgba(255,255,255,.08);
+
+    background:
+        rgba(255,255,255,.035);
+}
+
+.event.system::before {
+    background:
+        #887992;
+}
+
+
+/* =========================================================
+   SEVERITY
+========================================================= */
+
+.severity {
+    display: inline-flex;
+
+    padding:
+        5px 7px;
+
+    border-radius: 999px;
+
+    font-size: 7.5px;
+    font-weight: 950;
+
+    text-transform: uppercase;
+}
+
+.severity.info {
+    color: #b8ddea;
+
+    background:
+        rgba(103,174,202,.06);
+
+    border:
+        1px solid
+        rgba(103,174,202,.11);
+}
+
+.severity.warning {
+    color: #d4b1d0;
+
+    background:
+        rgba(103,86,130,.12);
+
+    border:
+        1px solid
+        rgba(103,86,130,.20);
+}
+
+.severity.critical {
+    color: #ffadc9;
+
+    background:
+        rgba(229,42,111,.08);
+
+    border:
+        1px solid
+        rgba(229,42,111,.15);
+}
+
+
+/* =========================================================
+   ACTION CELL
+========================================================= */
+
+.action-copy strong {
+    display: block;
+
+    color: #fff;
+
+    font-size: 9.5px;
+}
+
+.action-copy span {
+    display: block;
+
+    max-width: 300px;
+
+    margin-top: 4px;
+
+    color: #776b80;
+
+    font-size: 8px;
+
+    white-space: nowrap;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+}
+
+.view-button {
+    min-height: 32px;
+
+    padding:
+        0 10px;
+
+    border:
+        1px solid var(--line);
+
+    border-radius: 8px;
+
+    background:
+        rgba(103,86,130,.07);
+
+    color: #badce8;
+
+    font-size: 8px;
+    font-weight: 900;
+}
+
+.view-button:hover {
+    color: #fff;
+
+    border-color:
+        var(--topaz);
+}
+
+
+/* =========================================================
+   EMPTY
+========================================================= */
+
+.empty {
+    display: none;
+
+    padding:
+        65px 20px;
+
+    text-align: center;
+}
+
+.empty-icon {
+    width: 54px;
+    height: 54px;
+
+    margin:
+        0 auto;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 16px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(103,174,202,.14),
+            rgba(103,86,130,.16)
+        );
+
+    font-size: 22px;
+}
+
+.empty h3 {
+    margin-top: 14px;
+
+    font-size: 15px;
+}
+
+.empty p {
+    margin-top: 6px;
+
+    color: #776b80;
+
+    font-size: 9px;
+}
+
+
+/* =========================================================
+   PAGINATION
+========================================================= */
+
+.pagination {
+    padding:
+        14px 18px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 12px;
+
+    border-top:
+        1px solid var(--line-soft);
+}
+
+.pagination-info {
+    color: #74687c;
+
+    font-size: 8.5px;
+}
+
+.pagination-buttons {
+    display: flex;
+
+    gap: 7px;
+}
+
+.page-button {
+    min-width: 34px;
+    height: 34px;
+
+    padding:
+        0 9px;
+
+    border:
+        1px solid var(--line);
+
+    border-radius: 8px;
+
+    background:
+        rgba(103,86,130,.06);
+
+    color: #9e92a5;
+
+    font-size: 8px;
+
+    font-weight: 900;
+}
+
+.page-button.active {
+    border: 0;
+
+    color: #fff;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--topaz),
+            var(--amethyst)
+        );
+}
+
+.page-button:disabled {
+    opacity: .4;
+
+    cursor: not-allowed;
+}
+
+
+/* =========================================================
+   MODAL
+========================================================= */
+
+.modal-backdrop {
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 100;
+
+    display: none;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+
+    background:
+        rgba(0,0,0,.80);
+
+    backdrop-filter:
+        blur(9px);
+}
+
+.modal-backdrop.open {
+    display: flex;
+}
+
+.modal {
+    width:
+        min(
+            700px,
+            100%
+        );
+
+    max-height: 90vh;
+
+    overflow-y: auto;
+
+    border:
+        1px solid
+        rgba(103,174,202,.15);
+
+    border-radius: 22px;
+
+    background:
+        #0d0910;
+
+    box-shadow:
+        0 40px 120px
+        rgba(0,0,0,.7);
+}
+
+.modal-head {
+    padding:
+        18px 20px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 14px;
+
+    border-bottom:
+        1px solid var(--line-soft);
+}
+
+.modal-head h2 {
+    font-size: 18px;
+}
+
+.modal-head p {
+    margin-top: 4px;
+
+    color: #80738a;
+
+    font-size: 9.5px;
+}
+
+.close-button {
+    width: 36px;
+    height: 36px;
+
+    border:
+        1px solid var(--line);
+
+    border-radius: 9px;
+
+    background:
+        rgba(103,86,130,.09);
+
+    color: #fff;
+}
+
+
+/* =========================================================
+   DETAIL
+========================================================= */
+
+.detail-content {
+    padding: 20px;
+}
+
+.detail-event {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+}
+
+.detail-icon {
+    width: 48px;
+    height: 48px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 14px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--topaz),
+            var(--amethyst),
+            var(--rose)
+        );
+
+    font-size: 16px;
+}
+
+.detail-event h3 {
+    font-size: 15px;
+}
+
+.detail-event p {
+    margin-top: 4px;
+
+    color: #80738a;
+
+    font-size: 9px;
+}
+
+.detail-grid {
+    display: grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap: 9px;
+
+    margin-top: 18px;
+}
+
+.detail-item {
+    padding: 12px;
+
+    border:
+        1px solid var(--line-soft);
+
+    border-radius: 11px;
+
+    background:
+        rgba(103,86,130,.045);
+}
+
+.detail-item small {
+    display: block;
+
+    color: #695d71;
+
+    font-size: 7px;
+
+    font-weight: 900;
+
+    letter-spacing: .07em;
+
+    text-transform: uppercase;
+}
+
+.detail-item strong {
+    display: block;
+
+    margin-top: 5px;
+
+    color: #d4cad8;
+
+    font-size: 9.5px;
+
+    word-break: break-word;
+}
+
+.change-box {
+    margin-top: 17px;
+
+    padding: 14px;
+
+    border:
+        1px solid var(--line-soft);
+
+    border-radius: 13px;
+
+    background:
+        rgba(103,86,130,.04);
+}
+
+.change-box h4 {
+    font-size: 10px;
+}
+
+.change-row {
+    display: grid;
+
+    grid-template-columns:
+        100px 1fr;
+
+    gap: 10px;
+
+    margin-top: 10px;
+
+    padding-top: 10px;
+
+    border-top:
+        1px solid var(--line-soft);
+}
+
+.change-row:first-of-type {
+    border-top: 0;
+}
+
+.change-row span {
+    color: #75697e;
+
+    font-size: 8.5px;
+}
+
+.change-row strong {
+    color: #c9becf;
+
+    font-size: 9px;
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+.toast {
+    position: fixed;
+
+    right: 24px;
+    bottom: 24px;
+
+    z-index: 200;
+
+    min-width: 250px;
+
+    padding:
+        13px 15px;
+
+    border:
+        1px solid
+        rgba(103,174,202,.17);
+
+    border-radius: 12px;
+
+    background:
+        rgba(13,9,16,.97);
+
+    color: #dfd4e3;
+
+    box-shadow:
+        0 20px 60px
+        rgba(0,0,0,.45);
+
+    font-size: 10px;
+
+    opacity: 0;
+
+    transform:
+        translateY(10px);
+
+    pointer-events: none;
+
+    transition: .2s ease;
+}
+
+.toast.show {
+    opacity: 1;
+
+    transform: none;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+.sidebar-backdrop {
+    display: none;
+}
+
+@media (max-width: 1150px) {
+
+    .stats {
+        grid-template-columns:
+            1fr 1fr;
+    }
+
+    .filters {
+        grid-template-columns:
+            1fr 1fr 1fr;
+    }
+
+    .filters input {
+        grid-column:
+            1 / -1;
+    }
+}
+
+@media (max-width: 900px) {
+
+    .sidebar {
+        transform:
+            translateX(-100%);
+
+        transition: .2s ease;
+    }
+
+    .sidebar.open {
+        transform: none;
+    }
+
+    .sidebar-backdrop {
+        position: fixed;
+
+        inset: 0;
+
+        z-index: 45;
+
+        background:
+            rgba(0,0,0,.64);
+    }
+
+    .sidebar-backdrop.open {
+        display: block;
+    }
+
+    .main {
+        margin-left: 0;
+    }
+
+    .mobile-btn {
+        display: grid;
+
+        place-items: center;
+    }
+
+    .hero-row {
+        flex-direction: column;
+
+        align-items: flex-start;
+    }
+}
+
+@media (max-width: 650px) {
+
+    .content {
+        padding: 16px;
+    }
+
+    .topbar {
+        padding:
+            0 14px;
+    }
+
+    .search {
+        display: none;
+    }
+
+    .profile-copy {
+        display: none;
+    }
+
+    .hero {
+        padding: 21px;
+    }
+
+    .hero h1 {
+        font-size: 37px;
+    }
+
+    .stats,
+    .filters,
+    .detail-grid {
+        grid-template-columns:
+            1fr;
+    }
+
+    .filters input {
+        grid-column: auto;
+    }
+
+    .pagination {
+        align-items: flex-start;
+
+        flex-direction: column;
+    }
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     SIDEBAR
+========================================================= -->
+
+<aside
+    class="sidebar"
+    id="sidebar"
+>
+
+    <div class="brand">
+
+        <div class="brand-mark">
+            R
+        </div>
+
+        <div>
+
+            <strong>
+                ResolveDesk
+            </strong>
+
+            <span>
+                IT Service Management
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <div class="nav-label">
+        Workspace
+    </div>
+
+
+    <nav class="nav">
+
+        <a href="/dashboard.html">
+            <span class="nav-icon">⌂</span>
+            Dashboard
+        </a>
+
+        <a href="/tickets.html">
+            <span class="nav-icon">◫</span>
+            Tickets
+        </a>
+
+        <a href="/my-queue.html">
+            <span class="nav-icon">◎</span>
+            My Queue
+        </a>
+
+        <a href="/sla-monitor.html">
+            <span class="nav-icon">⏱</span>
+            SLA Monitor
+        </a>
+
+        <a href="/knowledge-base.html">
+            <span class="nav-icon">▤</span>
+            Knowledge Base
+        </a>
+
+    </nav>
+
+
+    <div class="nav-label">
+        Management
+    </div>
+
+
+    <nav class="nav">
+
+        <a href="/users.html">
+            <span class="nav-icon">♙</span>
+            Users
+        </a>
+
+        <a href="/technicians.html">
+            <span class="nav-icon">♟</span>
+            Technicians
+        </a>
+
+        <a href="/departments.html">
+            <span class="nav-icon">▦</span>
+            Departments
+        </a>
+
+        <a href="/reports.html">
+            <span class="nav-icon">▥</span>
+            Reports
+        </a>
+
+        <a
+            class="active"
+            href="/activity-log.html"
+        >
+            <span class="nav-icon">◷</span>
+            Audit Log
+        </a>
+
+        <a href="/settings.html">
+            <span class="nav-icon">⚙</span>
+            Settings
+        </a>
+
+    </nav>
+
+
+    <div class="sidebar-bottom">
+
+        <div class="system-card">
+
+            <small>
+                Audit Service
+            </small>
+
+            <strong>
+                Logging enabled
+            </strong>
+
+            <p>
+                Administrative and
+                support activity is
+                recorded automatically.
+            </p>
+
+        </div>
+
+    </div>
+
+</aside>
+
+
+<div
+    class="sidebar-backdrop"
+    id="sidebarBackdrop"
+></div>
+
+
+<!-- =========================================================
+     MAIN
+========================================================= -->
+
+<main class="main">
+
+
+<header class="topbar">
+
+    <div
+        style="
+            display:flex;
+            align-items:center;
+            gap:12px;
+        "
+    >
+
+        <button
+            class="mobile-btn"
+            id="menuBtn"
+            type="button"
+        >
+            ☰
+        </button>
+
+
+        <div class="search">
+
+            <input
+                id="topSearch"
+                type="search"
+                placeholder="
+                    Search audit events...
+                "
+            >
+
+        </div>
+
+    </div>
+
+
+    <div class="top-actions">
+
+        <button
+            class="icon-btn"
+            type="button"
+        >
+            ?
+        </button>
+
+        <button
+            class="icon-btn"
+            type="button"
+        >
+            ●
+        </button>
+
+
+        <div class="profile">
+
+            <div class="avatar">
+                HH
+            </div>
+
+            <div class="profile-copy">
+
+                <strong>
+                    Haziq Hanif
+                </strong>
+
+                <span>
+                    Administrator
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<div class="content">
+
+
+<!-- =========================================================
+     HERO
+========================================================= -->
+
+<section class="hero">
+
+    <div class="hero-row">
+
+        <div>
+
+            <div class="eyebrow">
+                Security & Accountability
+            </div>
+
+
+            <h1>
+
+                Every action.
+
+                <span>
+                    Fully traceable.
+                </span>
+
+            </h1>
+
+
+            <p>
+
+                Review authentication,
+                ticket changes,
+                user administration,
+                SLA escalations and
+                important system events
+                across ResolveDesk.
+
+            </p>
+
+        </div>
+
+
+        <button
+            class="export-button"
+            id="exportButton"
+            type="button"
+        >
+            ↓ Export Audit Log
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     STATS
+========================================================= -->
+
+<section class="stats">
+
+    <article class="stat">
+
+        <small>
+            Events Today
+        </small>
+
+        <strong id="todayCount">
+            0
+        </strong>
+
+        <p>
+            Recorded audit events
+        </p>
+
+    </article>
+
+
+    <article class="stat">
+
+        <small>
+            Ticket Changes
+        </small>
+
+        <strong id="ticketCount">
+            0
+        </strong>
+
+        <p>
+            Ticket workflow activity
+        </p>
+
+    </article>
+
+
+    <article class="stat">
+
+        <small>
+            User Actions
+        </small>
+
+        <strong id="userCount">
+            0
+        </strong>
+
+        <p>
+            Account administration
+        </p>
+
+    </article>
+
+
+    <article class="stat security">
+
+        <small>
+            Security Events
+        </small>
+
+        <strong id="securityCount">
+            0
+        </strong>
+
+        <p>
+            Authentication and access
+        </p>
+
+    </article>
+
+</section>
+
+
+<!-- =========================================================
+     FILTERS
+========================================================= -->
+
+<section class="filters">
+
+    <input
+        id="searchInput"
+        type="search"
+        placeholder="
+            Search user, action,
+            ticket or IP address...
+        "
+    >
+
+
+    <select id="typeFilter">
+
+        <option value="">
+            All Events
+        </option>
+
+        <option value="auth">
+            Authentication
+        </option>
+
+        <option value="ticket">
+            Ticket
+        </option>
+
+        <option value="user">
+            User Management
+        </option>
+
+        <option value="sla">
+            SLA
+        </option>
+
+        <option value="system">
+            System
+        </option>
+
+    </select>
+
+
+    <select id="severityFilter">
+
+        <option value="">
+            All Severity
+        </option>
+
+        <option value="info">
+            Info
+        </option>
+
+        <option value="warning">
+            Warning
+        </option>
+
+        <option value="critical">
+            Critical
+        </option>
+
+    </select>
+
+
+    <select id="actorFilter">
+        <option value="">
+            All Actors
+        </option>
+    </select>
+
+
+    <button
+        class="reset-button"
+        id="resetFilters"
+        type="button"
+    >
+        Reset
+    </button>
+
+</section>
+
+
+<!-- =========================================================
+     AUDIT TABLE
+========================================================= -->
+
+<section class="panel">
+
+    <div class="panel-head">
+
+        <div class="panel-title">
+
+            <strong>
+                Activity History
+            </strong>
+
+            <span>
+                Administrative and
+                operational audit trail
+            </span>
+
+        </div>
+
+
+        <span
+            class="result-count"
+            id="resultCount"
+        >
+            0 events
+        </span>
+
+    </div>
+
+
+    <div class="table-wrap">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Time
+                    </th>
+
+                    <th>
+                        Actor
+                    </th>
+
+                    <th>
+                        Event
+                    </th>
+
+                    <th>
+                        Action
+                    </th>
+
+                    <th>
+                        Entity
+                    </th>
+
+                    <th>
+                        Severity
+                    </th>
+
+                    <th>
+                        IP Address
+                    </th>
+
+                    <th>
+                        Details
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody id="auditRows">
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    <div
+        class="empty"
+        id="emptyState"
+    >
+
+        <div class="empty-icon">
+            ◷
+        </div>
+
+        <h3>
+            No audit events found
+        </h3>
+
+        <p>
+            Try changing your
+            search or filters.
+        </p>
+
+    </div>
+
+
+    <div
+        class="pagination"
+        id="pagination"
+    >
+
+        <div
+            class="pagination-info"
+            id="paginationInfo"
+        >
+        </div>
+
+
+        <div class="pagination-buttons">
+
+            <button
+                class="page-button"
+                id="previousPage"
+                type="button"
+            >
+                ←
+            </button>
+
+
+            <button
+                class="
+                    page-button
+                    active
+                "
+                id="currentPageButton"
+                type="button"
+            >
+                1
+            </button>
+
+
+            <button
+                class="page-button"
+                id="nextPage"
+                type="button"
+            >
+                →
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+</div>
+
+</main>
+
+
+<!-- =========================================================
+     DETAIL MODAL
+========================================================= -->
+
+<div
+    class="modal-backdrop"
+    id="detailModal"
+>
+
+    <div class="modal">
+
+        <div class="modal-head">
+
+            <div>
+
+                <h2>
+                    Audit Event
+                </h2>
+
+                <p>
+                    Recorded system activity
+                </p>
+
+            </div>
+
+
+            <button
+                class="close-button"
+                id="closeDetailModal"
+                type="button"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <div
+            class="detail-content"
+            id="detailContent"
+        >
+        </div>
+
+    </div>
+
+</div>
+
+
+<div
+    class="toast"
+    id="toast"
+></div>
+
+
+<script>
+
+/* =========================================================
+   AUDIT STATE
+   Live data is loaded from /api/audit-logs
+========================================================= */
+
+const auditLogs = [];
+
+
+/* =========================================================
+   STATE
+========================================================= */
+
+let currentPage =
+    1;
+
+
+const pageSize =
+    8;
+
+
+/* =========================================================
+   HELPERS
+========================================================= */
+
+function escapeHtml(
+    value
+) {
+
+    return String(
+        value ?? ""
+    )
+        .replaceAll(
+            "&",
+            "&amp;"
+        )
+        .replaceAll(
+            "<",
+            "&lt;"
+        )
+        .replaceAll(
+            ">",
+            "&gt;"
+        )
+        .replaceAll(
+            '"',
+            "&quot;"
+        )
+        .replaceAll(
+            "'",
+            "&#039;"
+        );
+}
+
+
+function initials(
+    name
+) {
+
+    if (
+        name ===
+        "ResolveDesk System"
+    ) {
+
+        return "RD";
+    }
+
+
+    return String(
+        name || ""
+    )
+        .split(
+            " "
+        )
+        .filter(
+            Boolean
+        )
+        .slice(
+            0,
+            2
+        )
+        .map(
+            word =>
+                word[0]
+        )
+        .join(
+            ""
+        )
+        .toUpperCase();
+}
+
+
+function eventLabel(
+    type
+) {
+
+    const labels = {
+
+        auth:
+            "Authentication",
+
+        ticket:
+            "Ticket",
+
+        user:
+            "User",
+
+        sla:
+            "SLA",
+
+        system:
+            "System"
+    };
+
+
+    return labels[type] ||
+        type;
+}
+
+
+/* =========================================================
+   FILTER
+========================================================= */
+
+function getFilteredLogs() {
+
+    const search =
+        document
+            .getElementById(
+                "searchInput"
+            )
+            .value
+            .trim()
+            .toLowerCase();
+
+
+    const type =
+        document
+            .getElementById(
+                "typeFilter"
+            )
+            .value;
+
+
+    const severity =
+        document
+            .getElementById(
+                "severityFilter"
+            )
+            .value;
+
+
+    const actor =
+        document
+            .getElementById(
+                "actorFilter"
+            )
+            .value;
+
+
+    return auditLogs.filter(
+        log => {
+
+            const searchable =
+                [
+                    log.actor,
+                    log.role,
+                    log.action,
+                    log.description,
+                    log.entity,
+                    log.ip,
+                    log.oldValue,
+                    log.newValue
+                ]
+                    .join(
+                        " "
+                    )
+                    .toLowerCase();
+
+
+            return (
+                (
+                    !search ||
+                    searchable.includes(
+                        search
+                    )
+                ) &&
+                (
+                    !type ||
+                    log.type ===
+                        type
+                ) &&
+                (
+                    !severity ||
+                    log.severity ===
+                        severity
+                ) &&
+                (
+                    !actor ||
+                    log.actor ===
+                        actor
+                )
+            );
+        }
+    );
+}
+
+
+/* =========================================================
+   RENDER TABLE
+========================================================= */
+
+function renderLogs() {
+
+    const rows =
+        document.getElementById(
+            "auditRows"
+        );
+
+
+    const empty =
+        document.getElementById(
+            "emptyState"
+        );
+
+
+    const pagination =
+        document.getElementById(
+            "pagination"
+        );
+
+
+    const data =
+        getFilteredLogs();
+
+
+    const totalPages =
+        Math.max(
+            1,
+            Math.ceil(
+                data.length /
+                pageSize
+            )
+        );
+
+
+    if (
+        currentPage >
+        totalPages
+    ) {
+
+        currentPage =
+            totalPages;
+    }
+
+
+    const start =
+        (
+            currentPage -
+            1
+        ) *
+        pageSize;
+
+
+    const pageData =
+        data.slice(
+            start,
+            start +
+            pageSize
+        );
+
+
+    document.getElementById(
+        "resultCount"
+    ).textContent =
+        `${data.length} event${
+            data.length === 1
+                ? ""
+                : "s"
+        }`;
+
+
+    if (
+        data.length ===
+        0
+    ) {
+
+        rows.innerHTML =
+            "";
+
+        empty.style.display =
+            "block";
+
+
+        pagination.style.display =
+            "none";
+
+
+        return;
+    }
+
+
+    empty.style.display =
+        "none";
+
+
+    pagination.style.display =
+        "flex";
+
+
+    rows.innerHTML =
+        pageData
+            .map(
+                log => `
+
+                <tr>
+
+                    <td>
+                        ${escapeHtml(
+                            log.time
+                        )}
+                    </td>
+
+
+                    <td>
+
+                        <div class="actor">
+
+                            <div
+                                class="
+                                    actor-avatar
+                                "
+                            >
+
+                                ${escapeHtml(
+                                    initials(
+                                        log.actor
+                                    )
+                                )}
+
+                            </div>
+
+
+                            <div>
+
+                                <strong>
+
+                                    ${escapeHtml(
+                                        log.actor
+                                    )}
+
+                                </strong>
+
+                                <span>
+
+                                    ${escapeHtml(
+                                        log.role
+                                    )}
+
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </td>
+
+
+                    <td>
+
+                        <span
+                            class="
+                                event
+                                ${escapeHtml(
+                                    log.type
+                                )}
+                            "
+                        >
+
+                            ${escapeHtml(
+                                eventLabel(
+                                    log.type
+                                )
+                            )}
+
+                        </span>
+
+                    </td>
+
+
+                    <td>
+
+                        <div class="action-copy">
+
+                            <strong>
+
+                                ${escapeHtml(
+                                    log.action
+                                )}
+
+                            </strong>
+
+                            <span>
+
+                                ${escapeHtml(
+                                    log.description
+                                )}
+
+                            </span>
+
+                        </div>
+
+                    </td>
+
+
+                    <td>
+
+                        ${escapeHtml(
+                            log.entity
+                        )}
+
+                    </td>
+
+
+                    <td>
+
+                        <span
+                            class="
+                                severity
+                                ${escapeHtml(
+                                    log.severity
+                                )}
+                            "
+                        >
+
+                            ${escapeHtml(
+                                log.severity
+                            )}
+
+                        </span>
+
+                    </td>
+
+
+                    <td>
+
+                        ${escapeHtml(
+                            log.ip
+                        )}
+
+                    </td>
+
+
+                    <td>
+
+                        <button
+                            class="view-button"
+                            type="button"
+                            onclick="
+                                viewAudit(
+                                    ${log.id}
+                                )
+                            "
+                        >
+                            View →
+                        </button>
+
+                    </td>
+
+                </tr>
+
+                `
+            )
+            .join(
+                ""
+            );
+
+
+    document.getElementById(
+        "paginationInfo"
+    ).textContent =
+        `Showing ${
+            start + 1
+        }–${
+            Math.min(
+                start +
+                pageSize,
+                data.length
+            )
+        } of ${
+            data.length
+        } events`;
+
+
+    document.getElementById(
+        "currentPageButton"
+    ).textContent =
+        currentPage;
+
+
+    document.getElementById(
+        "previousPage"
+    ).disabled =
+        currentPage <=
+        1;
+
+
+    document.getElementById(
+        "nextPage"
+    ).disabled =
+        currentPage >=
+        totalPages;
+}
+
+
+/* =========================================================
+   STATS
+========================================================= */
+
+function updateStats() {
+
+    document.getElementById(
+        "todayCount"
+    ).textContent =
+        auditLogs.length;
+
+
+    document.getElementById(
+        "ticketCount"
+    ).textContent =
+        auditLogs.filter(
+            log =>
+                log.type ===
+                "ticket"
+        ).length;
+
+
+    document.getElementById(
+        "userCount"
+    ).textContent =
+        auditLogs.filter(
+            log =>
+                log.type ===
+                "user"
+        ).length;
+
+
+    document.getElementById(
+        "securityCount"
+    ).textContent =
+        auditLogs.filter(
+            log =>
+                log.type ===
+                    "auth" ||
+                log.severity ===
+                    "critical"
+        ).length;
+}
+
+
+/* =========================================================
+   PAGINATION
+========================================================= */
+
+document
+    .getElementById(
+        "previousPage"
+    )
+    .addEventListener(
+        "click",
+        () => {
+
+            if (
+                currentPage >
+                1
+            ) {
+
+                currentPage--;
+
+                renderLogs();
+            }
+        }
+    );
+
+
+document
+    .getElementById(
+        "nextPage"
+    )
+    .addEventListener(
+        "click",
+        () => {
+
+            const data =
+                getFilteredLogs();
+
+
+            const totalPages =
+                Math.ceil(
+                    data.length /
+                    pageSize
+                );
+
+
+            if (
+                currentPage <
+                totalPages
+            ) {
+
+                currentPage++;
+
+                renderLogs();
+            }
+        }
+    );
+
+
+/* =========================================================
+   FILTER EVENTS
+========================================================= */
+
+[
+    "searchInput",
+    "typeFilter",
+    "severityFilter",
+    "actorFilter"
+]
+.forEach(
+    id => {
+
+        document
+            .getElementById(
+                id
+            )
+            .addEventListener(
+                id ===
+                    "searchInput"
+                    ? "input"
+                    : "change",
+                () => {
+
+                    currentPage =
+                        1;
+
+
+                    renderLogs();
+                }
+            );
+    }
+);
+
+
+/* =========================================================
+   RESET FILTERS
+========================================================= */
+
+document
+    .getElementById(
+        "resetFilters"
+    )
+    .addEventListener(
+        "click",
+        () => {
+
+            document.getElementById(
+                "searchInput"
+            ).value =
+                "";
+
+
+            document.getElementById(
+                "typeFilter"
+            ).value =
+                "";
+
+
+            document.getElementById(
+                "severityFilter"
+            ).value =
+                "";
+
+
+            document.getElementById(
+                "actorFilter"
+            ).value =
+                "";
+
+
+            currentPage =
+                1;
+
+
+            renderLogs();
+        }
+    );
+
+
+/* =========================================================
+   TOP SEARCH
+========================================================= */
+
+document
+    .getElementById(
+        "topSearch"
+    )
+    .addEventListener(
+        "input",
+        event => {
+
+            document.getElementById(
+                "searchInput"
+            ).value =
+                event.target.value;
+
+
+            currentPage =
+                1;
+
+
+            renderLogs();
+        }
+    );
+
+
+/* =========================================================
+   DETAIL MODAL
+========================================================= */
+
+const detailModal =
+    document.getElementById(
+        "detailModal"
+    );
+
+
+function viewAudit(
+    id
+) {
+
+    const log =
+        auditLogs.find(
+            item =>
+                item.id ===
+                id
+        );
+
+
+    if (
+        !log
+    ) {
+
+        return;
+    }
+
+
+    document.getElementById(
+        "detailContent"
+    ).innerHTML = `
+
+        <div class="detail-event">
+
+            <div class="detail-icon">
+
+                ${
+                    log.type ===
+                        "auth"
+                        ? "◆"
+                        : log.type ===
+                            "ticket"
+                            ? "◫"
+                            : log.type ===
+                                "user"
+                                ? "♙"
+                                : log.type ===
+                                    "sla"
+                                    ? "⏱"
+                                    : "⚙"
+                }
+
+            </div>
+
+
+            <div>
+
+                <h3>
+
+                    ${escapeHtml(
+                        log.action
+                    )}
+
+                </h3>
+
+                <p>
+
+                    ${escapeHtml(
+                        log.description
+                    )}
+
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="detail-grid">
+
+            <div class="detail-item">
+
+                <small>
+                    Actor
+                </small>
+
+                <strong>
+
+                    ${escapeHtml(
+                        log.actor
+                    )}
+
+                </strong>
+
+            </div>
+
+
+            <div class="detail-item">
+
+                <small>
+                    Role
+                </small>
+
+                <strong>
+
+                    ${escapeHtml(
+                        log.role
+                    )}
+
+                </strong>
+
+            </div>
+
+
+            <div class="detail-item">
+
+                <small>
+                    Event Type
+                </small>
+
+                <strong>
+
+                    ${escapeHtml(
+                        eventLabel(
+                            log.type
+                        )
+                    )}
+
+                </strong>
+
+            </div>
+
+
+            <div class="detail-item">
+
+                <small>
+                    Severity
+                </small>
+
+                <strong>
+
+                    ${escapeHtml(
+                        log.severity
+                    )}
+
+                </strong>
+
+            </div>
+
+
+            <div class="detail-item">
+
+                <small>
+                    Entity
+                </small>
+
+                <strong>
+
+                    ${escapeHtml(
+                        log.entity
+                    )}
+
+                </strong>
+
+            </div>
+
+
+            <div class="detail-item">
+
+                <small>
+                    IP Address
+                </small>
+
+                <strong>
+
+                    ${escapeHtml(
+                        log.ip
+                    )}
+
+                </strong>
+
+            </div>
+
+
+            <div class="detail-item">
+
+                <small>
+                    Timestamp
+                </small>
+
+                <strong>
+
+                    ${escapeHtml(
+                        log.time
+                    )}
+
+                </strong>
+
+            </div>
+
+
+            <div class="detail-item">
+
+                <small>
+                    Event ID
+                </small>
+
+                <strong>
+
+                    AUD-${String(
+                        log.id
+                    ).padStart(
+                        6,
+                        "0"
+                    )}
+
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <div class="change-box">
+
+            <h4>
+                Recorded Change
+            </h4>
+
+
+            <div class="change-row">
+
+                <span>
+                    Previous
+                </span>
+
+                <strong>
+
+                    ${escapeHtml(
+                        log.oldValue
+                    )}
+
+                </strong>
+
+            </div>
+
+
+            <div class="change-row">
+
+                <span>
+                    New Value
+                </span>
+
+                <strong>
+
+                    ${escapeHtml(
+                        log.newValue
+                    )}
+
+                </strong>
+
+            </div>
+
+        </div>
+
+    `;
+
+
+    detailModal
+        .classList
+        .add(
+            "open"
+        );
+
+
+    document.body.style.overflow =
+        "hidden";
+}
+
+
+function closeDetailModal() {
+
+    detailModal
+        .classList
+        .remove(
+            "open"
+        );
+
+
+    document.body.style.overflow =
+        "";
+}
+
+
+document
+    .getElementById(
+        "closeDetailModal"
+    )
+    .addEventListener(
+        "click",
+        closeDetailModal
+    );
+
+
+detailModal
+    .addEventListener(
+        "click",
+        event => {
+
+            if (
+                event.target ===
+                detailModal
+            ) {
+
+                closeDetailModal();
+            }
+        }
+    );
+
+
+/* =========================================================
+   EXPORT CSV
+========================================================= */
+
+document
+    .getElementById(
+        "exportButton"
+    )
+    .addEventListener(
+        "click",
+        () => {
+
+            const logs =
+                getFilteredLogs();
+
+
+            const rows = [
+
+                [
+                    "Event ID",
+                    "Timestamp",
+                    "Actor",
+                    "Role",
+                    "Type",
+                    "Severity",
+                    "Action",
+                    "Entity",
+                    "IP Address",
+                    "Previous Value",
+                    "New Value"
+                ],
+
+                ...logs.map(
+                    log => [
+
+                        `AUD-${String(
+                            log.id
+                        ).padStart(
+                            6,
+                            "0"
+                        )}`,
+
+                        log.time,
+
+                        log.actor,
+
+                        log.role,
+
+                        eventLabel(
+                            log.type
+                        ),
+
+                        log.severity,
+
+                        log.action,
+
+                        log.entity,
+
+                        log.ip,
+
+                        log.oldValue,
+
+                        log.newValue
+
+                    ]
+                )
+
+            ];
+
+
+            const csv =
+                rows
+                    .map(
+                        row =>
+                            row
+                                .map(
+                                    value =>
+                                        `"${String(
+                                            value ?? ""
+                                        )
+                                            .replaceAll(
+                                                '"',
+                                                '""'
+                                            )}"`
+                                )
+                                .join(
+                                    ","
+                                )
+                    )
+                    .join(
+                        "\n"
+                    );
+
+
+            const blob =
+                new Blob(
+                    [
+                        csv
+                    ],
+                    {
+                        type:
+                            "text/csv;charset=utf-8"
+                    }
+                );
+
+
+            const url =
+                URL.createObjectURL(
+                    blob
+                );
+
+
+            const link =
+                document.createElement(
+                    "a"
+                );
+
+
+            link.href =
+                url;
+
+
+            link.download =
+                "resolvedesk-audit-log.csv";
+
+
+            document.body.appendChild(
+                link
+            );
+
+
+            link.click();
+
+
+            link.remove();
+
+
+            URL.revokeObjectURL(
+                url
+            );
+
+
+            showToast(
+                "Audit log exported."
+            );
+        }
+    );
+
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+let toastTimer;
+
+
+function showToast(
+    message
+) {
+
+    const toast =
+        document.getElementById(
+            "toast"
+        );
+
+
+    toast.textContent =
+        message;
+
+
+    toast.classList.add(
+        "show"
+    );
+
+
+    clearTimeout(
+        toastTimer
+    );
+
+
+    toastTimer =
+        setTimeout(
+            () => {
+
+                toast.classList.remove(
+                    "show"
+                );
+            },
+            2300
+        );
+}
+
+
+/* =========================================================
+   MOBILE SIDEBAR
+========================================================= */
+
+const sidebar =
+    document.getElementById(
+        "sidebar"
+    );
+
+
+const backdrop =
+    document.getElementById(
+        "sidebarBackdrop"
+    );
+
+
+document
+    .getElementById(
+        "menuBtn"
+    )
+    .addEventListener(
+        "click",
+        () => {
+
+            sidebar.classList.toggle(
+                "open"
+            );
+
+
+            backdrop.classList.toggle(
+                "open"
+            );
+        }
+    );
+
+
+backdrop
+    .addEventListener(
+        "click",
+        () => {
+
+            sidebar.classList.remove(
+                "open"
+            );
+
+
+            backdrop.classList.remove(
+                "open"
+            );
+        }
+    );
+
+
+/* =========================================================
+   ESCAPE KEY
+========================================================= */
+
+document
+    .addEventListener(
+        "keydown",
+        event => {
+
+            if (
+                event.key ===
+                "Escape"
+            ) {
+
+                closeDetailModal();
+            }
+        }
+    );
+
+
+/* =========================================================
+   INITIAL
+========================================================= */
+
+updateStats();
+
+renderLogs();
+
+</script>
+
+
+<script src="/js/auth-session.js"></script>
+
+
+<script src="/js/activity-log-live.js"></script>
+<script src="/js/role-navigation.js"></script>
+</body>
+</html>

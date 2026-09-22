@@ -1,0 +1,4680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>ResolveDesk — Ticket Detail</title>
+
+<style>
+
+:root {
+    --topaz: #67AECA;
+    --amethyst: #675682;
+    --jewel: #5F0F4E;
+    --rose: #E52A6F;
+
+    --bg: #08060b;
+    --bg2: #110b15;
+    --panel: rgba(16,10,20,.92);
+    --text: #ffffff;
+    --muted: #8f8395;
+    --line: rgba(103,174,202,.12);
+    --line-soft: rgba(103,174,202,.07);
+    --sidebar: 250px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Arial,
+        sans-serif;
+
+    color: var(--text);
+
+    background:
+        radial-gradient(
+            circle at 90% 5%,
+            rgba(103,174,202,.14),
+            transparent 26%
+        ),
+        radial-gradient(
+            circle at 8% 90%,
+            rgba(229,42,111,.08),
+            transparent 28%
+        ),
+        linear-gradient(
+            180deg,
+            var(--bg),
+            var(--bg2),
+            var(--bg)
+        );
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+button,
+select,
+textarea {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+
+/* =========================================================
+   SIDEBAR
+========================================================= */
+
+.sidebar {
+    position: fixed;
+    inset: 0 auto 0 0;
+
+    width: var(--sidebar);
+
+    z-index: 50;
+
+    padding: 18px 14px;
+
+    overflow-y: auto;
+
+    background:
+        rgba(8,5,11,.96);
+
+    border-right:
+        1px solid var(--line-soft);
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    padding:
+        7px 9px 24px;
+}
+
+.brand-mark {
+    width: 42px;
+    height: 42px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 12px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--topaz),
+            var(--amethyst),
+            var(--rose)
+        );
+
+    font-weight: 950;
+}
+
+.brand strong {
+    display: block;
+}
+
+.brand span {
+    display: block;
+
+    margin-top: 3px;
+
+    color: #766a7e;
+
+    font-size: 9px;
+
+    text-transform: uppercase;
+}
+
+.nav-label {
+    margin:
+        12px 10px 8px;
+
+    color: #5e5365;
+
+    font-size: 9px;
+    font-weight: 900;
+
+    text-transform: uppercase;
+    letter-spacing: .13em;
+}
+
+.nav {
+    display: grid;
+    gap: 4px;
+}
+
+.nav a {
+    min-height: 44px;
+
+    padding:
+        0 12px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 11px;
+
+    border-radius: 12px;
+
+    color: #95899b;
+
+    font-size: 12px;
+    font-weight: 750;
+
+    transition: .18s ease;
+}
+
+.nav a:hover,
+.nav a.active {
+    color: #fff;
+
+    background:
+        rgba(103,174,202,.07);
+}
+
+.nav-icon {
+    width: 28px;
+    height: 28px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 8px;
+
+    background:
+        rgba(103,86,130,.1);
+}
+
+
+/* =========================================================
+   MAIN
+========================================================= */
+
+.main {
+    margin-left:
+        var(--sidebar);
+
+    min-height: 100vh;
+}
+
+.topbar {
+    position: sticky;
+    top: 0;
+
+    z-index: 40;
+
+    height: 72px;
+
+    padding:
+        0 24px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 16px;
+
+    background:
+        rgba(8,5,11,.84);
+
+    border-bottom:
+        1px solid var(--line-soft);
+
+    backdrop-filter:
+        blur(18px);
+}
+
+.back {
+    display: inline-flex;
+    align-items: center;
+
+    gap: 8px;
+
+    color: #aaa0ae;
+
+    font-size: 11px;
+    font-weight: 800;
+}
+
+.profile {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    padding:
+        5px 9px 5px 5px;
+
+    border:
+        1px solid var(--line);
+
+    border-radius: 12px;
+
+    background:
+        rgba(103,86,130,.06);
+}
+
+.avatar {
+    width: 32px;
+    height: 32px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 9px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--topaz),
+            var(--amethyst)
+        );
+
+    font-size: 9px;
+    font-weight: 950;
+}
+
+.profile strong {
+    display: block;
+
+    font-size: 10px;
+}
+
+.profile span {
+    display: block;
+
+    margin-top: 2px;
+
+    color: #756a7b;
+
+    font-size: 8px;
+}
+
+.content {
+    padding: 26px;
+
+    max-width: 1500px;
+
+    margin: auto;
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.hero {
+    padding: 26px;
+
+    border:
+        1px solid var(--line);
+
+    border-radius: 24px;
+
+    background:
+        radial-gradient(
+            circle at 90% 10%,
+            rgba(103,174,202,.15),
+            transparent 28%
+        ),
+        linear-gradient(
+            135deg,
+            rgba(20,12,25,.98),
+            rgba(9,6,12,.98)
+        );
+}
+
+.hero-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 20px;
+}
+
+.ticket-number {
+    color: #91c8dc;
+
+    font-size: 10px;
+    font-weight: 950;
+
+    letter-spacing: .12em;
+
+    text-transform: uppercase;
+}
+
+.hero h1 {
+    margin-top: 10px;
+
+    font-size:
+        clamp(
+            28px,
+            4vw,
+            46px
+        );
+
+    letter-spacing: -1.8px;
+}
+
+.hero-meta {
+    margin-top: 13px;
+
+    display: flex;
+    flex-wrap: wrap;
+
+    gap: 8px;
+}
+
+.badge {
+    display: inline-flex;
+    align-items: center;
+
+    min-height: 28px;
+
+    padding:
+        0 9px;
+
+    border-radius: 999px;
+
+    border:
+        1px solid var(--line);
+
+    background:
+        rgba(103,86,130,.08);
+
+    color: #c2b7c7;
+
+    font-size: 8px;
+    font-weight: 900;
+
+    text-transform: uppercase;
+}
+
+.badge.critical {
+    color: #ff9fc2;
+
+    background:
+        rgba(229,42,111,.1);
+}
+
+.badge.high {
+    color: #ebb1c5;
+
+    background:
+        rgba(95,15,78,.16);
+}
+
+.badge.medium {
+    color: #b8d9e5;
+
+    background:
+        rgba(103,174,202,.08);
+}
+
+.badge.low {
+    color: #aaa0b2;
+
+    background:
+        rgba(103,86,130,.08);
+}
+
+.hero-actions {
+    display: flex;
+    gap: 8px;
+
+    flex-wrap: wrap;
+}
+
+.button {
+    min-height: 38px;
+
+    padding:
+        0 12px;
+
+    border-radius: 10px;
+
+    font-size: 8px;
+    font-weight: 900;
+}
+
+.button.primary {
+    border: 0;
+
+    color: #fff;
+
+    background:
+        linear-gradient(
+            100deg,
+            var(--topaz),
+            var(--amethyst),
+            var(--rose)
+        );
+}
+
+.button.secondary {
+    border:
+        1px solid var(--line);
+
+    color: #c2b7c7;
+
+    background:
+        rgba(103,86,130,.07);
+}
+
+.button.danger {
+    border:
+        1px solid
+        rgba(229,42,111,.18);
+
+    color: #ee9ab8;
+
+    background:
+        rgba(229,42,111,.06);
+}
+
+
+/* =========================================================
+   GRID
+========================================================= */
+
+.layout {
+    margin-top: 16px;
+
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 1.7fr)
+        minmax(300px, .8fr);
+
+    gap: 16px;
+}
+
+.panel {
+    border:
+        1px solid var(--line);
+
+    border-radius: 18px;
+
+    overflow: hidden;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(103,86,130,.075),
+            rgba(9,6,12,.96)
+        );
+}
+
+.panel + .panel {
+    margin-top: 16px;
+}
+
+.panel-head {
+    padding:
+        15px 17px;
+
+    border-bottom:
+        1px solid var(--line-soft);
+}
+
+.panel-head strong {
+    display: block;
+
+    font-size: 12px;
+}
+
+.panel-head span {
+    display: block;
+
+    margin-top: 4px;
+
+    color: #716679;
+
+    font-size: 8px;
+}
+
+.panel-body {
+    padding: 17px;
+}
+
+
+/* =========================================================
+   DESCRIPTION
+========================================================= */
+
+.description {
+    color: #c0b7c4;
+
+    font-size: 12px;
+
+    line-height: 1.8;
+
+    white-space: pre-wrap;
+}
+
+
+/* =========================================================
+   INFO GRID
+========================================================= */
+
+.info-grid {
+    display: grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap: 9px;
+}
+
+.info {
+    padding: 12px;
+
+    border:
+        1px solid var(--line-soft);
+
+    border-radius: 11px;
+
+    background:
+        rgba(103,86,130,.035);
+}
+
+.info small {
+    display: block;
+
+    color: #6f6476;
+
+    font-size: 7px;
+    font-weight: 900;
+
+    text-transform: uppercase;
+}
+
+.info strong {
+    display: block;
+
+    margin-top: 6px;
+
+    color: #e2dbe5;
+
+    font-size: 10px;
+
+    word-break: break-word;
+}
+
+
+/* =========================================================
+   SLA
+========================================================= */
+
+.sla-grid {
+    display: grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap: 9px;
+}
+
+.sla-card {
+    padding: 14px;
+
+    border:
+        1px solid var(--line);
+
+    border-radius: 13px;
+
+    background:
+        rgba(103,174,202,.04);
+}
+
+.sla-card small {
+    display: block;
+
+    color: #766b7e;
+
+    font-size: 7px;
+
+    text-transform: uppercase;
+
+    font-weight: 900;
+}
+
+.sla-card strong {
+    display: block;
+
+    margin-top: 7px;
+
+    font-size: 15px;
+}
+
+.sla-card span {
+    display: block;
+
+    margin-top: 5px;
+
+    color: #827788;
+
+    font-size: 8px;
+}
+
+.sla-breached {
+    border-color:
+        rgba(229,42,111,.25);
+
+    background:
+        rgba(229,42,111,.06);
+}
+
+
+/* =========================================================
+   ATTACHMENTS
+========================================================= */
+
+.attachment-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            auto-fill,
+            minmax(190px, 1fr)
+        );
+
+    gap: 10px;
+}
+
+.attachment {
+    overflow: hidden;
+
+    border:
+        1px solid var(--line);
+
+    border-radius: 14px;
+
+    background:
+        rgba(103,86,130,.045);
+}
+
+.attachment-preview {
+    height: 150px;
+
+    display: grid;
+    place-items: center;
+
+    overflow: hidden;
+
+    background:
+        rgba(0,0,0,.25);
+}
+
+.attachment-preview img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+}
+
+.file-icon {
+    font-size: 27px;
+    font-weight: 950;
+
+    color: #8fc5d8;
+}
+
+.attachment-copy {
+    padding: 11px;
+}
+
+.attachment-copy strong {
+    display: block;
+
+    font-size: 9px;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.attachment-copy span {
+    display: block;
+
+    margin-top: 4px;
+
+    color: #776b7e;
+
+    font-size: 7.5px;
+}
+
+.attachment-actions {
+    display: flex;
+
+    gap: 6px;
+
+    margin-top: 10px;
+}
+
+.attachment-actions a,
+.attachment-actions button {
+    flex: 1;
+
+    min-height: 31px;
+
+    border-radius: 8px;
+
+    display: grid;
+    place-items: center;
+
+    font-size: 7px;
+    font-weight: 900;
+}
+
+.attachment-actions a {
+    border:
+        1px solid var(--line);
+
+    background:
+        rgba(103,174,202,.06);
+}
+
+.attachment-actions button {
+    border:
+        1px solid
+        rgba(229,42,111,.15);
+
+    color: #eb94b3;
+
+    background:
+        rgba(229,42,111,.05);
+}
+
+
+/* =========================================================
+   HISTORY
+========================================================= */
+
+.timeline {
+    position: relative;
+}
+
+.timeline-item {
+    position: relative;
+
+    padding:
+        0 0 18px 28px;
+}
+
+.timeline-item:last-child {
+    padding-bottom: 0;
+}
+
+.timeline-item::before {
+    content: "";
+
+    position: absolute;
+
+    left: 7px;
+    top: 18px;
+    bottom: -1px;
+
+    width: 1px;
+
+    background:
+        var(--line);
+}
+
+.timeline-item:last-child::before {
+    display: none;
+}
+
+.timeline-dot {
+    position: absolute;
+
+    left: 2px;
+    top: 4px;
+
+    width: 11px;
+    height: 11px;
+
+    border-radius: 50%;
+
+    background:
+        var(--topaz);
+
+    box-shadow:
+        0 0 0 4px
+        rgba(103,174,202,.08);
+}
+
+.timeline-item strong {
+    display: block;
+
+    font-size: 9px;
+}
+
+.timeline-item p {
+    margin-top: 5px;
+
+    color: #817587;
+
+    font-size: 8px;
+
+    line-height: 1.6;
+}
+
+.timeline-item time {
+    display: block;
+
+    margin-top: 5px;
+
+    color: #5f5565;
+
+    font-size: 7px;
+}
+
+
+/* =========================================================
+   MANAGEMENT
+========================================================= */
+
+.control-group + .control-group {
+    margin-top: 13px;
+}
+
+.control-group label {
+    display: block;
+
+    margin-bottom: 7px;
+
+    color: #84788b;
+
+    font-size: 8px;
+    font-weight: 900;
+}
+
+.control {
+    width: 100%;
+    height: 40px;
+
+    padding:
+        0 10px;
+
+    border:
+        1px solid var(--line);
+
+    border-radius: 10px;
+
+    outline: none;
+
+    color: #fff;
+
+    background:
+        #110c15;
+}
+
+.management-actions {
+    display: grid;
+
+    gap: 8px;
+
+    margin-top: 13px;
+}
+
+
+/* =========================================================
+   EMPTY / ERROR
+========================================================= */
+
+.state {
+    padding: 24px;
+
+    text-align: center;
+
+    color: #776b7f;
+
+    font-size: 9px;
+}
+
+.error-box {
+    display: none;
+
+    padding: 22px;
+
+    margin-bottom: 16px;
+
+    border:
+        1px solid
+        rgba(229,42,111,.2);
+
+    border-radius: 16px;
+
+    background:
+        rgba(229,42,111,.06);
+
+    color: #f0a2bd;
+}
+
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+.toast {
+    position: fixed;
+
+    right: 24px;
+    bottom: 24px;
+
+    z-index: 9999;
+
+    max-width: 350px;
+
+    padding:
+        13px 15px;
+
+    border:
+        1px solid var(--line);
+
+    border-radius: 12px;
+
+    background:
+        rgba(12,8,15,.97);
+
+    box-shadow:
+        0 20px 60px
+        rgba(0,0,0,.45);
+
+    color: #fff;
+
+    font-size: 9px;
+
+    opacity: 0;
+
+    transform:
+        translateY(10px);
+
+    pointer-events: none;
+
+    transition: .2s;
+}
+
+.toast.show {
+    opacity: 1;
+
+    transform: none;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 950px) {
+
+    .sidebar {
+        display: none;
+    }
+
+    .main {
+        margin-left: 0;
+    }
+
+    .layout {
+        grid-template-columns:
+            1fr;
+    }
+}
+
+@media (max-width: 650px) {
+
+    .content {
+        padding: 15px;
+    }
+
+    .hero-top {
+        flex-direction: column;
+    }
+
+    .info-grid,
+    .sla-grid {
+        grid-template-columns:
+            1fr;
+    }
+
+    .profile-copy {
+        display: none;
+    }
+}
+
+
+/* =========================================================
+   RESOLVEDESK CONVERSATION UI
+========================================================= */
+
+.conversation-list {
+    display: grid;
+    gap: 14px;
+    max-height: 560px;
+    overflow-y: auto;
+    padding-right: 4px;
+    scroll-behavior: smooth;
+}
+
+.conversation-empty {
+    padding: 28px 20px;
+    border: 1px dashed rgba(103, 174, 202, .28);
+    border-radius: 18px;
+    text-align: center;
+    color: #8e8e98;
+    background: rgba(103, 174, 202, .035);
+}
+
+.comment-card {
+    position: relative;
+    padding: 16px 18px;
+    border: 1px solid rgba(255, 255, 255, .08);
+    border-radius: 18px;
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 255, 255, .055),
+            rgba(255, 255, 255, .025)
+        );
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, .12);
+}
+
+.comment-card.own {
+    margin-left: 8%;
+    border-color: rgba(103, 174, 202, .34);
+    background:
+        linear-gradient(
+            145deg,
+            rgba(103, 174, 202, .10),
+            rgba(103, 174, 202, .035)
+        );
+}
+
+.comment-card.internal {
+    border-color: rgba(229, 42, 111, .30);
+    background:
+        linear-gradient(
+            145deg,
+            rgba(229, 42, 111, .10),
+            rgba(95, 15, 78, .08)
+        );
+}
+
+.comment-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 14px;
+    margin-bottom: 12px;
+}
+
+.comment-author-wrap {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    min-width: 0;
+}
+
+.comment-avatar {
+    width: 38px;
+    height: 38px;
+    flex: 0 0 38px;
+    display: grid;
+    place-items: center;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: .03em;
+    background:
+        linear-gradient(
+            135deg,
+            #67AECA,
+            #675682
+        );
+    color: #fff;
+    box-shadow:
+        0 8px 22px rgba(103, 174, 202, .18);
+}
+
+.comment-author-copy {
+    min-width: 0;
+}
+
+.comment-author-copy strong {
+    display: block;
+    font-size: 14px;
+    line-height: 1.3;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.comment-author-copy span {
+    display: block;
+    margin-top: 3px;
+    font-size: 12px;
+    color: #8e8e98;
+}
+
+.comment-badges {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 7px;
+    flex-wrap: wrap;
+}
+
+.comment-badge {
+    display: inline-flex;
+    align-items: center;
+    min-height: 26px;
+    padding: 4px 9px;
+    border: 1px solid rgba(103, 174, 202, .22);
+    border-radius: 999px;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: .055em;
+    text-transform: uppercase;
+    color: #9dd8ef;
+    background: rgba(103, 174, 202, .08);
+}
+
+.comment-badge.internal {
+    border-color: rgba(229, 42, 111, .30);
+    color: #ff89b5;
+    background: rgba(229, 42, 111, .09);
+}
+
+.comment-body {
+    margin: 0;
+    color: #d8d8df;
+    font-size: 14px;
+    line-height: 1.75;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+.comment-composer {
+    margin-top: 20px;
+    padding: 18px;
+    border: 1px solid rgba(255, 255, 255, .08);
+    border-radius: 20px;
+    background: rgba(0, 0, 0, .12);
+    transition:
+        border-color .2s ease,
+        background .2s ease;
+}
+
+.comment-composer.internal-mode {
+    border-color: rgba(229, 42, 111, .27);
+    background: rgba(95, 15, 78, .075);
+}
+
+.comment-composer-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 14px;
+}
+
+.comment-composer-copy strong {
+    display: block;
+    font-size: 14px;
+}
+
+.comment-composer-copy span {
+    display: block;
+    margin-top: 4px;
+    max-width: 560px;
+    color: #8e8e98;
+    font-size: 12px;
+    line-height: 1.55;
+}
+
+.comment-mode-picker {
+    display: inline-flex;
+    gap: 4px;
+    padding: 4px;
+    border: 1px solid rgba(255, 255, 255, .08);
+    border-radius: 12px;
+    background: rgba(0, 0, 0, .16);
+}
+
+.comment-mode-picker[hidden] {
+    display: none;
+}
+
+.comment-mode-button {
+    border: 0;
+    border-radius: 9px;
+    padding: 8px 11px;
+    cursor: pointer;
+    font: inherit;
+    font-size: 11px;
+    font-weight: 800;
+    color: #85858f;
+    background: transparent;
+    transition: .18s ease;
+}
+
+.comment-mode-button:hover {
+    color: #fff;
+}
+
+.comment-mode-button.active {
+    color: #fff;
+    background:
+        linear-gradient(
+            135deg,
+            rgba(103, 174, 202, .65),
+            rgba(103, 86, 130, .70)
+        );
+}
+
+.comment-mode-button[data-comment-mode="INTERNAL"].active {
+    background:
+        linear-gradient(
+            135deg,
+            rgba(229, 42, 111, .72),
+            rgba(95, 15, 78, .78)
+        );
+}
+
+.comment-textarea {
+    width: 100%;
+    min-height: 125px;
+    resize: vertical;
+    border: 1px solid rgba(255, 255, 255, .09);
+    border-radius: 15px;
+    outline: none;
+    padding: 14px 15px;
+    font: inherit;
+    font-size: 14px;
+    line-height: 1.65;
+    color: #f5f5f7;
+    background: rgba(0, 0, 0, .18);
+    transition:
+        border-color .18s ease,
+        box-shadow .18s ease;
+}
+
+.comment-textarea:focus {
+    border-color: rgba(103, 174, 202, .62);
+    box-shadow:
+        0 0 0 3px rgba(103, 174, 202, .10);
+}
+
+.comment-composer.internal-mode
+.comment-textarea:focus {
+    border-color: rgba(229, 42, 111, .52);
+    box-shadow:
+        0 0 0 3px rgba(229, 42, 111, .08);
+}
+
+.comment-compose-footer {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 12px;
+}
+
+.comment-counter {
+    color: #777782;
+    font-size: 11px;
+}
+
+.comment-keyboard-hint {
+    margin-right: auto;
+    color: #666671;
+    font-size: 11px;
+}
+
+#sendCommentButton:disabled {
+    opacity: .55;
+    cursor: wait;
+}
+
+@media (max-width: 760px) {
+
+    .comment-card.own {
+        margin-left: 0;
+    }
+
+    .comment-header,
+    .comment-composer-top {
+        flex-direction: column;
+    }
+
+    .comment-badges {
+        justify-content: flex-start;
+    }
+
+    .comment-mode-picker {
+        width: 100%;
+    }
+
+    .comment-mode-button {
+        flex: 1;
+    }
+
+    .comment-compose-footer {
+        flex-wrap: wrap;
+    }
+
+    .comment-keyboard-hint {
+        width: 100%;
+        margin-right: 0;
+    }
+
+    #sendCommentButton {
+        width: 100%;
+    }
+}
+
+</style>
+
+</head>
+
+<body>
+
+
+<aside class="sidebar">
+
+    <div class="brand">
+
+        <div class="brand-mark">
+            R
+        </div>
+
+        <div>
+
+            <strong>
+                ResolveDesk
+            </strong>
+
+            <span>
+                IT Service Management
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <div class="nav-label">
+        Workspace
+    </div>
+
+
+    <nav class="nav">
+
+        <a href="/dashboard.html">
+            <span class="nav-icon">⌂</span>
+            Dashboard
+        </a>
+
+        <a
+            class="active"
+            href="/tickets.html"
+        >
+            <span class="nav-icon">◫</span>
+            Tickets
+        </a>
+
+        <a href="/create-ticket.html">
+            <span class="nav-icon">＋</span>
+            Create Ticket
+        </a>
+
+        <a href="/my-queue.html">
+            <span class="nav-icon">◎</span>
+            My Queue
+        </a>
+
+        <a href="/sla-monitor.html">
+            <span class="nav-icon">◷</span>
+            SLA Monitor
+        </a>
+
+        <a href="/knowledge-base.html">
+            <span class="nav-icon">▤</span>
+            Knowledge Base
+        </a>
+
+    </nav>
+
+
+    <div class="nav-label">
+        Account
+    </div>
+
+
+    <nav class="nav">
+
+        <a href="/profile.html">
+            <span class="nav-icon">♙</span>
+            Profile
+        </a>
+
+    </nav>
+
+</aside>
+
+
+<main class="main">
+
+
+<header class="topbar">
+
+    <a
+        class="back"
+        href="/tickets.html"
+    >
+        ← Back to Tickets
+    </a>
+
+
+    <a
+        class="profile"
+        href="/profile.html"
+    >
+
+        <div
+            class="avatar"
+            id="userAvatar"
+        >
+            RD
+        </div>
+
+
+        <div class="profile-copy">
+
+            <strong id="userName">
+                Loading...
+            </strong>
+
+            <span id="userRole">
+                ResolveDesk
+            </span>
+
+        </div>
+
+    </a>
+
+</header>
+
+
+<div class="content">
+
+
+<div
+    class="error-box"
+    id="errorBox"
+></div>
+
+
+<section class="hero">
+
+    <div class="hero-top">
+
+        <div>
+
+            <div
+                class="ticket-number"
+                id="ticketNumber"
+            >
+                Loading ticket...
+            </div>
+
+
+            <h1 id="ticketSubject">
+                Ticket Detail
+            </h1>
+
+
+            <div class="hero-meta">
+
+                <span
+                    class="badge"
+                    id="statusBadge"
+                >
+                    —
+                </span>
+
+
+                <span
+                    class="badge"
+                    id="priorityBadge"
+                >
+                    —
+                </span>
+
+
+                <span
+                    class="badge"
+                    id="categoryBadge"
+                >
+                    —
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="hero-actions">
+
+            <button
+                class="button secondary"
+                id="refreshButton"
+                type="button"
+            >
+                ↻ Refresh
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<div class="layout">
+
+
+<div>
+
+
+<section class="panel">
+
+    <div class="panel-head">
+
+        <strong>
+            Issue Description
+        </strong>
+
+        <span>
+            Information submitted by the requester
+        </span>
+
+    </div>
+
+
+    <div class="panel-body">
+
+        <div
+            class="description"
+            id="ticketDescription"
+        >
+            Loading...
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="panel">
+
+    <div class="panel-head">
+
+        <strong>
+            Attachments
+        </strong>
+
+        <span id="attachmentCount">
+            Loading attachments...
+        </span>
+
+    </div>
+
+
+    <div class="panel-body">
+
+        <div
+            class="attachment-grid"
+            id="attachmentGrid"
+        ></div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     RESOLVEDESK CONVERSATION UI
+========================================================= -->
+
+<section
+    class="panel"
+    id="conversationPanel"
+>
+
+    <div class="panel-head">
+
+        <strong>
+            Conversation
+        </strong>
+
+        <span id="commentCount">
+            Loading conversation...
+        </span>
+
+    </div>
+
+
+    <div class="panel-body">
+
+        <div
+            class="conversation-list"
+            id="conversationList"
+        >
+            <div class="conversation-empty">
+                Loading replies...
+            </div>
+        </div>
+
+
+        <div
+            class="comment-composer"
+            id="commentComposer"
+        >
+
+            <div class="comment-composer-top">
+
+                <div class="comment-composer-copy">
+
+                    <strong id="commentComposerTitle">
+                        Reply to ticket
+                    </strong>
+
+                    <span id="commentModeHint">
+                        Public replies are visible to the requester and support team.
+                    </span>
+
+                </div>
+
+
+                <div
+                    class="comment-mode-picker"
+                    id="commentModePicker"
+                    hidden
+                >
+
+                    <button
+                        class="comment-mode-button active"
+                        type="button"
+                        data-comment-mode="PUBLIC"
+                    >
+                        Public Reply
+                    </button>
+
+                    <button
+                        class="comment-mode-button"
+                        type="button"
+                        data-comment-mode="INTERNAL"
+                    >
+                        Internal Note
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <textarea
+                class="comment-textarea"
+                id="commentBody"
+                maxlength="5000"
+                placeholder="Write a reply..."
+            ></textarea>
+
+
+            <div class="comment-compose-footer">
+
+                <span
+                    class="comment-counter"
+                    id="commentCounter"
+                >
+                    0 / 5000
+                </span>
+
+                <span class="comment-keyboard-hint">
+                    ⌘ / Ctrl + Enter to send
+                </span>
+
+                <button
+                    class="button primary"
+                    id="sendCommentButton"
+                    type="button"
+                >
+                    Send Reply
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="panel">
+
+    <div class="panel-head">
+
+        <strong>
+            Ticket Activity
+        </strong>
+
+        <span>
+            Complete history of this request
+        </span>
+
+    </div>
+
+
+    <div class="panel-body">
+
+        <div
+            class="timeline"
+            id="historyTimeline"
+        ></div>
+
+    </div>
+
+</section>
+
+
+</div>
+
+
+<div>
+
+
+<section class="panel">
+
+    <div class="panel-head">
+
+        <strong>
+            Ticket Information
+        </strong>
+
+        <span>
+            Request and ownership details
+        </span>
+
+    </div>
+
+
+    <div class="panel-body">
+
+        <div class="info-grid">
+
+            <div class="info">
+                <small>Requester</small>
+                <strong id="requester">
+                    —
+                </strong>
+            </div>
+
+            <div class="info">
+                <small>Assigned To</small>
+                <strong id="assignee">
+                    —
+                </strong>
+            </div>
+
+            <div class="info">
+                <small>Department</small>
+                <strong id="department">
+                    —
+                </strong>
+            </div>
+
+            <div class="info">
+                <small>Category</small>
+                <strong id="category">
+                    —
+                </strong>
+            </div>
+
+            <div class="info">
+                <small>Created</small>
+                <strong id="createdAt">
+                    —
+                </strong>
+            </div>
+
+            <div class="info">
+                <small>Last Updated</small>
+                <strong id="updatedAt">
+                    —
+                </strong>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="panel">
+
+    <div class="panel-head">
+
+        <strong>
+            SLA Performance
+        </strong>
+
+        <span id="slaPolicy">
+            Service deadline monitoring
+        </span>
+
+    </div>
+
+
+    <div class="panel-body">
+
+        <div class="sla-grid">
+
+            <div
+                class="sla-card"
+                id="responseSlaCard"
+            >
+
+                <small>
+                    First Response
+                </small>
+
+                <strong id="responseRemaining">
+                    —
+                </strong>
+
+                <span id="responseDue">
+                    —
+                </span>
+
+            </div>
+
+
+            <div
+                class="sla-card"
+                id="resolutionSlaCard"
+            >
+
+                <small>
+                    Resolution
+                </small>
+
+                <strong id="resolutionRemaining">
+                    —
+                </strong>
+
+                <span id="resolutionDue">
+                    —
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<section
+    class="panel"
+    id="managementPanel"
+    style="display:none;"
+>
+
+    <div class="panel-head">
+
+        <strong>
+            Ticket Management
+        </strong>
+
+        <span>
+            Support team controls
+        </span>
+
+    </div>
+
+
+    <div class="panel-body">
+
+
+        <div
+            class="control-group"
+            id="assignmentGroup"
+        >
+
+            <label>
+                Assigned Technician
+            </label>
+
+            <select
+                class="control"
+                id="assigneeSelect"
+            >
+
+                <option value="">
+                    Unassigned
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <div class="control-group">
+
+            <label>
+                Priority
+            </label>
+
+            <select
+                class="control"
+                id="prioritySelect"
+            >
+
+                <option value="LOW">
+                    Low
+                </option>
+
+                <option value="MEDIUM">
+                    Medium
+                </option>
+
+                <option value="HIGH">
+                    High
+                </option>
+
+                <option value="CRITICAL">
+                    Critical
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <div class="control-group">
+
+            <label>
+                Status
+            </label>
+
+            <select
+                class="control"
+                id="statusSelect"
+            >
+
+                <option value="OPEN">
+                    Open
+                </option>
+
+                <option value="IN_PROGRESS">
+                    In Progress
+                </option>
+
+                <option value="PENDING">
+                    Pending
+                </option>
+
+                <option value="RESOLVED">
+                    Resolved
+                </option>
+
+                <option value="CLOSED">
+                    Closed
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <div class="management-actions">
+
+            <button
+                class="button primary"
+                id="saveManagement"
+                type="button"
+            >
+                Save Ticket Changes
+            </button>
+
+
+            <button
+                class="button secondary"
+                id="takeTicket"
+                type="button"
+                style="display:none;"
+            >
+                Assign Ticket To Me
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+</div>
+
+
+</div>
+
+</div>
+
+</main>
+
+
+<div
+    class="toast"
+    id="toast"
+></div>
+
+
+<script>
+
+/* =========================================================
+   STATE
+========================================================= */
+
+let currentUser =
+    null;
+
+
+let ticket =
+    null;
+
+
+let historyItems =
+    [];
+
+
+let attachments =
+    [];
+
+
+let comments =
+    [];
+
+
+let commentMode =
+    "PUBLIC";
+
+
+let technicians =
+    [];
+
+
+let slaTimer =
+    null;
+
+
+let toastTimer;
+
+
+/* =========================================================
+   ID
+========================================================= */
+
+const params =
+    new URLSearchParams(
+        window.location.search
+    );
+
+
+const ticketId =
+    params.get(
+        "id"
+    );
+
+
+/* =========================================================
+   API
+========================================================= */
+
+async function api(
+    url,
+    options = {}
+) {
+
+    const response =
+        await fetch(
+            url,
+            {
+                credentials:
+                    "include",
+
+                ...options,
+
+                headers: {
+
+                    ...(options.body
+                        ? {
+                            "Content-Type":
+                                "application/json"
+                        }
+                        : {}),
+
+                    ...(options.headers || {})
+
+                }
+            }
+        );
+
+
+    let data = {};
+
+
+    try {
+
+        data =
+            await response.json();
+
+    } catch (error) {
+
+        data = {};
+    }
+
+
+    if (
+        response.status ===
+        401
+    ) {
+
+        window.location.replace(
+            "/login.html"
+        );
+
+
+        throw new Error(
+            "Authentication required."
+        );
+    }
+
+
+    if (
+        !response.ok
+    ) {
+
+        throw new Error(
+            data.message ||
+            "Request failed."
+        );
+    }
+
+
+    return data;
+}
+
+
+/* =========================================================
+   INITIALIZE
+========================================================= */
+
+async function initialize() {
+
+    if (
+        !ticketId ||
+        !/^\d+$/.test(
+            ticketId
+        )
+    ) {
+
+        showError(
+            "Invalid ticket ID."
+        );
+
+        return;
+    }
+
+
+    try {
+
+        await loadCurrentUser();
+
+        await loadTicket();
+
+        await loadComments();
+
+        await loadAttachments();
+
+        await setupManagement();
+
+        setupCommentComposer();
+
+        startSlaClock();
+
+    } catch (error) {
+
+        console.error(
+            error
+        );
+
+
+        showError(
+            error.message
+        );
+    }
+}
+
+
+/* =========================================================
+   CURRENT USER
+========================================================= */
+
+async function loadCurrentUser() {
+
+    const data =
+        await api(
+            "/api/auth/me"
+        );
+
+
+    if (
+        !data.loggedIn ||
+        !data.user
+    ) {
+
+        window.location.replace(
+            "/login.html"
+        );
+
+        return;
+    }
+
+
+    currentUser =
+        data.user;
+
+
+    setText(
+        "userName",
+        currentUser.fullName
+    );
+
+
+    setText(
+        "userRole",
+        formatRole(
+            currentUser.role
+        )
+    );
+
+
+    setText(
+        "userAvatar",
+        initials(
+            currentUser.fullName
+        )
+    );
+}
+
+
+/* =========================================================
+   LOAD TICKET
+========================================================= */
+
+async function loadTicket() {
+
+    const data =
+        await api(
+            `/api/tickets/${
+                encodeURIComponent(
+                    ticketId
+                )
+            }`
+        );
+
+
+    ticket =
+        data.ticket;
+
+
+    historyItems =
+        data.history ||
+        [];
+
+
+    renderTicket();
+
+    renderHistory();
+}
+
+
+/* =========================================================
+   RENDER TICKET
+========================================================= */
+
+function renderTicket() {
+
+    document.title =
+        `${ticket.ticketNumber} — ResolveDesk`;
+
+
+    setText(
+        "ticketNumber",
+        ticket.ticketNumber
+    );
+
+
+    setText(
+        "ticketSubject",
+        ticket.subject
+    );
+
+
+    setText(
+        "ticketDescription",
+        ticket.description
+    );
+
+
+    setText(
+        "requester",
+        ticket.requesterName ||
+        "Unknown"
+    );
+
+
+    setText(
+        "assignee",
+        ticket.assigneeName ||
+        "Unassigned"
+    );
+
+
+    setText(
+        "department",
+        ticket.department ||
+        "—"
+    );
+
+
+    setText(
+        "category",
+        ticket.category ||
+        "—"
+    );
+
+
+    setText(
+        "createdAt",
+        formatDate(
+            ticket.createdAt
+        )
+    );
+
+
+    setText(
+        "updatedAt",
+        formatDate(
+            ticket.updatedAt
+        )
+    );
+
+
+    setText(
+        "slaPolicy",
+        ticket.slaPolicy ||
+        "Service deadline monitoring"
+    );
+
+
+    const statusBadge =
+        document.getElementById(
+            "statusBadge"
+        );
+
+
+    statusBadge.textContent =
+        formatStatus(
+            ticket.status
+        );
+
+
+    const priorityBadge =
+        document.getElementById(
+            "priorityBadge"
+        );
+
+
+    priorityBadge.textContent =
+        ticket.priority;
+
+
+    priorityBadge.className =
+        `badge ${
+            String(
+                ticket.priority
+            ).toLowerCase()
+        }`;
+
+
+    setText(
+        "categoryBadge",
+        ticket.category ||
+        "Uncategorised"
+    );
+
+
+    updateSlaDisplay();
+}
+
+
+/* =========================================================
+   ATTACHMENTS
+========================================================= */
+
+async function loadAttachments() {
+
+    const data =
+        await api(
+            `/api/attachments/ticket/${
+                encodeURIComponent(
+                    ticketId
+                )
+            }`
+        );
+
+
+    attachments =
+        data.attachments ||
+        [];
+
+
+    renderAttachments();
+}
+
+
+function renderAttachments() {
+
+    const grid =
+        document.getElementById(
+            "attachmentGrid"
+        );
+
+
+    grid.replaceChildren();
+
+
+    setText(
+        "attachmentCount",
+        `${
+            attachments.length
+        } attachment${
+            attachments.length === 1
+                ? ""
+                : "s"
+        }`
+    );
+
+
+    if (
+        attachments.length ===
+        0
+    ) {
+
+        grid.innerHTML = `
+            <div class="state">
+                No attachments have been added to this ticket.
+            </div>
+        `;
+
+        return;
+    }
+
+
+    attachments.forEach(
+        attachment => {
+
+            const card =
+                document.createElement(
+                    "article"
+                );
+
+
+            card.className =
+                "attachment";
+
+
+            const preview =
+                document.createElement(
+                    "div"
+                );
+
+
+            preview.className =
+                "attachment-preview";
+
+
+            const isImage =
+                String(
+                    attachment.mimeType ||
+                    ""
+                ).startsWith(
+                    "image/"
+                );
+
+
+            if (
+                isImage
+            ) {
+
+                const image =
+                    document.createElement(
+                        "img"
+                    );
+
+
+                image.src =
+                    `/api/attachments/${
+                        encodeURIComponent(
+                            attachment.id
+                        )
+                    }/view`;
+
+
+                image.alt =
+                    attachment.originalName;
+
+
+                image.loading =
+                    "lazy";
+
+
+                preview.appendChild(
+                    image
+                );
+
+            } else {
+
+                const icon =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                icon.className =
+                    "file-icon";
+
+
+                icon.textContent =
+                    attachment.mimeType ===
+                    "application/pdf"
+                        ? "PDF"
+                        : "TXT";
+
+
+                preview.appendChild(
+                    icon
+                );
+            }
+
+
+            const copy =
+                document.createElement(
+                    "div"
+                );
+
+
+            copy.className =
+                "attachment-copy";
+
+
+            const name =
+                document.createElement(
+                    "strong"
+                );
+
+
+            name.textContent =
+                attachment.originalName;
+
+
+            const details =
+                document.createElement(
+                    "span"
+                );
+
+
+            details.textContent =
+                `${
+                    formatFileSize(
+                        attachment.sizeBytes
+                    )
+                } · ${
+                    attachment.uploadedByName ||
+                    "ResolveDesk User"
+                }`;
+
+
+            const actions =
+                document.createElement(
+                    "div"
+                );
+
+
+            actions.className =
+                "attachment-actions";
+
+
+            const open =
+                document.createElement(
+                    "a"
+                );
+
+
+            open.href =
+                `/api/attachments/${
+                    encodeURIComponent(
+                        attachment.id
+                    )
+                }/view`;
+
+
+            open.target =
+                "_blank";
+
+
+            open.rel =
+                "noopener";
+
+
+            open.textContent =
+                "Open";
+
+
+            const download =
+                document.createElement(
+                    "a"
+                );
+
+
+            download.href =
+                attachment.downloadUrl;
+
+
+            download.textContent =
+                "Download";
+
+
+            actions.append(
+                open,
+                download
+            );
+
+
+            const canDelete =
+                currentUser.role ===
+                    "ADMIN" ||
+                (
+                    String(
+                        attachment.uploadedBy
+                    ) ===
+                    String(
+                        currentUser.id
+                    ) &&
+                    ticket.status !==
+                        "CLOSED"
+                );
+
+
+            if (
+                canDelete
+            ) {
+
+                const remove =
+                    document.createElement(
+                        "button"
+                    );
+
+
+                remove.type =
+                    "button";
+
+
+                remove.textContent =
+                    "Delete";
+
+
+                remove.addEventListener(
+                    "click",
+                    () =>
+                        deleteAttachment(
+                            attachment
+                        )
+                );
+
+
+                actions.appendChild(
+                    remove
+                );
+            }
+
+
+            copy.append(
+                name,
+                details,
+                actions
+            );
+
+
+            card.append(
+                preview,
+                copy
+            );
+
+
+            grid.appendChild(
+                card
+            );
+        }
+    );
+}
+
+
+/* =========================================================
+   DELETE ATTACHMENT
+========================================================= */
+
+async function deleteAttachment(
+    attachment
+) {
+
+    const confirmed =
+        confirm(
+            `Delete ${attachment.originalName}?`
+        );
+
+
+    if (!confirmed) {
+        return;
+    }
+
+
+    try {
+
+        await api(
+            `/api/attachments/${
+                encodeURIComponent(
+                    attachment.id
+                )
+            }`,
+            {
+                method:
+                    "DELETE"
+            }
+        );
+
+
+        showToast(
+            "Attachment deleted."
+        );
+
+
+        await Promise.all([
+            loadAttachments(),
+            loadTicket()
+        ]);
+
+    } catch (error) {
+
+        showToast(
+            error.message
+        );
+    }
+}
+
+
+/* =========================================================
+   COMMENTS / CONVERSATION
+========================================================= */
+
+function canUseInternalNotes() {
+
+    return (
+        currentUser?.role ===
+            "ADMIN" ||
+        currentUser?.role ===
+            "TECHNICIAN"
+    );
+}
+
+
+async function loadComments() {
+
+    const data =
+        await api(
+            `/api/tickets/${
+                encodeURIComponent(
+                    ticketId
+                )
+            }/comments`
+        );
+
+
+    comments =
+        data.comments ||
+        [];
+
+
+    renderComments();
+}
+
+
+function renderComments() {
+
+    const list =
+        document.getElementById(
+            "conversationList"
+        );
+
+
+    const count =
+        document.getElementById(
+            "commentCount"
+        );
+
+
+    if (
+        !list ||
+        !count
+    ) {
+        return;
+    }
+
+
+    list.replaceChildren();
+
+
+    count.textContent =
+        `${
+            comments.length
+        } ${
+            comments.length ===
+                1
+                ? "message"
+                : "messages"
+        }`;
+
+
+    if (
+        comments.length ===
+        0
+    ) {
+
+        const empty =
+            document.createElement(
+                "div"
+            );
+
+
+        empty.className =
+            "conversation-empty";
+
+
+        empty.textContent =
+            "No replies yet. Start the conversation below.";
+
+
+        list.appendChild(
+            empty
+        );
+
+
+        return;
+    }
+
+
+    comments.forEach(
+        comment => {
+
+            const ownComment =
+                String(
+                    comment.userId
+                ) ===
+                String(
+                    currentUser?.id
+                );
+
+
+            const card =
+                document.createElement(
+                    "article"
+                );
+
+
+            card.className =
+                [
+                    "comment-card",
+                    ownComment
+                        ? "own"
+                        : "",
+                    comment.isInternal
+                        ? "internal"
+                        : ""
+                ]
+                    .filter(Boolean)
+                    .join(" ");
+
+
+            const header =
+                document.createElement(
+                    "div"
+                );
+
+
+            header.className =
+                "comment-header";
+
+
+            const authorWrap =
+                document.createElement(
+                    "div"
+                );
+
+
+            authorWrap.className =
+                "comment-author-wrap";
+
+
+            const avatar =
+                document.createElement(
+                    "div"
+                );
+
+
+            avatar.className =
+                "comment-avatar";
+
+
+            avatar.textContent =
+                initials(
+                    comment.authorName ||
+                    "User"
+                );
+
+
+            const authorCopy =
+                document.createElement(
+                    "div"
+                );
+
+
+            authorCopy.className =
+                "comment-author-copy";
+
+
+            const author =
+                document.createElement(
+                    "strong"
+                );
+
+
+            author.textContent =
+                ownComment
+                    ? `${
+                        comment.authorName ||
+                        "You"
+                    } · You`
+                    : (
+                        comment.authorName ||
+                        "ResolveDesk User"
+                    );
+
+
+            const meta =
+                document.createElement(
+                    "span"
+                );
+
+
+            meta.textContent =
+                `${
+                    formatRole(
+                        comment.authorRole
+                    )
+                } · ${
+                    formatDate(
+                        comment.createdAt
+                    )
+                }`;
+
+
+            authorCopy.append(
+                author,
+                meta
+            );
+
+
+            authorWrap.append(
+                avatar,
+                authorCopy
+            );
+
+
+            const badges =
+                document.createElement(
+                    "div"
+                );
+
+
+            badges.className =
+                "comment-badges";
+
+
+            const typeBadge =
+                document.createElement(
+                    "span"
+                );
+
+
+            typeBadge.className =
+                comment.isInternal
+                    ? "comment-badge internal"
+                    : "comment-badge";
+
+
+            typeBadge.textContent =
+                comment.isInternal
+                    ? "Internal Note"
+                    : "Public Reply";
+
+
+            badges.appendChild(
+                typeBadge
+            );
+
+
+            header.append(
+                authorWrap,
+                badges
+            );
+
+
+            const body =
+                document.createElement(
+                    "p"
+                );
+
+
+            body.className =
+                "comment-body";
+
+
+            body.textContent =
+                comment.body ||
+                "";
+
+
+            card.append(
+                header,
+                body
+            );
+
+
+            list.appendChild(
+                card
+            );
+        }
+    );
+
+
+    list.scrollTop =
+        list.scrollHeight;
+}
+
+
+function setupCommentComposer() {
+
+    const textarea =
+        document.getElementById(
+            "commentBody"
+        );
+
+
+    const sendButton =
+        document.getElementById(
+            "sendCommentButton"
+        );
+
+
+    const modePicker =
+        document.getElementById(
+            "commentModePicker"
+        );
+
+
+    if (
+        !textarea ||
+        !sendButton ||
+        !modePicker
+    ) {
+        return;
+    }
+
+
+    modePicker.hidden =
+        !canUseInternalNotes();
+
+
+    if (
+        !canUseInternalNotes()
+    ) {
+        commentMode =
+            "PUBLIC";
+    }
+
+
+    document
+        .querySelectorAll(
+            "[data-comment-mode]"
+        )
+        .forEach(
+            button => {
+
+                button.addEventListener(
+                    "click",
+                    () => {
+
+                        setCommentMode(
+                            button.dataset
+                                .commentMode
+                        );
+                    }
+                );
+            }
+        );
+
+
+    textarea.addEventListener(
+        "input",
+        updateCommentCounter
+    );
+
+
+    textarea.addEventListener(
+        "keydown",
+        event => {
+
+            if (
+                (
+                    event.metaKey ||
+                    event.ctrlKey
+                ) &&
+                event.key ===
+                    "Enter"
+            ) {
+
+                event.preventDefault();
+
+                sendComment();
+            }
+        }
+    );
+
+
+    sendButton.addEventListener(
+        "click",
+        sendComment
+    );
+
+
+    updateCommentCounter();
+
+    setCommentMode(
+        "PUBLIC"
+    );
+}
+
+
+function setCommentMode(
+    mode
+) {
+
+    if (
+        mode ===
+            "INTERNAL" &&
+        !canUseInternalNotes()
+    ) {
+        return;
+    }
+
+
+    commentMode =
+        mode ===
+            "INTERNAL"
+            ? "INTERNAL"
+            : "PUBLIC";
+
+
+    const internal =
+        commentMode ===
+        "INTERNAL";
+
+
+    document
+        .querySelectorAll(
+            "[data-comment-mode]"
+        )
+        .forEach(
+            button => {
+
+                button.classList.toggle(
+                    "active",
+                    button.dataset
+                        .commentMode ===
+                        commentMode
+                );
+            }
+        );
+
+
+    const composer =
+        document.getElementById(
+            "commentComposer"
+        );
+
+
+    const title =
+        document.getElementById(
+            "commentComposerTitle"
+        );
+
+
+    const hint =
+        document.getElementById(
+            "commentModeHint"
+        );
+
+
+    const textarea =
+        document.getElementById(
+            "commentBody"
+        );
+
+
+    const sendButton =
+        document.getElementById(
+            "sendCommentButton"
+        );
+
+
+    composer?.classList.toggle(
+        "internal-mode",
+        internal
+    );
+
+
+    if (title) {
+
+        title.textContent =
+            internal
+                ? "Add internal note"
+                : "Reply to ticket";
+    }
+
+
+    if (hint) {
+
+        hint.textContent =
+            internal
+                ? "Internal notes are visible only to administrators and technicians."
+                : "Public replies are visible to the requester and support team.";
+    }
+
+
+    if (textarea) {
+
+        textarea.placeholder =
+            internal
+                ? "Write a private note for the support team..."
+                : "Write a reply...";
+    }
+
+
+    if (
+        sendButton &&
+        !sendButton.disabled
+    ) {
+
+        sendButton.textContent =
+            internal
+                ? "Add Internal Note"
+                : "Send Reply";
+    }
+}
+
+
+function updateCommentCounter() {
+
+    const textarea =
+        document.getElementById(
+            "commentBody"
+        );
+
+
+    const counter =
+        document.getElementById(
+            "commentCounter"
+        );
+
+
+    if (
+        !textarea ||
+        !counter
+    ) {
+        return;
+    }
+
+
+    counter.textContent =
+        `${
+            textarea.value.length
+        } / 5000`;
+}
+
+
+async function sendComment() {
+
+    const textarea =
+        document.getElementById(
+            "commentBody"
+        );
+
+
+    const sendButton =
+        document.getElementById(
+            "sendCommentButton"
+        );
+
+
+    if (
+        !textarea ||
+        !sendButton
+    ) {
+        return;
+    }
+
+
+    const body =
+        textarea.value.trim();
+
+
+    if (!body) {
+
+        showToast(
+            commentMode ===
+                "INTERNAL"
+                ? "Write an internal note first."
+                : "Write a reply first."
+        );
+
+        textarea.focus();
+
+        return;
+    }
+
+
+    if (
+        body.length >
+        5000
+    ) {
+
+        showToast(
+            "Reply cannot exceed 5000 characters."
+        );
+
+        return;
+    }
+
+
+    const internal =
+        commentMode ===
+        "INTERNAL";
+
+
+    sendButton.disabled =
+        true;
+
+
+    sendButton.textContent =
+        internal
+            ? "Adding..."
+            : "Sending...";
+
+
+    try {
+
+        const data =
+            await api(
+                `/api/tickets/${
+                    encodeURIComponent(
+                        ticketId
+                    )
+                }/comments`,
+                {
+
+                    method:
+                        "POST",
+
+                    body:
+                        JSON.stringify({
+
+                            body,
+
+                            isInternal:
+                                internal
+
+                        })
+                }
+            );
+
+
+        textarea.value =
+            "";
+
+
+        updateCommentCounter();
+
+
+        await Promise.all([
+
+            loadComments(),
+
+            loadTicket()
+
+        ]);
+
+
+        showToast(
+            data.message ||
+            (
+                internal
+                    ? "Internal note added."
+                    : "Reply posted successfully."
+            )
+        );
+
+    } catch (error) {
+
+        showToast(
+            error.message
+        );
+
+    } finally {
+
+        sendButton.disabled =
+            false;
+
+
+        setCommentMode(
+            commentMode
+        );
+    }
+}
+
+
+/* =========================================================
+   HISTORY
+========================================================= */
+
+function renderHistory() {
+
+    const timeline =
+        document.getElementById(
+            "historyTimeline"
+        );
+
+
+    timeline.replaceChildren();
+
+
+    if (
+        historyItems.length ===
+        0
+    ) {
+
+        timeline.innerHTML = `
+            <div class="state">
+                No ticket activity recorded.
+            </div>
+        `;
+
+        return;
+    }
+
+
+    historyItems.forEach(
+        item => {
+
+            const entry =
+                document.createElement(
+                    "div"
+                );
+
+
+            entry.className =
+                "timeline-item";
+
+
+            const dot =
+                document.createElement(
+                    "div"
+                );
+
+
+            dot.className =
+                "timeline-dot";
+
+
+            const title =
+                document.createElement(
+                    "strong"
+                );
+
+
+            title.textContent =
+                historyTitle(
+                    item
+                );
+
+
+            const detail =
+                document.createElement(
+                    "p"
+                );
+
+
+            detail.textContent =
+                historyDescription(
+                    item
+                );
+
+
+            const time =
+                document.createElement(
+                    "time"
+                );
+
+
+            time.textContent =
+                `${
+                    item.actorName ||
+                    "System"
+                } · ${
+                    formatDate(
+                        item.createdAt
+                    )
+                }`;
+
+
+            entry.append(
+                dot,
+                title,
+                detail,
+                time
+            );
+
+
+            timeline.appendChild(
+                entry
+            );
+        }
+    );
+}
+
+
+function historyTitle(
+    item
+) {
+
+    const names = {
+
+        TICKET_CREATED:
+            "Ticket created",
+
+        ATTACHMENTS_ADDED:
+            "Attachments added",
+
+        ATTACHMENT_REMOVED:
+            "Attachment removed",
+
+        STATUS_CHANGED:
+            "Status changed",
+
+        PRIORITY_CHANGED:
+            "Priority changed",
+
+        TICKET_ASSIGNED:
+            "Technician assigned",
+
+        TICKET_UNASSIGNED:
+            "Ticket unassigned"
+
+    };
+
+
+    return (
+        names[
+            item.action
+        ] ||
+        String(
+            item.action ||
+            "Ticket activity"
+        )
+            .replaceAll(
+                "_",
+                " "
+            )
+    );
+}
+
+
+function historyDescription(
+    item
+) {
+
+    if (
+        item.action ===
+        "STATUS_CHANGED"
+    ) {
+
+        return `${
+            item.oldValue?.status ||
+            "—"
+        } → ${
+            item.newValue?.status ||
+            "—"
+        }`;
+    }
+
+
+    if (
+        item.action ===
+        "PRIORITY_CHANGED"
+    ) {
+
+        return `${
+            item.oldValue?.priority ||
+            "—"
+        } → ${
+            item.newValue?.priority ||
+            "—"
+        }`;
+    }
+
+
+    if (
+        item.action ===
+        "ATTACHMENTS_ADDED"
+    ) {
+
+        return `${
+            item.metadata?.count ||
+            0
+        } file(s) added to the ticket.`;
+    }
+
+
+    if (
+        item.action ===
+        "TICKET_CREATED"
+    ) {
+
+        return "Support request submitted to ResolveDesk.";
+    }
+
+
+    return "Ticket information updated.";
+}
+
+
+/* =========================================================
+   SLA
+========================================================= */
+
+function startSlaClock() {
+
+    clearInterval(
+        slaTimer
+    );
+
+
+    updateSlaDisplay();
+
+
+    slaTimer =
+        setInterval(
+            updateSlaDisplay,
+            1000
+        );
+}
+
+
+function updateSlaDisplay() {
+
+    if (!ticket) {
+        return;
+    }
+
+
+    renderDeadline(
+        "responseRemaining",
+        "responseDue",
+        "responseSlaCard",
+        ticket.firstResponseDueAt,
+        ticket.firstResponseAt,
+        "Responded"
+    );
+
+
+    renderDeadline(
+        "resolutionRemaining",
+        "resolutionDue",
+        "resolutionSlaCard",
+        ticket.resolutionDueAt,
+        ticket.resolvedAt,
+        "Resolved"
+    );
+}
+
+
+function renderDeadline(
+    remainingId,
+    dueId,
+    cardId,
+    dueAt,
+    completedAt,
+    completedLabel
+) {
+
+    const remaining =
+        document.getElementById(
+            remainingId
+        );
+
+
+    const due =
+        document.getElementById(
+            dueId
+        );
+
+
+    const card =
+        document.getElementById(
+            cardId
+        );
+
+
+    card.classList.remove(
+        "sla-breached"
+    );
+
+
+    if (
+        completedAt
+    ) {
+
+        remaining.textContent =
+            completedLabel;
+
+
+        due.textContent =
+            formatDate(
+                completedAt
+            );
+
+
+        return;
+    }
+
+
+    if (
+        !dueAt
+    ) {
+
+        remaining.textContent =
+            "Not set";
+
+
+        due.textContent =
+            "No deadline";
+
+
+        return;
+    }
+
+
+    const deadline =
+        new Date(
+            dueAt
+        );
+
+
+    const difference =
+        deadline.getTime() -
+        Date.now();
+
+
+    due.textContent =
+        `Due ${formatDate(dueAt)}`;
+
+
+    if (
+        difference <=
+        0
+    ) {
+
+        remaining.textContent =
+            `Overdue ${formatCountdown(
+                Math.abs(
+                    difference
+                )
+            )}`;
+
+
+        card.classList.add(
+            "sla-breached"
+        );
+
+
+        return;
+    }
+
+
+    remaining.textContent =
+        formatCountdown(
+            difference
+        );
+}
+
+
+/* =========================================================
+   MANAGEMENT
+========================================================= */
+
+async function setupManagement() {
+
+    const panel =
+        document.getElementById(
+            "managementPanel"
+        );
+
+    const assignmentGroup =
+        document.getElementById(
+            "assignmentGroup"
+        );
+
+    const takeTicket =
+        document.getElementById(
+            "takeTicket"
+        );
+
+    const saveManagement =
+        document.getElementById(
+            "saveManagement"
+        );
+
+    const isSupport =
+        [
+            "ADMIN",
+            "TECHNICIAN"
+        ].includes(
+            currentUser?.role
+        );
+
+    /*
+        STAFF / requester:
+        hide all support management controls.
+    */
+    if (!isSupport) {
+
+        if (panel) {
+            panel.style.display =
+                "none";
+        }
+
+        if (assignmentGroup) {
+            assignmentGroup.style.display =
+                "none";
+        }
+
+        if (takeTicket) {
+            takeTicket.style.display =
+                "none";
+        }
+
+        if (saveManagement) {
+            saveManagement.style.display =
+                "none";
+        }
+
+        return;
+    }
+
+    if (panel) {
+        panel.style.display =
+            "block";
+    }
+
+    document.getElementById(
+        "prioritySelect"
+    ).value =
+        ticket.priority;
+
+    document.getElementById(
+        "statusSelect"
+    ).value =
+        ticket.status;
+
+    if (
+        currentUser.role ===
+        "ADMIN"
+    ) {
+
+        await loadTechnicians();
+        renderTechnicians();
+
+    } else {
+
+        if (assignmentGroup) {
+            assignmentGroup.style.display =
+                "none";
+        }
+
+        const assignedToMe =
+            String(
+                ticket.assignedTo ||
+                ""
+            ) ===
+            String(
+                currentUser.id
+            );
+
+        if (saveManagement) {
+            saveManagement.style.display =
+                assignedToMe
+                    ? "block"
+                    : "none";
+        }
+
+        if (
+            !ticket.assignedTo &&
+            takeTicket
+        ) {
+            takeTicket.style.display =
+                "block";
+        }
+    }
+}
+
+
+async function loadTechnicians() {
+
+    const data =
+        await api(
+            "/api/tickets/meta/options"
+        );
+
+
+    technicians =
+        data.technicians ||
+        [];
+}
+
+
+function renderTechnicians() {
+
+    const select =
+        document.getElementById(
+            "assigneeSelect"
+        );
+
+
+    select.innerHTML = `
+        <option value="">
+            Unassigned
+        </option>
+    `;
+
+
+    technicians.forEach(
+        technician => {
+
+            const option =
+                document.createElement(
+                    "option"
+                );
+
+
+            option.value =
+                technician.id;
+
+
+            option.textContent =
+                technician.fullName;
+
+
+            select.appendChild(
+                option
+            );
+        }
+    );
+
+
+    select.value =
+        ticket.assignedTo ||
+        "";
+}
+
+
+/* =========================================================
+   SAVE MANAGEMENT
+========================================================= */
+
+document.getElementById(
+    "saveManagement"
+).addEventListener(
+    "click",
+    async () => {
+
+        try {
+
+            const newPriority =
+                document.getElementById(
+                    "prioritySelect"
+                ).value;
+
+
+            const newStatus =
+                document.getElementById(
+                    "statusSelect"
+                ).value;
+
+
+            if (
+                currentUser.role ===
+                "ADMIN"
+            ) {
+
+                const newAssignee =
+                    document.getElementById(
+                        "assigneeSelect"
+                    ).value;
+
+
+                if (
+                    String(
+                        newAssignee
+                    ) !==
+                    String(
+                        ticket.assignedTo ||
+                        ""
+                    )
+                ) {
+
+                    await api(
+                        `/api/tickets/${
+                            ticket.id
+                        }/assign`,
+                        {
+                            method:
+                                "PATCH",
+
+                            body:
+                                JSON.stringify({
+                                    assignedTo:
+                                        newAssignee ||
+                                        null
+                                })
+                        }
+                    );
+                }
+            }
+
+
+            if (
+                newPriority !==
+                ticket.priority
+            ) {
+
+                await api(
+                    `/api/tickets/${
+                        ticket.id
+                    }/priority`,
+                    {
+                        method:
+                            "PATCH",
+
+                        body:
+                            JSON.stringify({
+                                priority:
+                                    newPriority
+                            })
+                    }
+                );
+            }
+
+
+            if (
+                newStatus !==
+                ticket.status
+            ) {
+
+                let resolutionNote =
+                    "";
+
+
+                if (
+                    newStatus ===
+                        "RESOLVED" ||
+                    newStatus ===
+                        "CLOSED"
+                ) {
+
+                    resolutionNote =
+                        prompt(
+                            "Resolution note (optional):"
+                        ) || "";
+                }
+
+
+                await api(
+                    `/api/tickets/${
+                        ticket.id
+                    }/status`,
+                    {
+                        method:
+                            "PATCH",
+
+                        body:
+                            JSON.stringify({
+
+                                status:
+                                    newStatus,
+
+                                resolutionNote
+
+                            })
+                    }
+                );
+            }
+
+
+            showToast(
+                "Ticket updated successfully."
+            );
+
+
+            await refreshTicket();
+
+        } catch (error) {
+
+            showToast(
+                error.message
+            );
+        }
+    }
+);
+
+
+/* =========================================================
+   SELF ASSIGN
+========================================================= */
+
+document.getElementById(
+    "takeTicket"
+).addEventListener(
+    "click",
+    async () => {
+
+        try {
+
+            await api(
+                `/api/tickets/${
+                    ticket.id
+                }/assign`,
+                {
+                    method:
+                        "PATCH",
+
+                    body:
+                        JSON.stringify({})
+                }
+            );
+
+
+            showToast(
+                "Ticket assigned to you."
+            );
+
+
+            await refreshTicket();
+
+        } catch (error) {
+
+            showToast(
+                error.message
+            );
+        }
+    }
+);
+
+
+/* =========================================================
+   REFRESH
+========================================================= */
+
+async function refreshTicket() {
+
+    await Promise.all([
+        loadTicket(),
+        loadAttachments()
+    ]);
+
+
+    document.getElementById(
+        "managementPanel"
+    ).style.display =
+        "none";
+
+
+    await setupManagement();
+}
+
+
+document.getElementById(
+    "refreshButton"
+).addEventListener(
+    "click",
+    async () => {
+
+        try {
+
+            await refreshTicket();
+
+
+            showToast(
+                "Ticket refreshed."
+            );
+
+        } catch (error) {
+
+            showToast(
+                error.message
+            );
+        }
+    }
+);
+
+
+/* =========================================================
+   UTILITIES
+========================================================= */
+
+function setText(
+    id,
+    value
+) {
+
+    const element =
+        document.getElementById(
+            id
+        );
+
+
+    if (
+        element
+    ) {
+
+        element.textContent =
+            value ?? "—";
+    }
+}
+
+
+function initials(
+    name
+) {
+
+    return String(
+        name ||
+        "User"
+    )
+        .split(" ")
+        .filter(Boolean)
+        .slice(0, 2)
+        .map(
+            part =>
+                part[0]
+        )
+        .join("")
+        .toUpperCase();
+}
+
+
+function formatRole(
+    role
+) {
+
+    if (
+        role ===
+        "ADMIN"
+    ) {
+
+        return "Administrator";
+    }
+
+
+    if (
+        role ===
+        "TECHNICIAN"
+    ) {
+
+        return "Technician";
+    }
+
+
+    return "Staff";
+}
+
+
+function formatStatus(
+    status
+) {
+
+    return String(
+        status ||
+        ""
+    )
+        .replaceAll(
+            "_",
+            " "
+        )
+        .toLowerCase()
+        .replace(
+            /\b\w/g,
+            letter =>
+                letter.toUpperCase()
+        );
+}
+
+
+function formatDate(
+    value
+) {
+
+    if (!value) {
+        return "—";
+    }
+
+
+    const date =
+        new Date(
+            value
+        );
+
+
+    if (
+        Number.isNaN(
+            date.getTime()
+        )
+    ) {
+
+        return "—";
+    }
+
+
+    return new Intl.DateTimeFormat(
+        "en-MY",
+        {
+            dateStyle:
+                "medium",
+
+            timeStyle:
+                "short"
+        }
+    ).format(
+        date
+    );
+}
+
+
+function formatFileSize(
+    bytes
+) {
+
+    const value =
+        Number(
+            bytes
+        ) || 0;
+
+
+    if (
+        value <
+        1024
+    ) {
+
+        return `${value} B`;
+    }
+
+
+    if (
+        value <
+        1024 *
+        1024
+    ) {
+
+        return `${
+            (
+                value /
+                1024
+            ).toFixed(1)
+        } KB`;
+    }
+
+
+    return `${
+        (
+            value /
+            1024 /
+            1024
+        ).toFixed(1)
+    } MB`;
+}
+
+
+function formatCountdown(
+    milliseconds
+) {
+
+    let seconds =
+        Math.max(
+            0,
+            Math.floor(
+                milliseconds /
+                1000
+            )
+        );
+
+
+    const days =
+        Math.floor(
+            seconds /
+            86400
+        );
+
+
+    seconds %=
+        86400;
+
+
+    const hours =
+        Math.floor(
+            seconds /
+            3600
+        );
+
+
+    seconds %=
+        3600;
+
+
+    const minutes =
+        Math.floor(
+            seconds /
+            60
+        );
+
+
+    seconds %=
+        60;
+
+
+    if (
+        days >
+        0
+    ) {
+
+        return `${
+            days
+        }d ${
+            hours
+        }h ${
+            minutes
+        }m`;
+    }
+
+
+    return [
+        hours,
+        minutes,
+        seconds
+    ]
+        .map(
+            value =>
+                String(
+                    value
+                ).padStart(
+                    2,
+                    "0"
+                )
+        )
+        .join(":");
+}
+
+
+function showError(
+    message
+) {
+
+    const box =
+        document.getElementById(
+            "errorBox"
+        );
+
+
+    box.textContent =
+        message;
+
+
+    box.style.display =
+        "block";
+}
+
+
+function showToast(
+    message
+) {
+
+    const toast =
+        document.getElementById(
+            "toast"
+        );
+
+
+    toast.textContent =
+        message;
+
+
+    toast.classList.add(
+        "show"
+    );
+
+
+    clearTimeout(
+        toastTimer
+    );
+
+
+    toastTimer =
+        setTimeout(
+            () => {
+
+                toast.classList.remove(
+                    "show"
+                );
+
+            },
+            2400
+        );
+}
+
+
+/* =========================================================
+   START
+========================================================= */
+
+initialize();
+
+</script>
+
+
+<script src="/js/auth-session.js"></script>
+
+<script src="/js/role-navigation.js"></script>
+<script src="/js/create-ticket-nav.js"></script>
+</body>
+</html>

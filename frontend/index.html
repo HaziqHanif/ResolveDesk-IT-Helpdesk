@@ -1,0 +1,2018 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta
+    name="description"
+    content="ResolveDesk — modern IT help desk ticketing, SLA tracking, notifications and role-based support operations."
+>
+<title>ResolveDesk — IT Support, Resolved</title>
+
+<style>
+:root {
+    --topaz: #67AECA;
+    --amethyst: #675682;
+    --jewel: #5F0F4E;
+    --rose: #E52A6F;
+
+    --black: #070509;
+    --black-2: #0d0811;
+    --black-3: #15101a;
+
+    --white: #ffffff;
+    --text: #f7f3f8;
+    --muted: #a79dab;
+    --muted-2: #776d7d;
+
+    --line: rgba(103,174,202,.15);
+    --line-soft: rgba(255,255,255,.06);
+
+    --panel: rgba(17,11,20,.74);
+    --panel-strong: rgba(19,12,23,.92);
+
+    --shadow:
+        0 40px 120px rgba(0,0,0,.48);
+
+    --radius: 26px;
+    --max-width: 1220px;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    min-height: 100vh;
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Inter,
+        Arial,
+        sans-serif;
+    color: var(--text);
+    background:
+        radial-gradient(
+            circle at 10% 8%,
+            rgba(103,174,202,.16),
+            transparent 24%
+        ),
+        radial-gradient(
+            circle at 90% 22%,
+            rgba(103,86,130,.14),
+            transparent 28%
+        ),
+        radial-gradient(
+            circle at 72% 84%,
+            rgba(229,42,111,.10),
+            transparent 28%
+        ),
+        linear-gradient(
+            180deg,
+            #060407,
+            #0d0811 48%,
+            #08050a
+        );
+    overflow-x: hidden;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    pointer-events: none;
+    opacity: .15;
+    background-image:
+        linear-gradient(
+            rgba(103,174,202,.035) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            90deg,
+            rgba(103,174,202,.035) 1px,
+            transparent 1px
+        );
+    background-size: 64px 64px;
+    mask-image:
+        linear-gradient(
+            #000,
+            transparent 92%
+        );
+}
+
+body::after {
+    content: "";
+    position: fixed;
+    width: 680px;
+    height: 680px;
+    top: -360px;
+    right: -280px;
+    z-index: -1;
+    border-radius: 50%;
+    pointer-events: none;
+    background:
+        radial-gradient(
+            circle,
+            rgba(103,174,202,.12),
+            rgba(103,86,130,.04) 40%,
+            transparent 70%
+        );
+    filter: blur(12px);
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+button,
+a {
+    -webkit-tap-highlight-color: transparent;
+}
+
+button {
+    font: inherit;
+}
+
+.shell {
+    width: min(
+        calc(100% - 40px),
+        var(--max-width)
+    );
+    margin: 0 auto;
+}
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
+
+.site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    padding: 18px 0;
+    background:
+        linear-gradient(
+            180deg,
+            rgba(7,5,9,.92),
+            rgba(7,5,9,.60),
+            transparent
+        );
+    backdrop-filter: blur(16px);
+}
+
+.nav {
+    min-height: 68px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 22px;
+    padding: 12px 14px 12px 18px;
+    border: 1px solid var(--line-soft);
+    border-radius: 22px;
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255,255,255,.055),
+            rgba(255,255,255,.018)
+        );
+    box-shadow:
+        0 16px 50px rgba(0,0,0,.22);
+}
+
+.brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+}
+
+.brand-mark {
+    position: relative;
+    width: 38px;
+    height: 38px;
+    flex: 0 0 auto;
+    display: grid;
+    place-items: center;
+    border-radius: 13px;
+    background:
+        linear-gradient(
+            135deg,
+            rgba(103,174,202,.96),
+            rgba(103,86,130,.95) 52%,
+            rgba(229,42,111,.95)
+        );
+    box-shadow:
+        0 12px 30px rgba(103,174,202,.18);
+}
+
+.brand-mark::after {
+    content: "";
+    width: 14px;
+    height: 14px;
+    border: 3px solid #fff;
+    border-top-color: transparent;
+    border-radius: 50%;
+    transform: rotate(-18deg);
+}
+
+.brand-copy {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.05;
+}
+
+.brand-name {
+    font-weight: 820;
+    letter-spacing: -.03em;
+    font-size: 17px;
+}
+
+.brand-tagline {
+    margin-top: 5px;
+    color: var(--muted-2);
+    font-size: 11px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.nav-link {
+    padding: 11px 13px;
+    border-radius: 12px;
+    color: #cfc7d3;
+    font-size: 13px;
+    transition:
+        color .2s ease,
+        background .2s ease;
+}
+
+.nav-link:hover {
+    color: #fff;
+    background: rgba(255,255,255,.05);
+}
+
+.nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.user-chip {
+    display: none;
+    max-width: 190px;
+    padding: 9px 12px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    color: #dceef5;
+    background: rgba(103,174,202,.07);
+    font-size: 12px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.btn {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    padding: 0 16px;
+    border: 1px solid transparent;
+    border-radius: 13px;
+    font-weight: 760;
+    font-size: 13px;
+    transition:
+        transform .2s ease,
+        border-color .2s ease,
+        background .2s ease,
+        box-shadow .2s ease;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+}
+
+.btn-ghost {
+    color: #eae5ed;
+    border-color: rgba(255,255,255,.09);
+    background: rgba(255,255,255,.035);
+}
+
+.btn-ghost:hover {
+    border-color: rgba(103,174,202,.25);
+    background: rgba(103,174,202,.07);
+}
+
+.btn-primary {
+    color: #071017;
+    background:
+        linear-gradient(
+            135deg,
+            #7ac4df,
+            var(--topaz)
+        );
+    box-shadow:
+        0 14px 34px rgba(103,174,202,.20);
+}
+
+.btn-primary:hover {
+    box-shadow:
+        0 18px 46px rgba(103,174,202,.28);
+}
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.hero {
+    position: relative;
+    min-height: calc(100vh - 105px);
+    display: grid;
+    align-items: center;
+    padding: 64px 0 92px;
+}
+
+.hero-grid {
+    display: grid;
+    grid-template-columns:
+        minmax(0, 1.02fr)
+        minmax(420px, .98fr);
+    gap: clamp(44px, 7vw, 96px);
+    align-items: center;
+}
+
+.eyebrow {
+    width: fit-content;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 22px;
+    padding: 8px 12px;
+    border: 1px solid rgba(103,174,202,.19);
+    border-radius: 999px;
+    color: #bfe7f6;
+    background: rgba(103,174,202,.055);
+    font-size: 11px;
+    font-weight: 760;
+    letter-spacing: .11em;
+    text-transform: uppercase;
+}
+
+.eyebrow-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--topaz);
+    box-shadow:
+        0 0 0 6px rgba(103,174,202,.08),
+        0 0 22px rgba(103,174,202,.55);
+}
+
+.hero h1 {
+    max-width: 720px;
+    font-size:
+        clamp(
+            48px,
+            6.4vw,
+            88px
+        );
+    line-height: .97;
+    letter-spacing: -.065em;
+    font-weight: 860;
+}
+
+.hero h1 span {
+    display: inline-block;
+    background:
+        linear-gradient(
+            95deg,
+            #ffffff 8%,
+            #bce6f5 45%,
+            #df9fbd 84%
+        );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.hero-copy {
+    max-width: 650px;
+    margin-top: 26px;
+    color: #b6adb9;
+    font-size: clamp(16px, 1.45vw, 19px);
+    line-height: 1.75;
+}
+
+.hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 34px;
+}
+
+.hero-actions .btn {
+    min-height: 52px;
+    padding-inline: 20px;
+    border-radius: 15px;
+    font-size: 14px;
+}
+
+.hero-note {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-top: 28px;
+    color: #746a79;
+    font-size: 12px;
+}
+
+.hero-note span {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.hero-note span::before {
+    content: "";
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: rgba(103,174,202,.72);
+}
+
+/* =========================================================
+   HERO COMMAND PANEL
+========================================================= */
+
+.command-wrap {
+    position: relative;
+}
+
+.command-wrap::before {
+    content: "";
+    position: absolute;
+    inset: 12% 10%;
+    z-index: -1;
+    border-radius: 50%;
+    background:
+        radial-gradient(
+            circle,
+            rgba(103,174,202,.17),
+            rgba(103,86,130,.08) 42%,
+            transparent 72%
+        );
+    filter: blur(35px);
+}
+
+.command-panel {
+    position: relative;
+    overflow: hidden;
+    padding: 22px;
+    border: 1px solid rgba(103,174,202,.16);
+    border-radius: 30px;
+    background:
+        linear-gradient(
+            145deg,
+            rgba(22,14,27,.93),
+            rgba(12,8,15,.92)
+        );
+    box-shadow: var(--shadow);
+}
+
+.command-panel::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+        linear-gradient(
+            115deg,
+            rgba(103,174,202,.07),
+            transparent 35%,
+            transparent 68%,
+            rgba(229,42,111,.045)
+        );
+}
+
+.command-head {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    margin-bottom: 20px;
+}
+
+.command-title {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+}
+
+.command-title-mark {
+    width: 34px;
+    height: 34px;
+    display: grid;
+    place-items: center;
+    border: 1px solid rgba(103,174,202,.18);
+    border-radius: 11px;
+    color: var(--topaz);
+    background: rgba(103,174,202,.07);
+    font-size: 15px;
+    font-weight: 850;
+}
+
+.command-title strong {
+    display: block;
+    font-size: 14px;
+}
+
+.command-title small {
+    display: block;
+    margin-top: 4px;
+    color: var(--muted-2);
+    font-size: 11px;
+}
+
+.live {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 7px 10px;
+    border: 1px solid rgba(96,211,148,.15);
+    border-radius: 999px;
+    color: #90ddb3;
+    background: rgba(96,211,148,.06);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+
+.live::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #61d494;
+    box-shadow: 0 0 16px rgba(97,212,148,.7);
+}
+
+.metric-grid {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0,1fr));
+    gap: 12px;
+}
+
+.metric {
+    min-height: 118px;
+    padding: 17px;
+    border: 1px solid rgba(255,255,255,.055);
+    border-radius: 18px;
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.045),
+            rgba(255,255,255,.015)
+        );
+}
+
+.metric-label {
+    color: #817786;
+    font-size: 10px;
+    font-weight: 780;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+
+.metric-value {
+    margin-top: 12px;
+    font-size: 28px;
+    font-weight: 840;
+    letter-spacing: -.045em;
+}
+
+.metric-value.topaz {
+    color: #9fd7eb;
+}
+
+.metric-value.rose {
+    color: #f07da8;
+}
+
+.metric-foot {
+    margin-top: 8px;
+    color: #706776;
+    font-size: 10px;
+}
+
+.activity {
+    position: relative;
+    margin-top: 12px;
+    padding: 17px;
+    border: 1px solid rgba(255,255,255,.055);
+    border-radius: 18px;
+    background: rgba(255,255,255,.025);
+}
+
+.activity-head {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 15px;
+}
+
+.activity-head strong {
+    font-size: 12px;
+}
+
+.activity-head span {
+    color: #6f6575;
+    font-size: 10px;
+}
+
+.ticket-row {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 11px;
+    align-items: center;
+    padding: 11px 0;
+    border-top: 1px solid rgba(255,255,255,.045);
+}
+
+.ticket-row:first-of-type {
+    border-top: 0;
+}
+
+.ticket-icon {
+    width: 30px;
+    height: 30px;
+    display: grid;
+    place-items: center;
+    border-radius: 10px;
+    background: rgba(103,174,202,.075);
+    color: var(--topaz);
+    font-size: 11px;
+    font-weight: 820;
+}
+
+.ticket-main strong {
+    display: block;
+    font-size: 11px;
+    font-weight: 720;
+}
+
+.ticket-main small {
+    display: block;
+    margin-top: 4px;
+    color: #716876;
+    font-size: 9px;
+}
+
+.ticket-status {
+    padding: 6px 8px;
+    border-radius: 999px;
+    font-size: 8px;
+    font-weight: 850;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+}
+
+.ticket-status.progress {
+    color: #b8e7f8;
+    background: rgba(103,174,202,.08);
+}
+
+.ticket-status.pending {
+    color: #e8bdd2;
+    background: rgba(229,42,111,.07);
+}
+
+.ticket-status.resolved {
+    color: #a9e0c2;
+    background: rgba(96,211,148,.07);
+}
+
+/* =========================================================
+   SECTIONS
+========================================================= */
+
+.section {
+    padding: 98px 0;
+}
+
+.section-head {
+    max-width: 700px;
+    margin-bottom: 42px;
+}
+
+.section-kicker {
+    margin-bottom: 13px;
+    color: var(--topaz);
+    font-size: 11px;
+    font-weight: 820;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+}
+
+.section h2 {
+    font-size:
+        clamp(
+            34px,
+            4.3vw,
+            58px
+        );
+    line-height: 1.04;
+    letter-spacing: -.05em;
+}
+
+.section-lead {
+    margin-top: 18px;
+    color: #9b919f;
+    font-size: 16px;
+    line-height: 1.75;
+}
+
+/* =========================================================
+   FEATURES
+========================================================= */
+
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0,1fr));
+    gap: 14px;
+}
+
+.feature-card {
+    min-height: 250px;
+    padding: 22px;
+    border: 1px solid var(--line-soft);
+    border-radius: 22px;
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.038),
+            rgba(255,255,255,.014)
+        );
+    transition:
+        transform .24s ease,
+        border-color .24s ease,
+        background .24s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(103,174,202,.18);
+    background:
+        linear-gradient(
+            145deg,
+            rgba(103,174,202,.055),
+            rgba(255,255,255,.015)
+        );
+}
+
+.feature-icon {
+    width: 42px;
+    height: 42px;
+    display: grid;
+    place-items: center;
+    margin-bottom: 28px;
+    border: 1px solid rgba(103,174,202,.16);
+    border-radius: 13px;
+    color: #a7dced;
+    background: rgba(103,174,202,.055);
+    font-weight: 850;
+}
+
+.feature-card h3 {
+    font-size: 17px;
+    letter-spacing: -.025em;
+}
+
+.feature-card p {
+    margin-top: 12px;
+    color: #817786;
+    font-size: 13px;
+    line-height: 1.72;
+}
+
+/* =========================================================
+   WORKFLOW
+========================================================= */
+
+.workflow {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0,1fr));
+    gap: 0;
+    overflow: hidden;
+    border: 1px solid var(--line-soft);
+    border-radius: 28px;
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255,255,255,.035),
+            rgba(255,255,255,.012)
+        );
+}
+
+.workflow-step {
+    position: relative;
+    min-height: 230px;
+    padding: 27px;
+    border-right: 1px solid var(--line-soft);
+}
+
+.workflow-step:last-child {
+    border-right: 0;
+}
+
+.step-number {
+    color: rgba(103,174,202,.55);
+    font-size: 11px;
+    font-weight: 850;
+    letter-spacing: .1em;
+}
+
+.workflow-step h3 {
+    margin-top: 48px;
+    font-size: 18px;
+}
+
+.workflow-step p {
+    margin-top: 12px;
+    color: #817786;
+    font-size: 13px;
+    line-height: 1.68;
+}
+
+/* =========================================================
+   ROLES / SLA
+========================================================= */
+
+.dual-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+}
+
+.large-card {
+    position: relative;
+    overflow: hidden;
+    min-height: 360px;
+    padding: 30px;
+    border: 1px solid var(--line-soft);
+    border-radius: 28px;
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.04),
+            rgba(255,255,255,.012)
+        );
+}
+
+.large-card::after {
+    content: "";
+    position: absolute;
+    width: 260px;
+    height: 260px;
+    right: -100px;
+    bottom: -120px;
+    border-radius: 50%;
+    background:
+        radial-gradient(
+            circle,
+            rgba(103,174,202,.10),
+            transparent 68%
+        );
+}
+
+.large-card.rose-glow::after {
+    background:
+        radial-gradient(
+            circle,
+            rgba(229,42,111,.10),
+            transparent 68%
+        );
+}
+
+.large-card h3 {
+    margin-top: 12px;
+    font-size: 28px;
+    letter-spacing: -.04em;
+}
+
+.large-card > p {
+    max-width: 520px;
+    margin-top: 14px;
+    color: #918695;
+    font-size: 14px;
+    line-height: 1.75;
+}
+
+.pill-row {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px;
+    margin-top: 30px;
+}
+
+.pill {
+    padding: 9px 11px;
+    border: 1px solid rgba(255,255,255,.065);
+    border-radius: 999px;
+    color: #bbb2bf;
+    background: rgba(255,255,255,.025);
+    font-size: 11px;
+}
+
+.sla-stack {
+    position: relative;
+    z-index: 1;
+    margin-top: 28px;
+}
+
+.sla-row {
+    margin-top: 12px;
+    padding: 15px;
+    border: 1px solid rgba(255,255,255,.05);
+    border-radius: 15px;
+    background: rgba(255,255,255,.022);
+}
+
+.sla-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.sla-top strong {
+    font-size: 12px;
+}
+
+.sla-top span {
+    color: #84798a;
+    font-size: 10px;
+}
+
+.sla-bar {
+    height: 5px;
+    margin-top: 12px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: rgba(255,255,255,.055);
+}
+
+.sla-bar > span {
+    display: block;
+    height: 100%;
+    border-radius: inherit;
+    background:
+        linear-gradient(
+            90deg,
+            var(--topaz),
+            var(--amethyst),
+            var(--rose)
+        );
+}
+
+/* =========================================================
+   CTA
+========================================================= */
+
+.cta {
+    padding: 80px 0 110px;
+}
+
+.cta-card {
+    position: relative;
+    overflow: hidden;
+    padding:
+        clamp(34px, 6vw, 70px);
+    border: 1px solid rgba(103,174,202,.15);
+    border-radius: 32px;
+    text-align: center;
+    background:
+        radial-gradient(
+            circle at 12% 0%,
+            rgba(103,174,202,.12),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 88% 100%,
+            rgba(229,42,111,.08),
+            transparent 32%
+        ),
+        linear-gradient(
+            145deg,
+            rgba(24,15,29,.92),
+            rgba(11,7,13,.95)
+        );
+    box-shadow: var(--shadow);
+}
+
+.cta-card h2 {
+    max-width: 760px;
+    margin: 0 auto;
+}
+
+.cta-card p {
+    max-width: 620px;
+    margin: 18px auto 0;
+    color: #948a98;
+    line-height: 1.75;
+}
+
+.cta-actions {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 28px;
+}
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.footer {
+    padding: 0 0 36px;
+}
+
+.footer-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 22px;
+    padding-top: 24px;
+    border-top: 1px solid var(--line-soft);
+    color: #655d69;
+    font-size: 11px;
+}
+
+.footer-links {
+    display: flex;
+    gap: 17px;
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 1040px) {
+    .nav-links {
+        display: none;
+    }
+
+    .hero-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .hero {
+        padding-top: 50px;
+    }
+
+    .hero-copy {
+        max-width: 720px;
+    }
+
+    .command-wrap {
+        max-width: 720px;
+    }
+
+    .feature-grid {
+        grid-template-columns: repeat(2, minmax(0,1fr));
+    }
+
+    .workflow {
+        grid-template-columns: repeat(2, minmax(0,1fr));
+    }
+
+    .workflow-step:nth-child(2) {
+        border-right: 0;
+    }
+
+    .workflow-step:nth-child(-n+2) {
+        border-bottom: 1px solid var(--line-soft);
+    }
+}
+
+@media (max-width: 720px) {
+    .shell {
+        width: min(
+            calc(100% - 24px),
+            var(--max-width)
+        );
+    }
+
+    .site-header {
+        padding-top: 10px;
+    }
+
+    .nav {
+        min-height: 62px;
+        padding: 10px 11px 10px 13px;
+        border-radius: 18px;
+    }
+
+    .brand-tagline {
+        display: none;
+    }
+
+    .nav-actions .btn-ghost,
+    .user-chip {
+        display: none !important;
+    }
+
+    .hero {
+        min-height: auto;
+        padding: 52px 0 70px;
+    }
+
+    .hero-grid {
+        gap: 48px;
+    }
+
+    .hero h1 {
+        font-size:
+            clamp(
+                44px,
+                15vw,
+                66px
+            );
+    }
+
+    .hero-copy {
+        font-size: 15px;
+    }
+
+    .hero-actions {
+        flex-direction: column;
+    }
+
+    .hero-actions .btn {
+        width: 100%;
+    }
+
+    .command-panel {
+        padding: 16px;
+        border-radius: 23px;
+    }
+
+    .metric {
+        min-height: 105px;
+        padding: 14px;
+    }
+
+    .metric-value {
+        font-size: 23px;
+    }
+
+    .section {
+        padding: 72px 0;
+    }
+
+    .feature-grid,
+    .workflow,
+    .dual-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .workflow-step {
+        min-height: 190px;
+        border-right: 0;
+        border-bottom: 1px solid var(--line-soft);
+    }
+
+    .workflow-step:last-child {
+        border-bottom: 0;
+    }
+
+    .workflow-step:nth-child(2) {
+        border-bottom: 1px solid var(--line-soft);
+    }
+
+    .workflow-step h3 {
+        margin-top: 30px;
+    }
+
+    .footer-inner {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+        transition: none !important;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header class="site-header">
+    <div class="shell">
+        <nav class="nav">
+            <a
+                href="/"
+                class="brand"
+                aria-label="ResolveDesk home"
+            >
+                <span class="brand-mark"></span>
+
+                <span class="brand-copy">
+                    <span class="brand-name">
+                        ResolveDesk
+                    </span>
+
+                    <span class="brand-tagline">
+                        IT Help Desk
+                    </span>
+                </span>
+            </a>
+
+            <div class="nav-links">
+                <a
+                    class="nav-link"
+                    href="#capabilities"
+                >
+                    Capabilities
+                </a>
+
+                <a
+                    class="nav-link"
+                    href="#workflow"
+                >
+                    Workflow
+                </a>
+
+                <a
+                    class="nav-link"
+                    href="#operations"
+                >
+                    Operations
+                </a>
+            </div>
+
+            <div class="nav-actions">
+                <span
+                    id="userChip"
+                    class="user-chip"
+                ></span>
+
+                <a
+                    id="secondaryNavButton"
+                    class="btn btn-ghost"
+                    href="/login.html"
+                >
+                    Sign in
+                </a>
+
+                <a
+                    id="primaryNavButton"
+                    class="btn btn-primary"
+                    href="/login.html"
+                >
+                    Open ResolveDesk
+                </a>
+            </div>
+        </nav>
+    </div>
+</header>
+
+<main>
+
+<section class="hero">
+    <div class="shell hero-grid">
+
+        <div class="hero-content">
+            <div class="eyebrow">
+                <span class="eyebrow-dot"></span>
+                Support operations, simplified
+            </div>
+
+            <h1>
+                IT support.
+                <span>Resolved.</span>
+            </h1>
+
+            <p class="hero-copy">
+                ResolveDesk brings ticket management,
+                automated assignment, SLA tracking,
+                notifications and role-based support workflows
+                into one focused command center.
+            </p>
+
+            <div class="hero-actions">
+                <a
+                    id="heroPrimaryButton"
+                    href="/login.html"
+                    class="btn btn-primary"
+                >
+                    Sign in to ResolveDesk
+                    <span aria-hidden="true">→</span>
+                </a>
+
+                <a
+                    id="heroSecondaryButton"
+                    href="/create-ticket.html"
+                    class="btn btn-ghost"
+                >
+                    Create a support ticket
+                </a>
+            </div>
+
+            <div class="hero-note">
+                <span>Role-based access</span>
+                <span>Automated SLA monitoring</span>
+                <span>Real-time support workflow</span>
+            </div>
+        </div>
+
+        <div class="command-wrap">
+            <div class="command-panel">
+
+                <div class="command-head">
+                    <div class="command-title">
+                        <div class="command-title-mark">
+                            R
+                        </div>
+
+                        <div>
+                            <strong>
+                                Support Command Center
+                            </strong>
+
+                            <small>
+                                Operational overview
+                            </small>
+                        </div>
+                    </div>
+
+                    <span class="live">
+                        Live
+                    </span>
+                </div>
+
+                <div class="metric-grid">
+                    <article class="metric">
+                        <div class="metric-label">
+                            Active queue
+                        </div>
+
+                        <div class="metric-value topaz">
+                            24
+                        </div>
+
+                        <div class="metric-foot">
+                            Across support teams
+                        </div>
+                    </article>
+
+                    <article class="metric">
+                        <div class="metric-label">
+                            SLA health
+                        </div>
+
+                        <div class="metric-value">
+                            96%
+                        </div>
+
+                        <div class="metric-foot">
+                            Within target
+                        </div>
+                    </article>
+
+                    <article class="metric">
+                        <div class="metric-label">
+                            Critical
+                        </div>
+
+                        <div class="metric-value rose">
+                            03
+                        </div>
+
+                        <div class="metric-foot">
+                            Requires attention
+                        </div>
+                    </article>
+
+                    <article class="metric">
+                        <div class="metric-label">
+                            Resolved today
+                        </div>
+
+                        <div class="metric-value">
+                            18
+                        </div>
+
+                        <div class="metric-foot">
+                            Support completed
+                        </div>
+                    </article>
+                </div>
+
+                <div class="activity">
+                    <div class="activity-head">
+                        <strong>
+                            Recent support activity
+                        </strong>
+
+                        <span>
+                            Live preview
+                        </span>
+                    </div>
+
+                    <div class="ticket-row">
+                        <div class="ticket-icon">
+                            IT
+                        </div>
+
+                        <div class="ticket-main">
+                            <strong>
+                                VPN access unavailable
+                            </strong>
+
+                            <small>
+                                Network · High priority
+                            </small>
+                        </div>
+
+                        <span class="ticket-status progress">
+                            In progress
+                        </span>
+                    </div>
+
+                    <div class="ticket-row">
+                        <div class="ticket-icon">
+                            SW
+                        </div>
+
+                        <div class="ticket-main">
+                            <strong>
+                                Software installation request
+                            </strong>
+
+                            <small>
+                                Software · Normal priority
+                            </small>
+                        </div>
+
+                        <span class="ticket-status pending">
+                            Pending
+                        </span>
+                    </div>
+
+                    <div class="ticket-row">
+                        <div class="ticket-icon">
+                            AC
+                        </div>
+
+                        <div class="ticket-main">
+                            <strong>
+                                Account access restored
+                            </strong>
+
+                            <small>
+                                Access · Support completed
+                            </small>
+                        </div>
+
+                        <span class="ticket-status resolved">
+                            Resolved
+                        </span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<section
+    id="capabilities"
+    class="section"
+>
+    <div class="shell">
+
+        <div class="section-head">
+            <div class="section-kicker">
+                Core capabilities
+            </div>
+
+            <h2>
+                One workspace for the full support lifecycle.
+            </h2>
+
+            <p class="section-lead">
+                Built for requesters, technicians and administrators
+                with clear ownership, visibility and operational control.
+            </p>
+        </div>
+
+        <div class="feature-grid">
+
+            <article class="feature-card">
+                <div class="feature-icon">
+                    01
+                </div>
+
+                <h3>
+                    Ticket Management
+                </h3>
+
+                <p>
+                    Submit, prioritise, assign and manage support
+                    requests from creation through resolution.
+                </p>
+            </article>
+
+            <article class="feature-card">
+                <div class="feature-icon">
+                    02
+                </div>
+
+                <h3>
+                    SLA Tracking
+                </h3>
+
+                <p>
+                    Track first-response and resolution deadlines
+                    with warnings, breach detection and support alerts.
+                </p>
+            </article>
+
+            <article class="feature-card">
+                <div class="feature-icon">
+                    03
+                </div>
+
+                <h3>
+                    Smart Assignment
+                </h3>
+
+                <p>
+                    Automatically route tickets to eligible technicians
+                    according to department and current workload.
+                </p>
+            </article>
+
+            <article class="feature-card">
+                <div class="feature-icon">
+                    04
+                </div>
+
+                <h3>
+                    Secure Collaboration
+                </h3>
+
+                <p>
+                    Separate public replies from internal support notes
+                    with role-based access and complete activity history.
+                </p>
+            </article>
+
+        </div>
+    </div>
+</section>
+
+<section
+    id="workflow"
+    class="section"
+>
+    <div class="shell">
+
+        <div class="section-head">
+            <div class="section-kicker">
+                Support workflow
+            </div>
+
+            <h2>
+                From request to resolution.
+            </h2>
+
+            <p class="section-lead">
+                A straightforward workflow keeps users informed
+                while giving support teams the context they need.
+            </p>
+        </div>
+
+        <div class="workflow">
+
+            <article class="workflow-step">
+                <div class="step-number">
+                    STEP 01
+                </div>
+
+                <h3>
+                    Create
+                </h3>
+
+                <p>
+                    Staff submit a request with department,
+                    category, priority, description and attachments.
+                </p>
+            </article>
+
+            <article class="workflow-step">
+                <div class="step-number">
+                    STEP 02
+                </div>
+
+                <h3>
+                    Assign
+                </h3>
+
+                <p>
+                    ResolveDesk routes the request to an eligible
+                    support technician or allows administrative assignment.
+                </p>
+            </article>
+
+            <article class="workflow-step">
+                <div class="step-number">
+                    STEP 03
+                </div>
+
+                <h3>
+                    Collaborate
+                </h3>
+
+                <p>
+                    Support teams reply, add internal notes,
+                    update status and work against active SLA targets.
+                </p>
+            </article>
+
+            <article class="workflow-step">
+                <div class="step-number">
+                    STEP 04
+                </div>
+
+                <h3>
+                    Resolve
+                </h3>
+
+                <p>
+                    Resolution history, notifications and audit events
+                    preserve a complete record of the support journey.
+                </p>
+            </article>
+
+        </div>
+    </div>
+</section>
+
+<section
+    id="operations"
+    class="section"
+>
+    <div class="shell">
+
+        <div class="dual-grid">
+
+            <article class="large-card">
+                <div class="section-kicker">
+                    Role-based workspace
+                </div>
+
+                <h3>
+                    The right controls for every role.
+                </h3>
+
+                <p>
+                    Staff, technicians and administrators get
+                    different visibility and management capabilities
+                    based on what they actually need to do.
+                </p>
+
+                <div class="pill-row">
+                    <span class="pill">
+                        Staff requester
+                    </span>
+
+                    <span class="pill">
+                        Technician queue
+                    </span>
+
+                    <span class="pill">
+                        Admin oversight
+                    </span>
+
+                    <span class="pill">
+                        Internal notes
+                    </span>
+
+                    <span class="pill">
+                        Permission checks
+                    </span>
+                </div>
+            </article>
+
+            <article class="large-card rose-glow">
+                <div class="section-kicker">
+                    SLA operations
+                </div>
+
+                <h3>
+                    Know what needs attention before it becomes a breach.
+                </h3>
+
+                <p>
+                    Deadline tracking and notification logic keep
+                    support teams aware of approaching first-response
+                    and resolution targets.
+                </p>
+
+                <div class="sla-stack">
+                    <div class="sla-row">
+                        <div class="sla-top">
+                            <strong>
+                                First response
+                            </strong>
+
+                            <span>
+                                Warning threshold
+                            </span>
+                        </div>
+
+                        <div class="sla-bar">
+                            <span style="width: 76%"></span>
+                        </div>
+                    </div>
+
+                    <div class="sla-row">
+                        <div class="sla-top">
+                            <strong>
+                                Resolution target
+                            </strong>
+
+                            <span>
+                                Active tracking
+                            </span>
+                        </div>
+
+                        <div class="sla-bar">
+                            <span style="width: 58%"></span>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+        </div>
+    </div>
+</section>
+
+<section class="cta">
+    <div class="shell">
+        <div class="cta-card">
+            <div class="section-kicker">
+                ResolveDesk
+            </div>
+
+            <h2>
+                A clearer way to run IT support.
+            </h2>
+
+            <p>
+                Sign in to manage your workspace or submit
+                a new support request to the ResolveDesk team.
+            </p>
+
+            <div class="cta-actions">
+                <a
+                    id="ctaPrimaryButton"
+                    href="/login.html"
+                    class="btn btn-primary"
+                >
+                    Open ResolveDesk
+                </a>
+
+                <a
+                    href="/create-ticket.html"
+                    class="btn btn-ghost"
+                >
+                    Create ticket
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+</main>
+
+<footer class="footer">
+    <div class="shell footer-inner">
+        <div>
+            © <span id="year"></span> ResolveDesk.
+            IT support command center.
+        </div>
+
+        <div class="footer-links">
+            <a href="/login.html">
+                Sign in
+            </a>
+
+            <a href="/create-ticket.html">
+                Support
+            </a>
+        </div>
+    </div>
+</footer>
+
+<script>
+document.getElementById(
+    "year"
+).textContent =
+    new Date().getFullYear();
+
+
+async function syncSessionUI() {
+
+    const primaryNavButton =
+        document.getElementById(
+            "primaryNavButton"
+        );
+
+    const secondaryNavButton =
+        document.getElementById(
+            "secondaryNavButton"
+        );
+
+    const heroPrimaryButton =
+        document.getElementById(
+            "heroPrimaryButton"
+        );
+
+    const heroSecondaryButton =
+        document.getElementById(
+            "heroSecondaryButton"
+        );
+
+    const ctaPrimaryButton =
+        document.getElementById(
+            "ctaPrimaryButton"
+        );
+
+    const userChip =
+        document.getElementById(
+            "userChip"
+        );
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/auth/me",
+                {
+                    credentials:
+                        "same-origin"
+                }
+            );
+
+
+        if (
+            !response.ok
+        ) {
+            return;
+        }
+
+
+        const data =
+            await response.json();
+
+
+        if (
+            !data ||
+            !data.loggedIn ||
+            !data.user
+        ) {
+            return;
+        }
+
+
+        const user =
+            data.user;
+
+
+        if (
+            userChip
+        ) {
+
+            userChip.textContent =
+                user.full_name ||
+                user.name ||
+                user.email ||
+                "Signed in";
+
+            userChip.style.display =
+                "inline-flex";
+        }
+
+
+        if (
+            primaryNavButton
+        ) {
+
+            primaryNavButton.href =
+                "/dashboard.html";
+
+            primaryNavButton.textContent =
+                "Open Dashboard";
+        }
+
+
+        if (
+            secondaryNavButton
+        ) {
+
+            secondaryNavButton.href =
+                "/create-ticket.html";
+
+            secondaryNavButton.textContent =
+                "New Ticket";
+        }
+
+
+        if (
+            heroPrimaryButton
+        ) {
+
+            heroPrimaryButton.href =
+                "/dashboard.html";
+
+            heroPrimaryButton.innerHTML =
+                "Open your dashboard " +
+                "<span aria-hidden='true'>→</span>";
+        }
+
+
+        if (
+            heroSecondaryButton
+        ) {
+
+            heroSecondaryButton.href =
+                "/create-ticket.html";
+
+            heroSecondaryButton.textContent =
+                "Create a new ticket";
+        }
+
+
+        if (
+            ctaPrimaryButton
+        ) {
+
+            ctaPrimaryButton.href =
+                "/dashboard.html";
+
+            ctaPrimaryButton.textContent =
+                "Open Dashboard";
+        }
+
+    } catch (
+        error
+    ) {
+
+        /*
+            Public landing page must remain usable
+            even if the session endpoint is unavailable.
+        */
+
+    }
+}
+
+
+syncSessionUI();
+</script>
+
+</body>
+</html>

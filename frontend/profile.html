@@ -1,0 +1,4554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>ResolveDesk — My Profile</title>
+
+<style>
+
+/* =========================================================
+   RESOLVEDESK THEME
+========================================================= */
+
+:root {
+    --topaz: #67AECA;
+    --amethyst: #675682;
+    --jewel: #5F0F4E;
+    --rose: #E52A6F;
+
+    --bg: #08060b;
+    --bg2: #120b16;
+
+    --text: #ffffff;
+    --muted: #95899d;
+
+    --line: rgba(103,174,202,.14);
+    --line-soft: rgba(103,174,202,.07);
+
+    --sidebar: 250px;
+
+    --shadow:
+        0 30px 90px
+        rgba(25,5,30,.45);
+}
+
+
+/* =========================================================
+   RESET
+========================================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    min-height: 100vh;
+
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Inter,
+        Arial,
+        sans-serif;
+
+    color: var(--text);
+
+    background:
+        radial-gradient(
+            circle at 88% 5%,
+            rgba(103,174,202,.16),
+            transparent 25%
+        ),
+        radial-gradient(
+            circle at 10% 82%,
+            rgba(229,42,111,.08),
+            transparent 25%
+        ),
+        radial-gradient(
+            circle at 62% 94%,
+            rgba(103,86,130,.14),
+            transparent 30%
+        ),
+        linear-gradient(
+            180deg,
+            var(--bg),
+            var(--bg2) 55%,
+            var(--bg)
+        );
+
+    overflow-x: hidden;
+}
+
+body::before {
+    content: "";
+
+    position: fixed;
+    inset: 0;
+
+    pointer-events: none;
+
+    z-index: -1;
+
+    opacity: .13;
+
+    background-image:
+        linear-gradient(
+            rgba(103,174,202,.035) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            90deg,
+            rgba(103,174,202,.035) 1px,
+            transparent 1px
+        );
+
+    background-size: 64px 64px;
+
+    mask-image:
+        linear-gradient(
+            #000,
+            transparent 90%
+        );
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+button,
+input,
+select,
+textarea {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+
+/* =========================================================
+   SIDEBAR
+========================================================= */
+
+.sidebar {
+    position: fixed;
+
+    inset:
+        0 auto 0 0;
+
+    width: var(--sidebar);
+
+    z-index: 50;
+
+    padding:
+        18px 14px;
+
+    background:
+        rgba(8,5,11,.94);
+
+    border-right:
+        1px solid
+        rgba(103,174,202,.09);
+
+    backdrop-filter:
+        blur(20px);
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    padding:
+        7px 9px 22px;
+}
+
+.brand-mark {
+    width: 42px;
+    height: 42px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 12px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--topaz),
+            var(--amethyst) 58%,
+            var(--rose)
+        );
+
+    font-size: 20px;
+    font-weight: 950;
+
+    box-shadow:
+        0 14px 34px
+        rgba(103,86,130,.25);
+}
+
+.brand strong {
+    display: block;
+
+    font-size: 16px;
+}
+
+.brand span {
+    display: block;
+
+    margin-top: 3px;
+
+    color: #7d7085;
+
+    font-size: 9px;
+    font-weight: 900;
+
+    letter-spacing: .12em;
+
+    text-transform: uppercase;
+}
+
+.nav-label {
+    margin:
+        12px 10px 8px;
+
+    color: #615568;
+
+    font-size: 9px;
+    font-weight: 950;
+
+    letter-spacing: .14em;
+
+    text-transform: uppercase;
+}
+
+.nav {
+    display: grid;
+
+    gap: 4px;
+}
+
+.nav a {
+    min-height: 45px;
+
+    padding:
+        0 12px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 11px;
+
+    border:
+        1px solid transparent;
+
+    border-radius: 12px;
+
+    color: #988ba0;
+
+    font-size: 13px;
+    font-weight: 760;
+
+    transition: .18s ease;
+}
+
+.nav a:hover {
+    color: #fff;
+
+    background:
+        rgba(103,174,202,.05);
+}
+
+.nav a.active {
+    color: #fff;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(103,174,202,.13),
+            rgba(103,86,130,.10)
+        );
+
+    border-color:
+        rgba(103,174,202,.18);
+}
+
+.nav-icon {
+    width: 28px;
+    height: 28px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 8px;
+
+    background:
+        rgba(103,86,130,.08);
+
+    border:
+        1px solid
+        rgba(103,174,202,.09);
+
+    font-size: 12px;
+}
+
+.nav a.active .nav-icon {
+    background:
+        linear-gradient(
+            135deg,
+            var(--topaz),
+            var(--amethyst)
+        );
+}
+
+.sidebar-bottom {
+    position: absolute;
+
+    left: 14px;
+    right: 14px;
+    bottom: 16px;
+}
+
+.account-card {
+    padding: 13px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    border:
+        1px solid var(--line);
+
+    border-radius: 15px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(103,86,130,.11),
+            rgba(10,6,13,.9)
+        );
+}
+
+.sidebar-avatar {
+    width: 36px;
+    height: 36px;
+
+    flex-shrink: 0;
+
+    display: grid;
+    place-items: center;
+
+    overflow: hidden;
+
+    border-radius: 10px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--topaz),
+            var(--amethyst)
+        );
+
+    font-size: 9px;
+    font-weight: 950;
+}
+
+.sidebar-avatar img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+}
+
+.account-card strong {
+    display: block;
+
+    font-size: 10px;
+}
+
+.account-card span {
+    display: block;
+
+    margin-top: 3px;
+
+    color: #766a80;
+
+    font-size: 8px;
+}
+
+
+/* =========================================================
+   MAIN
+========================================================= */
+
+.main {
+    margin-left:
+        var(--sidebar);
+
+    min-height: 100vh;
+}
+
+
+/* =========================================================
+   TOPBAR
+========================================================= */
+
+.topbar {
+    position: sticky;
+
+    top: 0;
+
+    z-index: 40;
+
+    height: 74px;
+
+    padding:
+        0 24px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 16px;
+
+    background:
+        rgba(9,6,12,.8);
+
+    border-bottom:
+        1px solid
+        rgba(103,174,202,.08);
+
+    backdrop-filter:
+        blur(18px);
+}
+
+.mobile-btn {
+    display: none;
+
+    width: 42px;
+    height: 42px;
+
+    border:
+        1px solid var(--line);
+
+    border-radius: 11px;
+
+    background:
+        rgba(103,86,130,.08);
+
+    color: #fff;
+}
+
+.breadcrumb strong {
+    display: block;
+
+    font-size: 12px;
+}
+
+.breadcrumb span {
+    display: block;
+
+    margin-top: 3px;
+
+    color: #766a80;
+
+    font-size: 8.5px;
+}
+
+.top-actions {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+}
+
+.icon-btn {
+    width: 40px;
+    height: 40px;
+
+    display: grid;
+    place-items: center;
+
+    border:
+        1px solid var(--line);
+
+    border-radius: 11px;
+
+    background:
+        rgba(103,86,130,.07);
+
+    color: #c5bacb;
+}
+
+.top-profile {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    padding:
+        5px 8px 5px 5px;
+
+    border:
+        1px solid var(--line);
+
+    border-radius: 12px;
+
+    background:
+        rgba(103,86,130,.07);
+}
+
+.top-avatar {
+    width: 32px;
+    height: 32px;
+
+    display: grid;
+    place-items: center;
+
+    overflow: hidden;
+
+    border-radius: 9px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--topaz),
+            var(--amethyst)
+        );
+
+    font-size: 9px;
+    font-weight: 950;
+}
+
+.top-avatar img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+}
+
+.top-profile strong {
+    display: block;
+
+    font-size: 11px;
+}
+
+.top-profile span {
+    display: block;
+
+    margin-top: 2px;
+
+    color: #82758c;
+
+    font-size: 9px;
+}
+
+
+/* =========================================================
+   CONTENT
+========================================================= */
+
+.content {
+    padding: 26px;
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.hero {
+    position: relative;
+
+    overflow: hidden;
+
+    padding: 29px;
+
+    border:
+        1px solid var(--line);
+
+    border-radius: 26px;
+
+    background:
+        radial-gradient(
+            circle at 88% 10%,
+            rgba(103,174,202,.16),
+            transparent 27%
+        ),
+        radial-gradient(
+            circle at 8% 100%,
+            rgba(229,42,111,.08),
+            transparent 27%
+        ),
+        linear-gradient(
+            135deg,
+            rgba(20,12,25,.98),
+            rgba(10,7,13,.98)
+        );
+
+    box-shadow:
+        var(--shadow);
+}
+
+.hero-row {
+    position: relative;
+
+    z-index: 2;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 25px;
+}
+
+.hero-profile {
+    display: flex;
+    align-items: center;
+
+    gap: 18px;
+}
+
+.profile-photo {
+    position: relative;
+
+    width: 92px;
+    height: 92px;
+
+    flex-shrink: 0;
+
+    display: grid;
+    place-items: center;
+
+    overflow: hidden;
+
+    border-radius: 25px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--topaz),
+            var(--amethyst) 55%,
+            var(--rose)
+        );
+
+    box-shadow:
+        0 20px 50px
+        rgba(103,86,130,.28);
+
+    font-size: 24px;
+    font-weight: 950;
+}
+
+.profile-photo img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+}
+
+.hero-copy small {
+    display: inline-flex;
+
+    padding:
+        6px 9px;
+
+    border:
+        1px solid
+        rgba(103,174,202,.14);
+
+    border-radius: 999px;
+
+    background:
+        rgba(103,174,202,.055);
+
+    color: #b3d9e7;
+
+    font-size: 8px;
+    font-weight: 950;
+
+    letter-spacing: .08em;
+
+    text-transform: uppercase;
+}
+
+.hero-copy h1 {
+    margin-top: 10px;
+
+    font-size:
+        clamp(
+            30px,
+            4vw,
+            45px
+        );
+
+    letter-spacing:
+        -2px;
+}
+
+.hero-copy p {
+    margin-top: 7px;
+
+    color: #92869b;
+
+    font-size: 10px;
+}
+
+.hero-tags {
+    display: flex;
+    flex-wrap: wrap;
+
+    gap: 7px;
+
+    margin-top: 12px;
+}
+
+.hero-tag {
+    padding:
+        5px 8px;
+
+    border:
+        1px solid var(--line-soft);
+
+    border-radius: 999px;
+
+    background:
+        rgba(103,86,130,.06);
+
+    color: #a69baa;
+
+    font-size: 8px;
+}
+
+.hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+
+    gap: 9px;
+}
+
+.primary-button,
+.secondary-button,
+.danger-button {
+    min-height: 41px;
+
+    padding:
+        0 14px;
+
+    border-radius: 10px;
+
+    font-size: 9px;
+
+    font-weight: 900;
+}
+
+.primary-button {
+    border: 0;
+
+    color: #fff;
+
+    background:
+        linear-gradient(
+            100deg,
+            var(--topaz),
+            var(--amethyst) 56%,
+            var(--rose)
+        );
+}
+
+.secondary-button {
+    border:
+        1px solid var(--line);
+
+    color: #c1b6c7;
+
+    background:
+        rgba(103,86,130,.075);
+}
+
+.danger-button {
+    border:
+        1px solid
+        rgba(229,42,111,.17);
+
+    color: #f0a0be;
+
+    background:
+        rgba(229,42,111,.06);
+}
+
+
+/* =========================================================
+   STATS
+========================================================= */
+
+.stats {
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            4,
+            1fr
+        );
+
+    gap: 13px;
+
+    margin-top: 16px;
+}
+
+.stat {
+    padding: 17px;
+
+    border:
+        1px solid var(--line);
+
+    border-radius: 17px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(103,86,130,.10),
+            rgba(10,7,13,.96)
+        );
+}
+
+.stat small {
+    display: block;
+
+    color: #766a80;
+
+    font-size: 8.5px;
+    font-weight: 950;
+
+    letter-spacing: .09em;
+
+    text-transform: uppercase;
+}
+
+.stat strong {
+    display: block;
+
+    margin-top: 7px;
+
+    font-size: 25px;
+
+    letter-spacing: -1px;
+}
+
+.stat span {
+    display: block;
+
+    margin-top: 5px;
+
+    color: #776b80;
+
+    font-size: 9px;
+}
+
+
+/* =========================================================
+   PROFILE LAYOUT
+========================================================= */
+
+.profile-layout {
+    display: grid;
+
+    grid-template-columns:
+        minmax(
+            0,
+            1fr
+        )
+        340px;
+
+    gap: 16px;
+
+    margin-top: 16px;
+}
+
+.stack {
+    display: grid;
+
+    gap: 16px;
+
+    align-content: start;
+}
+
+
+/* =========================================================
+   PANEL
+========================================================= */
+
+.panel {
+    overflow: hidden;
+
+    border:
+        1px solid var(--line);
+
+    border-radius: 20px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(103,86,130,.09),
+            rgba(9,6,12,.97)
+        );
+}
+
+.panel-head {
+    padding:
+        16px 18px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 14px;
+
+    border-bottom:
+        1px solid var(--line-soft);
+}
+
+.panel-title strong {
+    display: block;
+
+    font-size: 13px;
+}
+
+.panel-title span {
+    display: block;
+
+    margin-top: 4px;
+
+    color: #74677d;
+
+    font-size: 9.5px;
+}
+
+.panel-body {
+    padding: 18px;
+}
+
+
+/* =========================================================
+   PROFILE FORM
+========================================================= */
+
+.form-grid {
+    display: grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap: 13px;
+}
+
+.field {
+    margin-bottom: 14px;
+}
+
+.field:last-child {
+    margin-bottom: 0;
+}
+
+.field label {
+    display: block;
+
+    margin-bottom: 7px;
+
+    color: #9d91a5;
+
+    font-size: 9px;
+
+    font-weight: 850;
+}
+
+.field input,
+.field select,
+.field textarea {
+    width: 100%;
+
+    border:
+        1px solid var(--line);
+
+    border-radius: 11px;
+
+    outline: none;
+
+    background:
+        rgba(103,86,130,.065);
+
+    color: #fff;
+}
+
+.field input,
+.field select {
+    height: 44px;
+
+    padding:
+        0 12px;
+}
+
+.field textarea {
+    min-height: 90px;
+
+    padding: 12px;
+
+    resize: vertical;
+
+    line-height: 1.6;
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+    border-color:
+        var(--topaz);
+}
+
+.field input:disabled {
+    opacity: .6;
+
+    cursor: not-allowed;
+
+    background:
+        rgba(255,255,255,.02);
+}
+
+.field input::placeholder,
+.field textarea::placeholder {
+    color: #665a6f;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+
+    gap: 9px;
+
+    padding-top: 15px;
+
+    border-top:
+        1px solid var(--line-soft);
+}
+
+
+/* =========================================================
+   PROFILE PHOTO SETTINGS
+========================================================= */
+
+.photo-area {
+    display: flex;
+    align-items: center;
+
+    gap: 15px;
+}
+
+.photo-preview {
+    width: 74px;
+    height: 74px;
+
+    flex-shrink: 0;
+
+    display: grid;
+    place-items: center;
+
+    overflow: hidden;
+
+    border-radius: 20px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--topaz),
+            var(--amethyst),
+            var(--rose)
+        );
+
+    font-size: 18px;
+    font-weight: 950;
+}
+
+.photo-preview img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+}
+
+.photo-copy strong {
+    display: block;
+
+    font-size: 11px;
+}
+
+.photo-copy p {
+    max-width: 440px;
+
+    margin-top: 5px;
+
+    color: #776b80;
+
+    font-size: 8.5px;
+
+    line-height: 1.55;
+}
+
+.photo-buttons {
+    display: flex;
+    flex-wrap: wrap;
+
+    gap: 7px;
+
+    margin-top: 10px;
+}
+
+.photo-input {
+    display: none;
+}
+
+
+/* =========================================================
+   SECURITY
+========================================================= */
+
+.security-status {
+    padding: 13px;
+
+    display: flex;
+    align-items: flex-start;
+
+    gap: 11px;
+
+    border:
+        1px solid
+        rgba(103,174,202,.12);
+
+    border-radius: 13px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(103,174,202,.065),
+            rgba(103,86,130,.06)
+        );
+
+    margin-bottom: 16px;
+}
+
+.security-icon {
+    width: 34px;
+    height: 34px;
+
+    display: grid;
+    place-items: center;
+
+    flex-shrink: 0;
+
+    border-radius: 10px;
+
+    background:
+        rgba(103,174,202,.09);
+
+    color: #b7dce8;
+
+    font-size: 12px;
+}
+
+.security-status strong {
+    display: block;
+
+    font-size: 10px;
+}
+
+.security-status p {
+    margin-top: 4px;
+
+    color: #81748a;
+
+    font-size: 8.5px;
+
+    line-height: 1.6;
+}
+
+.password-strength {
+    margin-top: 8px;
+}
+
+.strength-track {
+    height: 5px;
+
+    overflow: hidden;
+
+    border-radius: 999px;
+
+    background:
+        rgba(255,255,255,.06);
+}
+
+.strength-track span {
+    display: block;
+
+    width: 0;
+
+    height: 100%;
+
+    transition:
+        .2s ease;
+
+    background:
+        linear-gradient(
+            90deg,
+            var(--topaz),
+            var(--amethyst),
+            var(--rose)
+        );
+}
+
+.strength-copy {
+    margin-top: 5px;
+
+    color: #716579;
+
+    font-size: 8px;
+}
+
+
+/* =========================================================
+   PREFERENCES
+========================================================= */
+
+.preference-row {
+    min-height: 70px;
+
+    padding:
+        13px 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    border-bottom:
+        1px solid var(--line-soft);
+}
+
+.preference-row:first-child {
+    padding-top: 0;
+}
+
+.preference-row:last-child {
+    border-bottom: 0;
+
+    padding-bottom: 0;
+}
+
+.preference-copy strong {
+    display: block;
+
+    font-size: 10px;
+}
+
+.preference-copy span {
+    display: block;
+
+    margin-top: 4px;
+
+    color: #74687c;
+
+    font-size: 8.5px;
+
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   SWITCH
+========================================================= */
+
+.switch {
+    position: relative;
+
+    width: 43px;
+    height: 24px;
+
+    flex-shrink: 0;
+}
+
+.switch input {
+    opacity: 0;
+
+    position: absolute;
+}
+
+.slider {
+    position: absolute;
+
+    inset: 0;
+
+    border:
+        1px solid
+        rgba(103,174,202,.10);
+
+    border-radius: 999px;
+
+    background:
+        rgba(103,86,130,.14);
+
+    transition:
+        .18s ease;
+}
+
+.slider::before {
+    content: "";
+
+    position: absolute;
+
+    left: 3px;
+    top: 3px;
+
+    width: 16px;
+    height: 16px;
+
+    border-radius: 50%;
+
+    background:
+        #81738a;
+
+    transition:
+        .18s ease;
+}
+
+.switch input:checked + .slider {
+    background:
+        linear-gradient(
+            90deg,
+            rgba(103,174,202,.7),
+            rgba(103,86,130,.85)
+        );
+}
+
+.switch input:checked + .slider::before {
+    transform:
+        translateX(19px);
+
+    background:
+        #fff;
+}
+
+
+/* =========================================================
+   ACCOUNT OVERVIEW
+========================================================= */
+
+.account-list {
+    display: grid;
+
+    gap: 10px;
+}
+
+.account-row {
+    padding: 11px;
+
+    border:
+        1px solid var(--line-soft);
+
+    border-radius: 11px;
+
+    background:
+        rgba(103,86,130,.04);
+}
+
+.account-row small {
+    display: block;
+
+    color: #695d71;
+
+    font-size: 7px;
+
+    font-weight: 900;
+
+    text-transform: uppercase;
+
+    letter-spacing: .07em;
+}
+
+.account-row strong {
+    display: block;
+
+    margin-top: 5px;
+
+    font-size: 9.5px;
+}
+
+
+/* =========================================================
+   RECENT ACTIVITY
+========================================================= */
+
+.activity-list {
+    padding: 7px 0;
+}
+
+.activity-item {
+    position: relative;
+
+    display: grid;
+
+    grid-template-columns:
+        auto 1fr;
+
+    gap: 11px;
+
+    padding-bottom: 17px;
+}
+
+.activity-item:last-child {
+    padding-bottom: 0;
+}
+
+.activity-item:not(:last-child)::after {
+    content: "";
+
+    position: absolute;
+
+    left: 14px;
+
+    top: 32px;
+    bottom: 0;
+
+    width: 1px;
+
+    background:
+        var(--line-soft);
+}
+
+.activity-icon {
+    width: 29px;
+    height: 29px;
+
+    z-index: 1;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 9px;
+
+    background:
+        rgba(103,86,130,.12);
+
+    border:
+        1px solid var(--line-soft);
+
+    color: #b7dbe7;
+
+    font-size: 9px;
+}
+
+.activity-item strong {
+    display: block;
+
+    font-size: 9.5px;
+}
+
+.activity-item p {
+    margin-top: 4px;
+
+    color: #776b80;
+
+    font-size: 8.4px;
+
+    line-height: 1.5;
+}
+
+.activity-item time {
+    display: block;
+
+    margin-top: 4px;
+
+    color: #62566a;
+
+    font-size: 7.5px;
+}
+
+
+/* =========================================================
+   LOGOUT CARD
+========================================================= */
+
+.logout-panel {
+    border-color:
+        rgba(229,42,111,.14);
+}
+
+.logout-copy {
+    color: #8a7883;
+
+    font-size: 8.7px;
+
+    line-height: 1.6;
+
+    margin-bottom: 13px;
+}
+
+.logout-button {
+    width: 100%;
+
+    min-height: 42px;
+
+    border:
+        1px solid
+        rgba(229,42,111,.17);
+
+    border-radius: 10px;
+
+    background:
+        rgba(229,42,111,.065);
+
+    color: #f0a1be;
+
+    font-size: 9px;
+
+    font-weight: 900;
+}
+
+
+/* =========================================================
+   MODAL
+========================================================= */
+
+.modal-backdrop {
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 100;
+
+    display: none;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+
+    background:
+        rgba(0,0,0,.80);
+
+    backdrop-filter:
+        blur(9px);
+}
+
+.modal-backdrop.open {
+    display: flex;
+}
+
+.modal {
+    width:
+        min(
+            500px,
+            100%
+        );
+
+    border:
+        1px solid
+        rgba(229,42,111,.16);
+
+    border-radius: 20px;
+
+    background:
+        #0d0910;
+
+    box-shadow:
+        0 40px 120px
+        rgba(0,0,0,.7);
+}
+
+.modal-head {
+    padding:
+        18px 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    border-bottom:
+        1px solid var(--line-soft);
+}
+
+.modal-head h2 {
+    font-size: 17px;
+}
+
+.close-button {
+    width: 35px;
+    height: 35px;
+
+    border:
+        1px solid var(--line);
+
+    border-radius: 9px;
+
+    background:
+        rgba(103,86,130,.08);
+
+    color: #fff;
+}
+
+.modal-body {
+    padding: 20px;
+}
+
+.modal-body p {
+    color: #95899d;
+
+    font-size: 10px;
+
+    line-height: 1.7;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+
+    gap: 9px;
+
+    margin-top: 18px;
+}
+
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+.toast {
+    position: fixed;
+
+    right: 24px;
+    bottom: 24px;
+
+    z-index: 200;
+
+    min-width: 260px;
+
+    padding:
+        13px 15px;
+
+    border:
+        1px solid
+        rgba(103,174,202,.17);
+
+    border-radius: 12px;
+
+    background:
+        rgba(13,9,16,.97);
+
+    color: #dfd4e3;
+
+    box-shadow:
+        0 20px 60px
+        rgba(0,0,0,.45);
+
+    font-size: 10px;
+
+    opacity: 0;
+
+    transform:
+        translateY(10px);
+
+    pointer-events: none;
+
+    transition:
+        .2s ease;
+}
+
+.toast.show {
+    opacity: 1;
+
+    transform: none;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+.sidebar-backdrop {
+    display: none;
+}
+
+@media (max-width: 1100px) {
+
+    .profile-layout {
+        grid-template-columns:
+            1fr;
+    }
+
+    .stats {
+        grid-template-columns:
+            1fr 1fr;
+    }
+}
+
+@media (max-width: 900px) {
+
+    .sidebar {
+        transform:
+            translateX(-100%);
+
+        transition:
+            .2s ease;
+    }
+
+    .sidebar.open {
+        transform: none;
+    }
+
+    .sidebar-backdrop {
+        position: fixed;
+
+        inset: 0;
+
+        z-index: 45;
+
+        background:
+            rgba(0,0,0,.64);
+    }
+
+    .sidebar-backdrop.open {
+        display: block;
+    }
+
+    .main {
+        margin-left: 0;
+    }
+
+    .mobile-btn {
+        display: grid;
+        place-items: center;
+    }
+
+    .hero-row {
+        align-items: flex-start;
+
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 650px) {
+
+    .content {
+        padding: 16px;
+    }
+
+    .topbar {
+        padding:
+            0 14px;
+    }
+
+    .top-profile-copy {
+        display: none;
+    }
+
+    .hero {
+        padding: 21px;
+    }
+
+    .hero-profile {
+        align-items: flex-start;
+
+        flex-direction: column;
+    }
+
+    .profile-photo {
+        width: 78px;
+        height: 78px;
+
+        border-radius: 21px;
+    }
+
+    .hero-copy h1 {
+        font-size: 35px;
+    }
+
+    .stats,
+    .form-grid {
+        grid-template-columns:
+            1fr;
+    }
+
+    .photo-area {
+        align-items: flex-start;
+
+        flex-direction: column;
+    }
+
+    .preference-row {
+        align-items: flex-start;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+
+<!-- =========================================================
+     SIDEBAR
+========================================================= -->
+
+<aside
+    class="sidebar"
+    id="sidebar"
+>
+
+    <div class="brand">
+
+        <div class="brand-mark">
+            R
+        </div>
+
+        <div>
+
+            <strong>
+                ResolveDesk
+            </strong>
+
+            <span>
+                IT Service Management
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <div class="nav-label">
+        Workspace
+    </div>
+
+
+    <nav class="nav">
+
+        <a href="/dashboard.html">
+            <span class="nav-icon">⌂</span>
+            Dashboard
+        </a>
+
+        <a href="/tickets.html">
+            <span class="nav-icon">◫</span>
+            Tickets
+        </a>
+
+        <a href="/my-queue.html">
+            <span class="nav-icon">◎</span>
+            My Queue
+        </a>
+
+        <a href="/sla-monitor.html">
+            <span class="nav-icon">⏱</span>
+            SLA Monitor
+        </a>
+
+        <a href="/knowledge-base.html">
+            <span class="nav-icon">▤</span>
+            Knowledge Base
+        </a>
+
+    </nav>
+
+
+    <div class="nav-label">
+        Management
+    </div>
+
+
+    <nav class="nav">
+
+        <a href="/users.html">
+            <span class="nav-icon">♙</span>
+            Users
+        </a>
+
+        <a href="/technicians.html">
+            <span class="nav-icon">♟</span>
+            Technicians
+        </a>
+
+        <a href="/departments.html">
+            <span class="nav-icon">▦</span>
+            Departments
+        </a>
+
+        <a href="/reports.html">
+            <span class="nav-icon">▥</span>
+            Reports
+        </a>
+
+        <a href="/activity-log.html">
+            <span class="nav-icon">◷</span>
+            Audit Log
+        </a>
+
+        <a href="/settings.html">
+            <span class="nav-icon">⚙</span>
+            Settings
+        </a>
+
+    </nav>
+
+
+    <div class="nav-label">
+        Account
+    </div>
+
+
+    <nav class="nav">
+
+        <a
+            class="active"
+            href="/profile.html"
+        >
+            <span class="nav-icon">◉</span>
+            My Profile
+        </a>
+
+    </nav>
+
+
+    <div class="sidebar-bottom">
+
+        <div class="account-card">
+
+            <div
+                class="sidebar-avatar"
+                id="sidebarAvatar"
+            >
+                HH
+            </div>
+
+
+            <div>
+
+                <strong id="sidebarName">
+                    Haziq Hanif
+                </strong>
+
+                <span>
+                    Administrator
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</aside>
+
+
+<div
+    class="sidebar-backdrop"
+    id="sidebarBackdrop"
+></div>
+
+
+<!-- =========================================================
+     MAIN
+========================================================= -->
+
+<main class="main">
+
+
+<header class="topbar">
+
+    <div
+        style="
+            display:flex;
+            align-items:center;
+            gap:12px;
+        "
+    >
+
+        <button
+            class="mobile-btn"
+            id="menuBtn"
+            type="button"
+        >
+            ☰
+        </button>
+
+
+        <div class="breadcrumb">
+
+            <strong>
+                My Profile
+            </strong>
+
+            <span>
+                Account & preferences
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <div class="top-actions">
+
+        <button
+            class="icon-btn"
+            type="button"
+        >
+            ?
+        </button>
+
+
+        <button
+            class="icon-btn"
+            type="button"
+        >
+            ●
+        </button>
+
+
+        <div class="top-profile">
+
+            <div
+                class="top-avatar"
+                id="topAvatar"
+            >
+                HH
+            </div>
+
+
+            <div class="top-profile-copy">
+
+                <strong id="topName">
+                    Haziq Hanif
+                </strong>
+
+                <span>
+                    Administrator
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<div class="content">
+
+
+<!-- =========================================================
+     HERO
+========================================================= -->
+
+<section class="hero">
+
+    <div class="hero-row">
+
+
+        <div class="hero-profile">
+
+            <div
+                class="profile-photo"
+                id="heroAvatar"
+            >
+                HH
+            </div>
+
+
+            <div class="hero-copy">
+
+                <small id="heroAccountType">
+                    User Account
+                </small>
+
+
+                <h1 id="heroName">
+                    ResolveDesk User
+                </h1>
+
+
+                <p id="heroEmail">
+                    -
+                </p>
+
+
+                <div class="hero-tags">
+
+                    <span class="hero-tag" id="heroRole">
+                        User
+                    </span>
+
+                    <span class="hero-tag" id="heroDepartment">
+                        -
+                    </span>
+
+                    <span class="hero-tag">
+                        Active Account
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="hero-actions">
+
+            <button
+                class="secondary-button"
+                id="heroUploadButton"
+                type="button"
+            >
+                Change Photo
+            </button>
+
+
+            <button
+                class="primary-button"
+                id="heroEditButton"
+                type="button"
+            >
+                Edit Profile
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     ACCOUNT STATS
+========================================================= -->
+
+<section class="stats">
+
+    <article class="stat">
+        <small id="profileStat1Label">
+            Tickets Created
+        </small>
+
+        <strong id="profileStat1Value">
+            —
+        </strong>
+
+        <span id="profileStat1Note">
+            Lifetime requests
+        </span>
+    </article>
+
+
+    <article class="stat">
+        <small id="profileStat2Label">
+            Open Tickets
+        </small>
+
+        <strong id="profileStat2Value">
+            —
+        </strong>
+
+        <span id="profileStat2Note">
+            Currently active
+        </span>
+    </article>
+
+
+    <article class="stat">
+        <small id="profileStat3Label">
+            Resolved Tickets
+        </small>
+
+        <strong id="profileStat3Value">
+            —
+        </strong>
+
+        <span id="profileStat3Note">
+            Completed requests
+        </span>
+    </article>
+
+
+    <article class="stat">
+        <small id="profileStat4Label">
+            Department
+        </small>
+
+        <strong id="profileStat4Value">
+            —
+        </strong>
+
+        <span id="profileStat4Note">
+            Assigned department
+        </span>
+    </article>
+
+</section>
+
+
+<!-- =========================================================
+     PROFILE LAYOUT
+========================================================= -->
+
+<section class="profile-layout">
+
+
+<!-- =========================================================
+     LEFT COLUMN
+========================================================= -->
+
+<div class="stack">
+
+
+<!-- =========================================================
+     PHOTO
+========================================================= -->
+
+<article class="panel">
+
+    <div class="panel-head">
+
+        <div class="panel-title">
+
+            <strong>
+                Profile Photo
+            </strong>
+
+            <span>
+                Personalize your
+                ResolveDesk account
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <div class="panel-body">
+
+        <div class="photo-area">
+
+            <div
+                class="photo-preview"
+                id="photoPreview"
+            >
+                HH
+            </div>
+
+
+            <div class="photo-copy">
+
+                <strong>
+                    Account avatar
+                </strong>
+
+                <p>
+                    Upload a JPG, PNG or WEBP image.
+                    Maximum file size is 5 MB.
+                </p>
+
+
+                <div class="photo-buttons">
+
+                    <button
+                        class="primary-button"
+                        id="uploadPhotoButton"
+                        type="button"
+                    >
+                        Upload Photo
+                    </button>
+
+
+                    <button
+                        class="secondary-button"
+                        id="removePhotoButton"
+                        type="button"
+                    >
+                        Remove Photo
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <input
+            class="photo-input"
+            id="photoInput"
+            type="file"
+            accept="image/png,image/jpeg,image/webp"
+        >
+
+    </div>
+
+</article>
+
+
+<!-- =========================================================
+     PERSONAL DETAILS
+========================================================= -->
+
+<article
+    class="panel"
+    id="personalPanel"
+>
+
+    <div class="panel-head">
+
+        <div class="panel-title">
+
+            <strong>
+                Personal Information
+            </strong>
+
+            <span>
+                Account and contact details
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <form
+        class="panel-body"
+        id="profileForm"
+    >
+
+        <div class="form-grid">
+
+            <div class="field">
+
+                <label>
+                    Full Name
+                </label>
+
+                <input
+                    id="fullName"
+                    required
+                    value="Haziq Hanif"
+                >
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    Email Address
+                </label>
+
+                <input
+                    id="email"
+                    type="email"
+                    disabled
+                    value="haziq@resolvedesk.local"
+                >
+
+            </div>
+
+        </div>
+
+
+        <div class="form-grid">
+
+            <div class="field">
+
+                <label>
+                    Phone Number
+                </label>
+
+                <input
+                    id="phone"
+                    type="tel"
+                    value="+60 17 764 0425"
+                    placeholder="+60..."
+                >
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    Department
+                </label>
+
+                <input
+                    id="department"
+                    disabled
+                    value="Information Technology"
+                >
+
+            </div>
+
+        </div>
+
+
+        <div class="form-grid">
+
+            <div class="field">
+
+                <label>
+                    Job Title
+                </label>
+
+                <input
+                    id="jobTitle"
+                    value="IT Administrator"
+                >
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    Role
+                </label>
+
+                <input
+                    id="roleField"
+                    disabled
+                    value=""
+                >
+
+            </div>
+
+        </div>
+
+
+        <div class="field">
+
+            <label>
+                Bio
+            </label>
+
+            <textarea
+                id="bio"
+                placeholder="Short profile description..."
+            >ResolveDesk system administrator responsible for service desk operations, users, SLA monitoring and IT support management.</textarea>
+
+        </div>
+
+
+        <div class="form-actions">
+
+            <button
+                class="secondary-button"
+                id="resetProfileButton"
+                type="button"
+            >
+                Reset
+            </button>
+
+
+            <button
+                class="primary-button"
+                type="submit"
+            >
+                Save Profile
+            </button>
+
+        </div>
+
+    </form>
+
+</article>
+
+
+<!-- =========================================================
+     SECURITY
+========================================================= -->
+
+<article class="panel">
+
+    <div class="panel-head">
+
+        <div class="panel-title">
+
+            <strong>
+                Password & Security
+            </strong>
+
+            <span>
+                Protect your ResolveDesk account
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <form
+        class="panel-body"
+        id="passwordForm"
+    >
+
+        <div class="security-status">
+
+            <div class="security-icon">
+                ◆
+            </div>
+
+            <div>
+
+                <strong>
+                    Password protection enabled
+                </strong>
+
+                <p>
+                    Your current password is verified and new passwords are securely hashed by ResolveDesk.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="field">
+
+            <label>
+                Current Password
+            </label>
+
+            <input
+                id="currentPassword"
+                type="password"
+                autocomplete="current-password"
+                placeholder="Enter current password"
+            >
+
+        </div>
+
+
+        <div class="form-grid">
+
+            <div class="field">
+
+                <label>
+                    New Password
+                </label>
+
+                <input
+                    id="newPassword"
+                    type="password"
+                    autocomplete="new-password"
+                    placeholder="10+ chars, uppercase, number & special character"
+                >
+
+
+                <div class="password-strength">
+
+                    <div class="strength-track">
+
+                        <span id="strengthBar"></span>
+
+                    </div>
+
+
+                    <div
+                        class="strength-copy"
+                        id="strengthCopy"
+                    >
+                        Use 10+ characters, uppercase, number & special character
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    Confirm New Password
+                </label>
+
+                <input
+                    id="confirmPassword"
+                    type="password"
+                    autocomplete="new-password"
+                    placeholder="Repeat new password"
+                >
+
+            </div>
+
+        </div>
+
+
+        <div class="form-actions">
+
+            <button
+                class="primary-button"
+                type="submit"
+            >
+                Update Password
+            </button>
+
+        </div>
+
+    </form>
+
+</article>
+
+</div>
+
+
+<!-- =========================================================
+     RIGHT COLUMN
+========================================================= -->
+
+<div class="stack">
+
+
+<!-- =========================================================
+     ACCOUNT OVERVIEW
+========================================================= -->
+
+<article class="panel">
+
+    <div class="panel-head">
+
+        <div class="panel-title">
+
+            <strong>
+                Account Overview
+            </strong>
+
+            <span>
+                ResolveDesk identity
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <div class="panel-body">
+
+        <div class="account-list">
+
+            <div class="account-row">
+
+                <small>
+                    User ID
+                </small>
+
+                <strong>
+                    USR-000001
+                </strong>
+
+            </div>
+
+
+            <div class="account-row">
+
+                <small>
+                    Account Status
+                </small>
+
+                <strong id="accountStatus">
+                    Active
+                </strong>
+
+            </div>
+
+
+            <div class="account-row">
+
+                <small>
+                    Access Level
+                </small>
+
+                <strong id="accessLevel">
+                    User
+                </strong>
+
+            </div>
+
+
+            <div class="account-row">
+
+                <small>
+                    Last Login
+                </small>
+
+                <strong id="lastLogin">
+                    —
+                </strong>
+
+            </div>
+
+
+            <div class="account-row">
+
+                <small>
+                    Session
+                </small>
+
+                <strong id="currentDevice">
+                    Current Device
+                </strong>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</article>
+
+
+<!-- =========================================================
+     PREFERENCES
+========================================================= -->
+
+<article class="panel">
+
+    <div class="panel-head">
+
+        <div class="panel-title">
+
+            <strong>
+                Preferences
+            </strong>
+
+            <span>
+                Personal notification settings
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <div class="panel-body">
+
+        <div class="preference-row">
+
+            <div class="preference-copy">
+
+                <strong>
+                    Ticket assignment alerts
+                </strong>
+
+                <span>
+                    Notify me when a support ticket is assigned to my account.
+                </span>
+
+            </div>
+
+
+            <label class="switch">
+
+                <input
+                    id="assignmentAlerts"
+                    type="checkbox"
+                    checked
+                >
+
+                <span class="slider"></span>
+
+            </label>
+
+        </div>
+
+
+        <div class="preference-row">
+
+            <div class="preference-copy">
+
+                <strong>
+                    SLA alerts
+                </strong>
+
+                <span>
+                    Receive alerts for tickets approaching SLA deadlines.
+                </span>
+
+            </div>
+
+
+            <label class="switch">
+
+                <input
+                    id="slaAlerts"
+                    type="checkbox"
+                    checked
+                >
+
+                <span class="slider"></span>
+
+            </label>
+
+        </div>
+
+
+        <div class="preference-row">
+
+            <div class="preference-copy">
+
+                <strong>
+                    Email notifications
+                </strong>
+
+                <span>
+                    Receive ResolveDesk activity notifications by email.
+                </span>
+
+            </div>
+
+
+            <label class="switch">
+
+                <input
+                    id="emailAlerts"
+                    type="checkbox"
+                    checked
+                >
+
+                <span class="slider"></span>
+
+            </label>
+
+        </div>
+
+
+        <div class="preference-row">
+
+            <div class="preference-copy">
+
+                <strong>
+                    Daily support summary
+                </strong>
+
+                <span>
+                    Receive a summary of active and resolved tickets.
+                </span>
+
+            </div>
+
+
+            <label class="switch">
+
+                <input
+                    id="dailySummary"
+                    type="checkbox"
+                >
+
+                <span class="slider"></span>
+
+            </label>
+
+        </div>
+
+    </div>
+
+</article>
+
+
+<!-- =========================================================
+     ACTIVITY
+========================================================= -->
+
+<article class="panel">
+
+    <div class="panel-head">
+
+        <div class="panel-title">
+
+            <strong>
+                Recent Activity
+            </strong>
+
+            <span>
+                Your latest ResolveDesk actions
+            </span>
+
+        </div>
+
+
+        <a
+            id="profileActivityViewAll"
+            href="/activity-log.html"
+            style="
+                color:#a8d4e4;
+                font-size:8px;
+                font-weight:900;
+            "
+        >
+            View All →
+        </a>
+
+    </div>
+
+
+    <div class="panel-body">
+
+        <div class="activity-list" id="profileActivityList">
+
+            <div class="activity-item">
+
+                <div class="activity-icon">
+                    •
+                </div>
+
+                <div>
+                    <strong>
+                        Loading recent activity...
+                    </strong>
+
+                    <p>
+                        Your latest ResolveDesk actions will appear here.
+                    </p>
+                </div>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+</article>
+
+
+<!-- =========================================================
+     LOGOUT
+========================================================= -->
+
+<article class="panel logout-panel">
+
+    <div class="panel-head">
+
+        <div class="panel-title">
+
+            <strong>
+                Session
+            </strong>
+
+            <span>
+                Account access
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <div class="panel-body">
+
+        <p class="logout-copy">
+
+            Sign out of this ResolveDesk session.
+            Unsaved form changes will be lost.
+
+        </p>
+
+
+        <button
+            class="logout-button"
+            id="logoutButton"
+            type="button"
+        >
+            Sign Out
+        </button>
+
+    </div>
+
+</article>
+
+</div>
+
+</section>
+
+</div>
+
+</main>
+
+
+<!-- =========================================================
+     LOGOUT MODAL
+========================================================= -->
+
+<div
+    class="modal-backdrop"
+    id="logoutModal"
+>
+
+    <div class="modal">
+
+        <div class="modal-head">
+
+            <h2>
+                Sign Out
+            </h2>
+
+
+            <button
+                class="close-button"
+                id="closeLogoutModal"
+                type="button"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <div class="modal-body">
+
+            <p>
+                Are you sure you want to sign out of ResolveDesk?
+            </p>
+
+
+            <div class="modal-actions">
+
+                <button
+                    class="secondary-button"
+                    id="cancelLogout"
+                    type="button"
+                >
+                    Cancel
+                </button>
+
+
+                <button
+                    class="danger-button"
+                    id="confirmLogout"
+                    type="button"
+                >
+                    Sign Out
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<div
+    class="toast"
+    id="toast"
+></div>
+
+
+<script>
+
+/* =========================================================
+   DEFAULT PROFILE
+========================================================= */
+
+const defaultProfile = {
+
+    fullName:
+        "ResolveDesk User",
+
+    email:
+        "",
+
+    phone:
+        "",
+
+    department:
+        "",
+
+    jobTitle:
+        "",
+
+    bio:
+        "",
+
+    profilePhoto:
+        null,
+
+    preferences: {
+
+        assignmentAlerts:
+            true,
+
+        slaAlerts:
+            true,
+
+        emailAlerts:
+            true,
+
+        dailySummary:
+            false
+
+    }
+
+};
+
+
+let profile =
+    loadProfile();
+
+
+/* =========================================================
+   LOAD PROFILE
+========================================================= */
+
+function loadProfile() {
+
+    return {
+        ...defaultProfile,
+
+        preferences: {
+            ...defaultProfile.preferences
+        }
+    };
+}
+
+
+/* =========================================================
+   SAVE PROFILE
+========================================================= */
+
+/*
+    Legacy compatibility function.
+
+    Live profile data is now persisted
+    through ResolveDesk API endpoints.
+*/
+
+function saveProfile() {
+
+    return;
+}
+
+
+/* =========================================================
+   INITIALS
+========================================================= */
+
+function getInitials(
+    name
+) {
+
+    return String(
+        name ||
+        "ResolveDesk User"
+    )
+        .split(
+            " "
+        )
+        .filter(
+            Boolean
+        )
+        .slice(
+            0,
+            2
+        )
+        .map(
+            part =>
+                part[0]
+        )
+        .join(
+            ""
+        )
+        .toUpperCase();
+}
+
+
+/* =========================================================
+   ESCAPE
+========================================================= */
+
+function escapeHtml(
+    value
+) {
+
+    return String(
+        value ?? ""
+    )
+        .replaceAll(
+            "&",
+            "&amp;"
+        )
+        .replaceAll(
+            "<",
+            "&lt;"
+        )
+        .replaceAll(
+            ">",
+            "&gt;"
+        )
+        .replaceAll(
+            '"',
+            "&quot;"
+        )
+        .replaceAll(
+            "'",
+            "&#039;"
+        );
+}
+
+
+/* =========================================================
+   AVATAR
+========================================================= */
+
+function renderAvatar(
+    element
+) {
+
+    if (
+        !element
+    ) {
+
+        return;
+    }
+
+
+    if (
+        profile.profilePhoto
+    ) {
+
+        element.innerHTML = `
+
+            <img
+                src="${profile.profilePhoto}"
+                alt="Profile photo"
+            >
+
+        `;
+
+    } else {
+
+        element.textContent =
+            getInitials(
+                profile.fullName
+            );
+    }
+}
+
+
+/* =========================================================
+   RENDER PROFILE
+========================================================= */
+
+function renderProfile() {
+
+    document.getElementById(
+        "fullName"
+    ).value =
+        profile.fullName;
+
+
+    document.getElementById(
+        "email"
+    ).value =
+        profile.email;
+
+
+    document.getElementById(
+        "phone"
+    ).value =
+        profile.phone;
+
+
+    document.getElementById(
+        "department"
+    ).value =
+        profile.department;
+
+
+    document.getElementById(
+        "jobTitle"
+    ).value =
+        profile.jobTitle;
+
+
+    document.getElementById(
+        "bio"
+    ).value =
+        profile.bio;
+
+
+    document.getElementById(
+        "heroName"
+    ).textContent =
+        profile.fullName;
+
+
+    document.getElementById(
+        "heroEmail"
+    ).textContent =
+        profile.email;
+
+
+    document.getElementById(
+        "topName"
+    ).textContent =
+        profile.fullName;
+
+
+    document.getElementById(
+        "sidebarName"
+    ).textContent =
+        profile.fullName;
+
+
+    document.getElementById(
+        "assignmentAlerts"
+    ).checked =
+        profile.preferences.assignmentAlerts;
+
+
+    document.getElementById(
+        "slaAlerts"
+    ).checked =
+        profile.preferences.slaAlerts;
+
+
+    document.getElementById(
+        "emailAlerts"
+    ).checked =
+        profile.preferences.emailAlerts;
+
+
+    document.getElementById(
+        "dailySummary"
+    ).checked =
+        profile.preferences.dailySummary;
+
+
+    renderAvatar(
+        document.getElementById(
+            "heroAvatar"
+        )
+    );
+
+
+    renderAvatar(
+        document.getElementById(
+            "photoPreview"
+        )
+    );
+
+
+    renderAvatar(
+        document.getElementById(
+            "topAvatar"
+        )
+    );
+
+
+    renderAvatar(
+        document.getElementById(
+            "sidebarAvatar"
+        )
+    );
+}
+
+
+/* =========================================================
+   PROFILE SUBMIT
+========================================================= */
+
+document
+    .getElementById(
+        "profileForm"
+    )
+    .addEventListener(
+        "submit",
+        async event => {
+
+            event.preventDefault();
+
+
+            const fullName =
+                document
+                    .getElementById(
+                        "fullName"
+                    )
+                    .value
+                    .trim();
+
+
+            if (!fullName) {
+
+                showToast(
+                    "Full name is required."
+                );
+
+                return;
+            }
+
+
+            const phone =
+                document
+                    .getElementById(
+                        "phone"
+                    )
+                    .value
+                    .trim();
+
+
+            const jobTitle =
+                document
+                    .getElementById(
+                        "jobTitle"
+                    )
+                    .value
+                    .trim();
+
+
+            const bio =
+                document
+                    .getElementById(
+                        "bio"
+                    )
+                    .value
+                    .trim();
+
+
+            const button =
+                event.submitter ||
+                event.currentTarget
+                    .querySelector(
+                        'button[type="submit"]'
+                    );
+
+
+            const originalText =
+                button?.textContent;
+
+
+            if (button) {
+
+                button.disabled =
+                    true;
+
+                button.textContent =
+                    "Saving...";
+            }
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        "/api/auth/profile",
+                        {
+                            method:
+                                "PUT",
+
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
+
+                            credentials:
+                                "include",
+
+                            body:
+                                JSON.stringify({
+
+                                    fullName,
+
+                                    phone,
+
+                                    jobTitle,
+
+                                    bio,
+
+                                    profilePhoto:
+                                        profile
+                                            .profilePhoto ||
+                                        null
+
+                                })
+                        }
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                if (
+                    !response.ok ||
+                    !data.success
+                ) {
+
+                    throw new Error(
+                        data.message ||
+                        "Unable to update profile."
+                    );
+                }
+
+
+                const user =
+                    data.user;
+
+
+                profile = {
+                    ...profile,
+
+                    fullName:
+                        user.fullName ||
+                        fullName,
+
+                    email:
+                        user.email ||
+                        profile.email,
+
+                    phone:
+                        user.phone ||
+                        "",
+
+                    department:
+                        user.department ||
+                        profile.department,
+
+                    jobTitle:
+                        user.jobTitle ||
+                        "",
+
+                    bio:
+                        user.bio ||
+                        "",
+
+                    profilePhoto:
+                        user.profilePhoto ||
+                        null
+                };
+
+
+                
+
+
+                renderProfile();
+
+
+                showToast(
+                    data.message ||
+                    "Profile updated successfully."
+                );
+
+
+            } catch (error) {
+
+                console.error(
+                    "Profile update error:",
+                    error
+                );
+
+
+                showToast(
+                    error.message ||
+                    "Unable to update profile."
+                );
+
+            } finally {
+
+                if (button) {
+
+                    button.disabled =
+                        false;
+
+                    button.textContent =
+                        originalText ||
+                        "Save Profile";
+                }
+            }
+        }
+    );
+
+
+/* =========================================================
+   RESET PROFILE FORM
+========================================================= */
+
+document
+    .getElementById(
+        "resetProfileButton"
+    )
+    .addEventListener(
+        "click",
+        () => {
+
+            renderProfile();
+
+
+            showToast(
+                "Unsaved changes cleared."
+            );
+        }
+    );
+
+
+/* =========================================================
+   HERO EDIT
+========================================================= */
+
+document
+    .getElementById(
+        "heroEditButton"
+    )
+    .addEventListener(
+        "click",
+        () => {
+
+            document.getElementById(
+                "personalPanel"
+            )
+            .scrollIntoView(
+                {
+                    behavior:
+                        "smooth",
+
+                    block:
+                        "start"
+                }
+            );
+
+
+            setTimeout(
+                () => {
+
+                    document.getElementById(
+                        "fullName"
+                    ).focus();
+
+                },
+                500
+            );
+        }
+    );
+
+
+
+async function saveProfilePhotoToServer(
+    profilePhoto
+) {
+
+    const response =
+        await fetch(
+            "/api/auth/profile",
+            {
+                method:
+                    "PUT",
+
+                headers: {
+                    "Content-Type":
+                        "application/json"
+                },
+
+                credentials:
+                    "include",
+
+                body:
+                    JSON.stringify({
+
+                        fullName:
+                            profile.fullName ||
+                            "",
+
+                        phone:
+                            profile.phone ||
+                            "",
+
+                        jobTitle:
+                            profile.jobTitle ||
+                            "",
+
+                        bio:
+                            profile.bio ||
+                            "",
+
+                        profilePhoto:
+                            profilePhoto ||
+                            null
+
+                    })
+            }
+        );
+
+
+    const data =
+        await response.json();
+
+
+    if (
+        !response.ok ||
+        !data.success
+    ) {
+
+        throw new Error(
+            data.message ||
+            "Unable to save profile photo."
+        );
+    }
+
+
+    if (data.user) {
+
+        profile = {
+            ...profile,
+
+            fullName:
+                data.user.fullName ||
+                profile.fullName,
+
+            phone:
+                data.user.phone ||
+                "",
+
+            jobTitle:
+                data.user.jobTitle ||
+                "",
+
+            bio:
+                data.user.bio ||
+                "",
+
+            profilePhoto:
+                data.user.profilePhoto ||
+                null
+        };
+    }
+
+
+    return data;
+}
+
+
+/* =========================================================
+   PHOTO UPLOAD
+========================================================= */
+
+const photoInput =
+    document.getElementById(
+        "photoInput"
+    );
+
+
+function openPhotoPicker() {
+
+    photoInput.click();
+}
+
+
+document
+    .getElementById(
+        "uploadPhotoButton"
+    )
+    .addEventListener(
+        "click",
+        openPhotoPicker
+    );
+
+
+document
+    .getElementById(
+        "heroUploadButton"
+    )
+    .addEventListener(
+        "click",
+        openPhotoPicker
+    );
+
+
+photoInput.addEventListener(
+    "change",
+    event => {
+
+        const file =
+            event.target.files?.[0];
+
+
+        if (
+            !file
+        ) {
+
+            return;
+        }
+
+
+        const allowedTypes =
+            [
+                "image/jpeg",
+                "image/png",
+                "image/webp"
+            ];
+
+
+        if (
+            !allowedTypes.includes(
+                file.type
+            )
+        ) {
+
+            showToast(
+                "Use JPG, PNG or WEBP only."
+            );
+
+
+            photoInput.value =
+                "";
+
+
+            return;
+        }
+
+
+        if (
+            file.size >
+            5 *
+            1024 *
+            1024
+        ) {
+
+            showToast(
+                "Image must be below 5 MB."
+            );
+
+
+            photoInput.value =
+                "";
+
+
+            return;
+        }
+
+
+        const reader =
+            new FileReader();
+
+
+        reader.onload =
+            async () => {
+
+                profile.profilePhoto =
+                    reader.result;
+
+
+                try {
+
+                    await saveProfilePhotoToServer(
+                        profile.profilePhoto
+                    );
+
+                    renderProfile();
+
+
+                    showToast(
+                        "Profile photo updated."
+                    );
+
+                } catch (error) {
+
+                    console.error(
+                        "Profile photo update error:",
+                        error
+                    );
+
+                    showToast(
+                        error.message ||
+                        "Unable to update profile photo."
+                    );
+                }
+            };
+
+
+        reader.readAsDataURL(
+            file
+        );
+    }
+);
+
+
+/* =========================================================
+   REMOVE PHOTO
+========================================================= */
+
+document
+    .getElementById(
+        "removePhotoButton"
+    )
+    .addEventListener(
+        "click",
+        async () => {
+
+            profile.profilePhoto =
+                null;
+
+
+            try {
+
+                await saveProfilePhotoToServer(
+                    null
+                );
+
+                renderProfile();
+
+
+                showToast(
+                    "Profile photo removed."
+                );
+
+            } catch (error) {
+
+                console.error(
+                    "Profile photo remove error:",
+                    error
+                );
+
+                showToast(
+                    error.message ||
+                    "Unable to remove profile photo."
+                );
+
+                return;
+            }
+
+
+            photoInput.value =
+                "";
+
+
+        }
+    );
+
+
+/* =========================================================
+   PASSWORD STRENGTH
+========================================================= */
+
+const newPassword =
+    document.getElementById(
+        "newPassword"
+    );
+
+
+newPassword.addEventListener(
+    "input",
+    () => {
+
+        const password =
+            newPassword.value;
+
+
+        let score =
+            0;
+
+
+        if (
+            password.length >= 10
+        ) {
+            score++;
+        }
+
+
+        if (
+            /[A-Z]/.test(
+                password
+            )
+        ) {
+            score++;
+        }
+
+
+        if (
+            /[0-9]/.test(
+                password
+            )
+        ) {
+            score++;
+        }
+
+
+        if (
+            /[^A-Za-z0-9]/.test(
+                password
+            )
+        ) {
+            score++;
+        }
+
+
+        const width =
+            score *
+            25;
+
+
+        document.getElementById(
+            "strengthBar"
+        ).style.width =
+            `${width}%`;
+
+
+        const copy =
+            document.getElementById(
+                "strengthCopy"
+            );
+
+
+        if (
+            !password
+        ) {
+
+            copy.textContent =
+                "Use 10+ characters, uppercase, number & special character";
+
+        } else if (
+            score <=
+            1
+        ) {
+
+            copy.textContent =
+                "Weak password";
+
+        } else if (
+            score ===
+            2
+        ) {
+
+            copy.textContent =
+                "Fair password";
+
+        } else if (
+            score ===
+            3
+        ) {
+
+            copy.textContent =
+                "Strong password";
+
+        } else {
+
+            copy.textContent =
+                "Very strong password";
+        }
+    }
+);
+
+
+/* =========================================================
+   PASSWORD FORM
+========================================================= */
+
+document
+    .getElementById(
+        "passwordForm"
+    )
+    .addEventListener(
+        "submit",
+        async event => {
+
+            event.preventDefault();
+
+
+            const currentPassword =
+                document
+                    .getElementById(
+                        "currentPassword"
+                    )
+                    .value;
+
+
+            const newPassword =
+                document
+                    .getElementById(
+                        "newPassword"
+                    )
+                    .value;
+
+
+            const confirmPassword =
+                document
+                    .getElementById(
+                        "confirmPassword"
+                    )
+                    .value;
+
+
+            if (
+                !currentPassword ||
+                !newPassword ||
+                !confirmPassword
+            ) {
+
+                showToast(
+                    "Complete all password fields."
+                );
+
+                return;
+            }
+
+
+            if (
+                newPassword !==
+                confirmPassword
+            ) {
+
+                showToast(
+                    "New passwords do not match."
+                );
+
+                return;
+            }
+
+
+            const button =
+                event.submitter ||
+                event.currentTarget
+                    .querySelector(
+                        'button[type="submit"]'
+                    );
+
+
+            const originalText =
+                button?.textContent;
+
+
+            if (button) {
+
+                button.disabled =
+                    true;
+
+                button.textContent =
+                    "Updating...";
+            }
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        "/api/auth/password",
+                        {
+                            method:
+                                "PUT",
+
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
+
+                            credentials:
+                                "include",
+
+                            body:
+                                JSON.stringify({
+
+                                    currentPassword,
+
+                                    newPassword
+
+                                })
+                        }
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                if (
+                    !response.ok ||
+                    !data.success
+                ) {
+
+                    throw new Error(
+                        data.message ||
+                        "Unable to update password."
+                    );
+                }
+
+
+                event.currentTarget
+                    .reset();
+
+
+                document
+                    .getElementById(
+                        "strengthBar"
+                    )
+                    .style.width =
+                        "0%";
+
+
+                document
+                    .getElementById(
+                        "strengthCopy"
+                    )
+                    .textContent =
+                        "Use 10+ characters, uppercase, number & special character";
+
+
+                showToast(
+                    data.message ||
+                    "Password updated successfully."
+                );
+
+
+            } catch (error) {
+
+                console.error(
+                    "Password update error:",
+                    error
+                );
+
+
+                showToast(
+                    error.message ||
+                    "Unable to update password."
+                );
+
+            } finally {
+
+                if (button) {
+
+                    button.disabled =
+                        false;
+
+                    button.textContent =
+                        originalText ||
+                        "Update Password";
+                }
+            }
+        }
+    );
+
+
+/* =========================================================
+   PREFERENCES
+========================================================= */
+
+[
+    "assignmentAlerts",
+    "slaAlerts",
+    "emailAlerts",
+    "dailySummary"
+]
+.forEach(
+    id => {
+
+        document
+            .getElementById(
+                id
+            )
+            .addEventListener(
+                "change",
+                () => {
+
+                    profile.preferences = {
+
+                        assignmentAlerts:
+                            document.getElementById(
+                                "assignmentAlerts"
+                            ).checked,
+
+                        slaAlerts:
+                            document.getElementById(
+                                "slaAlerts"
+                            ).checked,
+
+                        emailAlerts:
+                            document.getElementById(
+                                "emailAlerts"
+                            ).checked,
+
+                        dailySummary:
+                            document.getElementById(
+                                "dailySummary"
+                            ).checked
+
+                    };
+
+
+                    saveProfile();
+
+
+                    showToast(
+                        "Preferences saved."
+                    );
+                }
+            );
+    }
+);
+
+
+/* =========================================================
+   LOGOUT MODAL
+========================================================= */
+
+const logoutModal =
+    document.getElementById(
+        "logoutModal"
+    );
+
+
+document
+    .getElementById(
+        "logoutButton"
+    )
+    .addEventListener(
+        "click",
+        () => {
+
+            logoutModal.classList.add(
+                "open"
+            );
+
+
+            document.body.style.overflow =
+                "hidden";
+        }
+    );
+
+
+function closeLogoutModal() {
+
+    logoutModal.classList.remove(
+        "open"
+    );
+
+
+    document.body.style.overflow =
+        "";
+}
+
+
+document
+    .getElementById(
+        "closeLogoutModal"
+    )
+    .addEventListener(
+        "click",
+        closeLogoutModal
+    );
+
+
+document
+    .getElementById(
+        "cancelLogout"
+    )
+    .addEventListener(
+        "click",
+        closeLogoutModal
+    );
+
+
+logoutModal.addEventListener(
+    "click",
+    event => {
+
+        if (
+            event.target ===
+            logoutModal
+        ) {
+
+            closeLogoutModal();
+        }
+    }
+);
+
+
+/* =========================================================
+   CONFIRM LOGOUT
+========================================================= */
+
+document
+    .getElementById(
+        "confirmLogout"
+    )
+    .addEventListener(
+        "click",
+        () => {
+
+            /*
+                BACKEND LATER:
+
+                await fetch(
+                    "/api/auth/logout",
+                    {
+                        method: "POST",
+                        credentials: "include"
+                    }
+                );
+            */
+
+
+            window.location.href =
+                "/login.html";
+        }
+    );
+
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+let toastTimer;
+
+
+function showToast(
+    message
+) {
+
+    const toast =
+        document.getElementById(
+            "toast"
+        );
+
+
+    toast.textContent =
+        message;
+
+
+    toast.classList.add(
+        "show"
+    );
+
+
+    clearTimeout(
+        toastTimer
+    );
+
+
+    toastTimer =
+        setTimeout(
+            () => {
+
+                toast.classList.remove(
+                    "show"
+                );
+
+            },
+            2400
+        );
+}
+
+
+/* =========================================================
+   MOBILE SIDEBAR
+========================================================= */
+
+const sidebar =
+    document.getElementById(
+        "sidebar"
+    );
+
+
+const backdrop =
+    document.getElementById(
+        "sidebarBackdrop"
+    );
+
+
+document
+    .getElementById(
+        "menuBtn"
+    )
+    .addEventListener(
+        "click",
+        () => {
+
+            sidebar.classList.toggle(
+                "open"
+            );
+
+
+            backdrop.classList.toggle(
+                "open"
+            );
+        }
+    );
+
+
+backdrop.addEventListener(
+    "click",
+    () => {
+
+        sidebar.classList.remove(
+            "open"
+        );
+
+
+        backdrop.classList.remove(
+            "open"
+        );
+    }
+);
+
+
+/* =========================================================
+   ESCAPE KEY
+========================================================= */
+
+document.addEventListener(
+    "keydown",
+    event => {
+
+        if (
+            event.key ===
+            "Escape"
+        ) {
+
+            closeLogoutModal();
+        }
+    }
+);
+
+
+/* =========================================================
+   INITIAL
+========================================================= */
+
+renderProfile();
+
+</script>
+
+
+<script src="/js/auth-session.js"></script>
+
+<script src="/js/role-navigation.js"></script>
+<script src="/js/create-ticket-nav.js"></script>
+<script src="/js/profile-session.js"></script>
+<script src="/js/profile-role-content.js"></script>
+<script src="/js/profile-stats.js"></script>
+<script src="/js/profile-account-info.js"></script>
+<script src="/js/profile-activity.js"></script>
+<script src="/js/profile-activity-access.js"></script>
+<script src="/js/profile-preferences.js"></script>
+</body>
+</html>

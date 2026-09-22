@@ -1,0 +1,3931 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>
+    ResolveDesk — Technicians
+</title>
+
+<style>
+
+/* =========================================================
+   THEME
+========================================================= */
+
+:root {
+
+    --topaz: #67AECA;
+    --amethyst: #675682;
+    --jewel: #5F0F4E;
+    --rose: #E52A6F;
+
+    --bg: #08060b;
+    --bg2: #120b16;
+
+    --text: #ffffff;
+    --muted: #95899d;
+
+    --line: rgba(103,174,202,.14);
+    --line-soft: rgba(103,174,202,.07);
+
+    --sidebar: 250px;
+
+    --shadow:
+        0 30px 90px
+        rgba(25,5,30,.45);
+}
+
+
+/* =========================================================
+   RESET
+========================================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+
+    min-height: 100vh;
+
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Inter,
+        Arial,
+        sans-serif;
+
+    color: var(--text);
+
+    background:
+        radial-gradient(
+            circle at 88% 5%,
+            rgba(103,174,202,.16),
+            transparent 25%
+        ),
+        radial-gradient(
+            circle at 10% 82%,
+            rgba(229,42,111,.08),
+            transparent 25%
+        ),
+        radial-gradient(
+            circle at 62% 94%,
+            rgba(103,86,130,.14),
+            transparent 30%
+        ),
+        linear-gradient(
+            180deg,
+            var(--bg),
+            var(--bg2) 55%,
+            var(--bg)
+        );
+
+    overflow-x: hidden;
+}
+
+body::before {
+
+    content: "";
+
+    position: fixed;
+    inset: 0;
+
+    z-index: -1;
+
+    pointer-events: none;
+
+    opacity: .13;
+
+    background-image:
+        linear-gradient(
+            rgba(103,174,202,.035) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            90deg,
+            rgba(103,174,202,.035) 1px,
+            transparent 1px
+        );
+
+    background-size:
+        64px 64px;
+
+    mask-image:
+        linear-gradient(
+            #000,
+            transparent 90%
+        );
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+button,
+input,
+select {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+
+/* =========================================================
+   SIDEBAR
+========================================================= */
+
+.sidebar {
+
+    position: fixed;
+
+    inset:
+        0 auto 0 0;
+
+    width: var(--sidebar);
+
+    z-index: 50;
+
+    padding:
+        18px 14px;
+
+    background:
+        rgba(8,5,11,.94);
+
+    border-right:
+        1px solid
+        rgba(103,174,202,.09);
+
+    backdrop-filter: blur(20px);
+}
+
+.brand {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding:
+        7px 9px 22px;
+}
+
+.brand-mark {
+
+    width: 42px;
+    height: 42px;
+
+    display: grid;
+
+    place-items: center;
+
+    border-radius: 12px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--topaz),
+            var(--amethyst) 58%,
+            var(--rose)
+        );
+
+    font-size: 20px;
+
+    font-weight: 950;
+
+    box-shadow:
+        0 14px 34px
+        rgba(103,86,130,.25);
+}
+
+.brand strong {
+
+    display: block;
+
+    font-size: 16px;
+}
+
+.brand span {
+
+    display: block;
+
+    margin-top: 3px;
+
+    color: #7d7085;
+
+    font-size: 9px;
+
+    font-weight: 900;
+
+    letter-spacing: .12em;
+
+    text-transform: uppercase;
+}
+
+.nav-label {
+
+    margin:
+        12px 10px 8px;
+
+    color: #615568;
+
+    font-size: 9px;
+
+    font-weight: 950;
+
+    letter-spacing: .14em;
+
+    text-transform: uppercase;
+}
+
+.nav {
+
+    display: grid;
+
+    gap: 4px;
+}
+
+.nav a {
+
+    min-height: 45px;
+
+    padding:
+        0 12px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 11px;
+
+    border:
+        1px solid transparent;
+
+    border-radius: 12px;
+
+    color: #988ba0;
+
+    font-size: 13px;
+
+    font-weight: 760;
+
+    transition: .18s ease;
+}
+
+.nav a:hover {
+
+    color: #fff;
+
+    background:
+        rgba(103,174,202,.05);
+}
+
+.nav a.active {
+
+    color: #fff;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(103,174,202,.13),
+            rgba(103,86,130,.10)
+        );
+
+    border-color:
+        rgba(103,174,202,.18);
+}
+
+.nav-icon {
+
+    width: 28px;
+    height: 28px;
+
+    display: grid;
+
+    place-items: center;
+
+    border-radius: 8px;
+
+    background:
+        rgba(103,86,130,.08);
+
+    border:
+        1px solid
+        rgba(103,174,202,.09);
+
+    font-size: 12px;
+}
+
+.nav a.active .nav-icon {
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--topaz),
+            var(--amethyst)
+        );
+}
+
+.sidebar-bottom {
+
+    position: absolute;
+
+    left: 14px;
+    right: 14px;
+    bottom: 16px;
+}
+
+.system-card {
+
+    padding: 14px;
+
+    border:
+        1px solid
+        rgba(103,174,202,.11);
+
+    border-radius: 15px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(103,86,130,.11),
+            rgba(10,6,13,.9)
+        );
+}
+
+.system-card small {
+
+    color: #746779;
+
+    font-size: 9px;
+
+    font-weight: 900;
+
+    letter-spacing: .10em;
+
+    text-transform: uppercase;
+}
+
+.system-card strong {
+
+    display: block;
+
+    margin-top: 7px;
+
+    font-size: 12px;
+}
+
+.system-card p {
+
+    margin-top: 5px;
+
+    color: #81748a;
+
+    font-size: 10px;
+
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   MAIN
+========================================================= */
+
+.main {
+
+    margin-left:
+        var(--sidebar);
+
+    min-height: 100vh;
+}
+
+
+/* =========================================================
+   TOPBAR
+========================================================= */
+
+.topbar {
+
+    position: sticky;
+
+    top: 0;
+
+    z-index: 40;
+
+    height: 74px;
+
+    padding:
+        0 24px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 16px;
+
+    background:
+        rgba(9,6,12,.8);
+
+    border-bottom:
+        1px solid
+        rgba(103,174,202,.08);
+
+    backdrop-filter: blur(18px);
+}
+
+.mobile-btn {
+
+    display: none;
+
+    width: 42px;
+    height: 42px;
+
+    border:
+        1px solid var(--line);
+
+    border-radius: 11px;
+
+    background:
+        rgba(103,86,130,.08);
+
+    color: #fff;
+}
+
+.search {
+
+    width:
+        min(
+            470px,
+            46vw
+        );
+}
+
+.search input {
+
+    width: 100%;
+
+    height: 42px;
+
+    padding:
+        0 14px;
+
+    border:
+        1px solid var(--line);
+
+    border-radius: 11px;
+
+    outline: none;
+
+    background:
+        rgba(12,8,16,.82);
+
+    color: #fff;
+}
+
+.search input:focus {
+
+    border-color:
+        var(--topaz);
+}
+
+.search input::placeholder {
+
+    color: #73667b;
+}
+
+.top-actions {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+}
+
+.icon-btn {
+
+    width: 40px;
+    height: 40px;
+
+    border:
+        1px solid var(--line);
+
+    border-radius: 11px;
+
+    background:
+        rgba(103,86,130,.07);
+
+    color: #c5bacb;
+}
+
+.profile {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    padding:
+        5px 8px 5px 5px;
+
+    border:
+        1px solid var(--line);
+
+    border-radius: 12px;
+
+    background:
+        rgba(103,86,130,.07);
+}
+
+.avatar {
+
+    width: 32px;
+    height: 32px;
+
+    display: grid;
+
+    place-items: center;
+
+    border-radius: 9px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--topaz),
+            var(--amethyst)
+        );
+
+    font-size: 10px;
+
+    font-weight: 950;
+}
+
+.profile strong {
+
+    display: block;
+
+    font-size: 11px;
+}
+
+.profile span {
+
+    display: block;
+
+    margin-top: 2px;
+
+    color: #82758c;
+
+    font-size: 9px;
+}
+
+
+/* =========================================================
+   CONTENT
+========================================================= */
+
+.content {
+
+    padding: 26px;
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.hero {
+
+    position: relative;
+
+    overflow: hidden;
+
+    padding: 28px;
+
+    border:
+        1px solid var(--line);
+
+    border-radius: 26px;
+
+    background:
+        radial-gradient(
+            circle at 88% 10%,
+            rgba(103,174,202,.16),
+            transparent 27%
+        ),
+        radial-gradient(
+            circle at 8% 100%,
+            rgba(229,42,111,.08),
+            transparent 27%
+        ),
+        linear-gradient(
+            135deg,
+            rgba(20,12,25,.98),
+            rgba(10,7,13,.98)
+        );
+
+    box-shadow:
+        var(--shadow);
+}
+
+.hero-row {
+
+    position: relative;
+
+    z-index: 2;
+
+    display: flex;
+
+    align-items: flex-end;
+
+    justify-content: space-between;
+
+    gap: 22px;
+}
+
+.eyebrow {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    padding:
+        7px 10px;
+
+    border:
+        1px solid
+        rgba(103,174,202,.16);
+
+    border-radius: 999px;
+
+    background:
+        rgba(103,174,202,.06);
+
+    color: #b9dce8;
+
+    font-size: 9px;
+
+    font-weight: 950;
+
+    letter-spacing: .11em;
+
+    text-transform: uppercase;
+}
+
+.eyebrow::before {
+
+    content: "";
+
+    width: 7px;
+    height: 7px;
+
+    border-radius: 50%;
+
+    background:
+        var(--topaz);
+
+    box-shadow:
+        0 0 16px
+        rgba(103,174,202,.6);
+}
+
+.hero h1 {
+
+    margin-top: 13px;
+
+    font-size:
+        clamp(
+            34px,
+            4vw,
+            52px
+        );
+
+    letter-spacing:
+        -2.3px;
+}
+
+.hero h1 span {
+
+    background:
+        linear-gradient(
+            90deg,
+            var(--topaz),
+            #b79ac9,
+            var(--rose)
+        );
+
+    -webkit-background-clip:
+        text;
+
+    background-clip:
+        text;
+
+    color: transparent;
+}
+
+.hero p {
+
+    max-width: 720px;
+
+    margin-top: 11px;
+
+    color: #95899d;
+
+    font-size: 12.5px;
+
+    line-height: 1.7;
+}
+
+.primary-button {
+
+    min-height: 44px;
+
+    padding:
+        0 16px;
+
+    border: 0;
+
+    border-radius: 12px;
+
+    background:
+        linear-gradient(
+            100deg,
+            var(--topaz),
+            var(--amethyst) 56%,
+            var(--rose)
+        );
+
+    color: #fff;
+
+    font-size: 11px;
+
+    font-weight: 900;
+
+    box-shadow:
+        0 13px 30px
+        rgba(103,86,130,.26);
+}
+
+
+/* =========================================================
+   STATS
+========================================================= */
+
+.stats {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            4,
+            1fr
+        );
+
+    gap: 13px;
+
+    margin-top: 16px;
+}
+
+.stat {
+
+    padding: 17px;
+
+    border:
+        1px solid var(--line);
+
+    border-radius: 17px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(103,86,130,.10),
+            rgba(10,7,13,.96)
+        );
+}
+
+.stat small {
+
+    display: block;
+
+    color: #766a80;
+
+    font-size: 8.5px;
+
+    font-weight: 950;
+
+    letter-spacing: .09em;
+
+    text-transform: uppercase;
+}
+
+.stat strong {
+
+    display: block;
+
+    margin-top: 7px;
+
+    font-size: 27px;
+
+    letter-spacing: -1px;
+}
+
+.stat p {
+
+    margin-top: 5px;
+
+    color: #776b80;
+
+    font-size: 9px;
+}
+
+
+/* =========================================================
+   FILTERS
+========================================================= */
+
+.filters {
+
+    margin-top: 16px;
+
+    padding: 13px;
+
+    display: grid;
+
+    grid-template-columns:
+        minmax(
+            250px,
+            1fr
+        )
+        180px
+        190px
+        auto;
+
+    gap: 10px;
+
+    border:
+        1px solid var(--line);
+
+    border-radius: 17px;
+
+    background:
+        rgba(13,8,16,.82);
+}
+
+.filters input,
+.filters select {
+
+    width: 100%;
+
+    height: 42px;
+
+    padding:
+        0 12px;
+
+    border:
+        1px solid var(--line);
+
+    border-radius: 10px;
+
+    outline: none;
+
+    background:
+        rgba(103,86,130,.07);
+
+    color: #fff;
+}
+
+.filters input:focus,
+.filters select:focus {
+
+    border-color:
+        var(--topaz);
+}
+
+.filters input::placeholder {
+
+    color: #73667b;
+}
+
+.reset-button {
+
+    min-height: 42px;
+
+    padding:
+        0 13px;
+
+    border:
+        1px solid var(--line);
+
+    border-radius: 10px;
+
+    background:
+        rgba(103,86,130,.08);
+
+    color: #c4b8ca;
+
+    font-size: 9px;
+
+    font-weight: 900;
+}
+
+
+/* =========================================================
+   TECHNICIAN GRID
+========================================================= */
+
+.technician-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            2,
+            minmax(
+                0,
+                1fr
+            )
+        );
+
+    gap: 15px;
+
+    margin-top: 16px;
+}
+
+.tech-card {
+
+    position: relative;
+
+    overflow: hidden;
+
+    padding: 18px;
+
+    border:
+        1px solid var(--line);
+
+    border-radius: 20px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(103,86,130,.09),
+            rgba(9,6,12,.97)
+        );
+
+    transition:
+        .18s ease;
+}
+
+.tech-card:hover {
+
+    transform:
+        translateY(-2px);
+
+    border-color:
+        rgba(103,174,202,.23);
+
+    box-shadow:
+        0 20px 50px
+        rgba(0,0,0,.24);
+}
+
+.tech-card::after {
+
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    height: 1px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            var(--topaz),
+            var(--rose),
+            transparent
+        );
+}
+
+.tech-top {
+
+    display: flex;
+
+    align-items: flex-start;
+
+    justify-content: space-between;
+
+    gap: 14px;
+}
+
+.tech-profile {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+}
+
+.tech-avatar {
+
+    width: 48px;
+    height: 48px;
+
+    display: grid;
+
+    place-items: center;
+
+    flex-shrink: 0;
+
+    border-radius: 14px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--topaz),
+            var(--amethyst) 60%,
+            var(--rose)
+        );
+
+    font-size: 11px;
+
+    font-weight: 950;
+
+    box-shadow:
+        0 12px 30px
+        rgba(103,86,130,.22);
+}
+
+.tech-profile strong {
+
+    display: block;
+
+    font-size: 13px;
+}
+
+.tech-profile span {
+
+    display: block;
+
+    margin-top: 4px;
+
+    color: #81758a;
+
+    font-size: 9px;
+}
+
+.availability {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 6px;
+
+    padding:
+        6px 8px;
+
+    border-radius: 999px;
+
+    font-size: 7.5px;
+
+    font-weight: 950;
+
+    text-transform: uppercase;
+
+    letter-spacing: .05em;
+}
+
+.availability::before {
+
+    content: "";
+
+    width: 6px;
+    height: 6px;
+
+    border-radius: 50%;
+}
+
+.availability.available {
+
+    color: #bce1ed;
+
+    background:
+        rgba(103,174,202,.07);
+
+    border:
+        1px solid
+        rgba(103,174,202,.13);
+}
+
+.availability.available::before {
+
+    background:
+        var(--topaz);
+}
+
+.availability.busy {
+
+    color: #f0a3bf;
+
+    background:
+        rgba(229,42,111,.07);
+
+    border:
+        1px solid
+        rgba(229,42,111,.14);
+}
+
+.availability.busy::before {
+
+    background:
+        var(--rose);
+}
+
+.availability.away {
+
+    color: #c5b1d0;
+
+    background:
+        rgba(103,86,130,.13);
+
+    border:
+        1px solid
+        rgba(103,86,130,.22);
+}
+
+.availability.away::before {
+
+    background:
+        var(--amethyst);
+}
+
+
+/* =========================================================
+   SPECIALIZATION
+========================================================= */
+
+.specializations {
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 6px;
+
+    margin-top: 14px;
+}
+
+.specialization {
+
+    padding:
+        5px 7px;
+
+    border-radius: 999px;
+
+    border:
+        1px solid
+        rgba(103,174,202,.10);
+
+    background:
+        rgba(103,174,202,.05);
+
+    color: #a8d4e4;
+
+    font-size: 7.5px;
+
+    font-weight: 850;
+}
+
+
+/* =========================================================
+   TECH STATS
+========================================================= */
+
+.tech-stats {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            4,
+            1fr
+        );
+
+    gap: 8px;
+
+    margin-top: 15px;
+}
+
+.tech-stat {
+
+    padding: 10px;
+
+    border:
+        1px solid
+        rgba(103,174,202,.08);
+
+    border-radius: 11px;
+
+    background:
+        rgba(103,86,130,.045);
+}
+
+.tech-stat small {
+
+    display: block;
+
+    color: #685c70;
+
+    font-size: 7px;
+
+    font-weight: 900;
+
+    text-transform: uppercase;
+
+    letter-spacing: .06em;
+}
+
+.tech-stat strong {
+
+    display: block;
+
+    margin-top: 5px;
+
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   WORKLOAD
+========================================================= */
+
+.workload {
+
+    margin-top: 14px;
+
+    padding-top: 13px;
+
+    border-top:
+        1px solid var(--line-soft);
+}
+
+.workload-row {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 10px;
+}
+
+.workload-row span {
+
+    color: #786b80;
+
+    font-size: 8.5px;
+}
+
+.workload-row strong {
+
+    font-size: 9.5px;
+}
+
+.workload-bar {
+
+    height: 6px;
+
+    margin-top: 8px;
+
+    overflow: hidden;
+
+    border-radius: 999px;
+
+    background:
+        rgba(255,255,255,.06);
+}
+
+.workload-bar span {
+
+    display: block;
+
+    height: 100%;
+
+    border-radius: inherit;
+
+    background:
+        linear-gradient(
+            90deg,
+            var(--topaz),
+            var(--amethyst),
+            var(--rose)
+        );
+}
+
+
+/* =========================================================
+   ACTIONS
+========================================================= */
+
+.tech-actions {
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 8px;
+
+    margin-top: 14px;
+}
+
+.action-button {
+
+    min-height: 35px;
+
+    padding:
+        0 11px;
+
+    border:
+        1px solid var(--line);
+
+    border-radius: 9px;
+
+    background:
+        rgba(103,86,130,.07);
+
+    color: #c4b9ca;
+
+    font-size: 8px;
+
+    font-weight: 900;
+}
+
+.action-button:hover {
+
+    border-color:
+        var(--topaz);
+
+    color: #fff;
+}
+
+.action-button.primary {
+
+    border: 0;
+
+    color: #fff;
+
+    background:
+        linear-gradient(
+            100deg,
+            var(--topaz),
+            var(--amethyst) 57%,
+            var(--rose)
+        );
+}
+
+
+/* =========================================================
+   EMPTY
+========================================================= */
+
+.empty {
+
+    display: none;
+
+    margin-top: 16px;
+
+    padding:
+        70px 20px;
+
+    text-align: center;
+
+    border:
+        1px solid var(--line);
+
+    border-radius: 20px;
+
+    background:
+        rgba(13,8,16,.76);
+}
+
+.empty-icon {
+
+    width: 54px;
+    height: 54px;
+
+    margin:
+        0 auto;
+
+    display: grid;
+
+    place-items: center;
+
+    border-radius: 16px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(103,174,202,.14),
+            rgba(103,86,130,.16)
+        );
+
+    font-size: 22px;
+}
+
+.empty h3 {
+
+    margin-top: 14px;
+
+    font-size: 15px;
+}
+
+.empty p {
+
+    margin-top: 6px;
+
+    color: #776b80;
+
+    font-size: 9px;
+}
+
+
+/* =========================================================
+   MODAL
+========================================================= */
+
+.modal-backdrop {
+
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 100;
+
+    display: none;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 20px;
+
+    background:
+        rgba(0,0,0,.80);
+
+    backdrop-filter:
+        blur(9px);
+}
+
+.modal-backdrop.open {
+
+    display: flex;
+}
+
+.modal {
+
+    width:
+        min(
+            720px,
+            100%
+        );
+
+    max-height: 90vh;
+
+    overflow-y: auto;
+
+    border:
+        1px solid
+        rgba(103,174,202,.15);
+
+    border-radius: 22px;
+
+    background:
+        #0d0910;
+
+    box-shadow:
+        0 40px 120px
+        rgba(0,0,0,.7);
+}
+
+.modal-head {
+
+    padding:
+        18px 20px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 14px;
+
+    border-bottom:
+        1px solid var(--line-soft);
+}
+
+.modal-head h2 {
+
+    font-size: 18px;
+}
+
+.modal-head p {
+
+    margin-top: 4px;
+
+    color: #80738a;
+
+    font-size: 9.5px;
+}
+
+.close-button {
+
+    width: 36px;
+    height: 36px;
+
+    border:
+        1px solid var(--line);
+
+    border-radius: 9px;
+
+    background:
+        rgba(103,86,130,.09);
+
+    color: #fff;
+}
+
+
+/* =========================================================
+   TECHNICIAN MODAL CONTENT
+========================================================= */
+
+.tech-modal-content {
+
+    padding: 20px;
+}
+
+.modal-tech-profile {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 13px;
+}
+
+.modal-tech-avatar {
+
+    width: 55px;
+    height: 55px;
+
+    display: grid;
+
+    place-items: center;
+
+    border-radius: 15px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--topaz),
+            var(--amethyst),
+            var(--rose)
+        );
+
+    font-size: 12px;
+
+    font-weight: 950;
+}
+
+.modal-tech-profile h3 {
+
+    font-size: 16px;
+}
+
+.modal-tech-profile p {
+
+    margin-top: 4px;
+
+    color: #81758a;
+
+    font-size: 9px;
+}
+
+.modal-performance {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            4,
+            1fr
+        );
+
+    gap: 9px;
+
+    margin-top: 18px;
+}
+
+.performance-card {
+
+    padding: 12px;
+
+    border:
+        1px solid var(--line-soft);
+
+    border-radius: 12px;
+
+    background:
+        rgba(103,86,130,.05);
+}
+
+.performance-card small {
+
+    color: #6d6175;
+
+    font-size: 7px;
+
+    font-weight: 900;
+
+    text-transform: uppercase;
+}
+
+.performance-card strong {
+
+    display: block;
+
+    margin-top: 5px;
+
+    font-size: 14px;
+}
+
+.assignment-list {
+
+    margin-top: 18px;
+}
+
+.assignment-list h4 {
+
+    font-size: 11px;
+}
+
+.assignment {
+
+    margin-top: 9px;
+
+    padding: 11px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 10px;
+
+    border:
+        1px solid var(--line-soft);
+
+    border-radius: 11px;
+
+    background:
+        rgba(103,86,130,.04);
+}
+
+.assignment strong {
+
+    display: block;
+
+    font-size: 9.5px;
+}
+
+.assignment span {
+
+    display: block;
+
+    margin-top: 3px;
+
+    color: #74687c;
+
+    font-size: 8px;
+}
+
+.ticket-priority {
+
+    padding:
+        5px 7px;
+
+    border-radius: 999px;
+
+    font-size: 7px;
+
+    font-weight: 950;
+
+    text-transform: uppercase;
+}
+
+.ticket-priority.critical {
+
+    color: #ffafcb;
+
+    background:
+        rgba(229,42,111,.09);
+
+    border:
+        1px solid
+        rgba(229,42,111,.15);
+}
+
+.ticket-priority.high {
+
+    color: #d7afd0;
+
+    background:
+        rgba(95,15,78,.17);
+
+    border:
+        1px solid
+        rgba(95,15,78,.28);
+}
+
+.ticket-priority.medium {
+
+    color: #b8ddea;
+
+    background:
+        rgba(103,174,202,.07);
+
+    border:
+        1px solid
+        rgba(103,174,202,.13);
+}
+
+
+/* =========================================================
+   ASSIGN MODAL
+========================================================= */
+
+.form {
+
+    padding: 20px;
+
+    display: grid;
+
+    gap: 14px;
+}
+
+.field label {
+
+    display: block;
+
+    margin-bottom: 7px;
+
+    color: #a79aaa;
+
+    font-size: 9.5px;
+
+    font-weight: 850;
+}
+
+.field select {
+
+    width: 100%;
+
+    height: 44px;
+
+    padding:
+        0 12px;
+
+    border:
+        1px solid var(--line);
+
+    border-radius: 11px;
+
+    background:
+        rgba(103,86,130,.08);
+
+    color: #fff;
+
+    outline: none;
+}
+
+.field select:focus {
+
+    border-color:
+        var(--topaz);
+}
+
+.modal-actions {
+
+    display: flex;
+
+    justify-content: flex-end;
+
+    gap: 10px;
+}
+
+.secondary-button {
+
+    min-height: 41px;
+
+    padding:
+        0 14px;
+
+    border:
+        1px solid var(--line);
+
+    border-radius: 10px;
+
+    background:
+        rgba(103,86,130,.08);
+
+    color: #c2b6c8;
+
+    font-size: 9px;
+
+    font-weight: 900;
+}
+
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+.toast {
+
+    position: fixed;
+
+    right: 24px;
+    bottom: 24px;
+
+    z-index: 200;
+
+    min-width: 250px;
+
+    padding:
+        13px 15px;
+
+    border:
+        1px solid
+        rgba(103,174,202,.17);
+
+    border-radius: 12px;
+
+    background:
+        rgba(13,9,16,.97);
+
+    color: #dfd4e3;
+
+    box-shadow:
+        0 20px 60px
+        rgba(0,0,0,.45);
+
+    font-size: 10px;
+
+    opacity: 0;
+
+    transform:
+        translateY(10px);
+
+    pointer-events: none;
+
+    transition: .2s ease;
+}
+
+.toast.show {
+
+    opacity: 1;
+
+    transform: none;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+.sidebar-backdrop {
+
+    display: none;
+}
+
+@media (
+    max-width: 1150px
+) {
+
+    .tech-stats {
+
+        grid-template-columns:
+            1fr 1fr;
+    }
+}
+
+@media (
+    max-width: 1050px
+) {
+
+    .stats {
+
+        grid-template-columns:
+            1fr 1fr;
+    }
+
+    .filters {
+
+        grid-template-columns:
+            1fr 1fr;
+    }
+
+    .filters input {
+
+        grid-column:
+            1 / -1;
+    }
+
+    .technician-grid {
+
+        grid-template-columns:
+            1fr;
+    }
+}
+
+@media (
+    max-width: 900px
+) {
+
+    .sidebar {
+
+        transform:
+            translateX(-100%);
+
+        transition:
+            .2s ease;
+    }
+
+    .sidebar.open {
+
+        transform: none;
+    }
+
+    .sidebar-backdrop {
+
+        position: fixed;
+
+        inset: 0;
+
+        z-index: 45;
+
+        background:
+            rgba(0,0,0,.64);
+    }
+
+    .sidebar-backdrop.open {
+
+        display: block;
+    }
+
+    .main {
+
+        margin-left: 0;
+    }
+
+    .mobile-btn {
+
+        display: grid;
+
+        place-items: center;
+    }
+
+    .hero-row {
+
+        flex-direction: column;
+
+        align-items: flex-start;
+    }
+}
+
+@media (
+    max-width: 650px
+) {
+
+    .content {
+
+        padding: 16px;
+    }
+
+    .topbar {
+
+        padding:
+            0 14px;
+    }
+
+    .search {
+
+        display: none;
+    }
+
+    .profile-copy {
+
+        display: none;
+    }
+
+    .hero {
+
+        padding: 21px;
+    }
+
+    .hero h1 {
+
+        font-size: 37px;
+    }
+
+    .stats,
+    .filters,
+    .modal-performance {
+
+        grid-template-columns:
+            1fr;
+    }
+
+    .filters input {
+
+        grid-column: auto;
+    }
+
+    .tech-stats {
+
+        grid-template-columns:
+            1fr 1fr;
+    }
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     SIDEBAR
+========================================================= -->
+
+<aside
+    class="sidebar"
+    id="sidebar"
+>
+
+    <div class="brand">
+
+        <div class="brand-mark">
+            R
+        </div>
+
+        <div>
+
+            <strong>
+                ResolveDesk
+            </strong>
+
+            <span>
+                IT Service Management
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <div class="nav-label">
+        Workspace
+    </div>
+
+
+    <nav class="nav">
+
+        <a href="/dashboard.html">
+            <span class="nav-icon">⌂</span>
+            Dashboard
+        </a>
+
+        <a href="/tickets.html">
+            <span class="nav-icon">◫</span>
+            Tickets
+        </a>
+
+        <a href="/my-queue.html">
+            <span class="nav-icon">◎</span>
+            My Queue
+        </a>
+
+        <a href="/sla-monitor.html">
+            <span class="nav-icon">⏱</span>
+            SLA Monitor
+        </a>
+
+        <a href="/knowledge-base.html">
+            <span class="nav-icon">▤</span>
+            Knowledge Base
+        </a>
+
+    </nav>
+
+
+    <div class="nav-label">
+        Management
+    </div>
+
+
+    <nav class="nav">
+
+        <a href="/users.html">
+            <span class="nav-icon">♙</span>
+            Users
+        </a>
+
+        <a
+            class="active"
+            href="/technicians.html"
+        >
+            <span class="nav-icon">♟</span>
+            Technicians
+        </a>
+
+        <a href="/departments.html">
+            <span class="nav-icon">▦</span>
+            Departments
+        </a>
+
+        <a href="/reports.html">
+            <span class="nav-icon">▥</span>
+            Reports
+        </a>
+
+        <a href="/activity-log.html">
+            <span class="nav-icon">◷</span>
+            Audit Log
+        </a>
+
+        <a href="/settings.html">
+            <span class="nav-icon">⚙</span>
+            Settings
+        </a>
+
+    </nav>
+
+
+    <div class="sidebar-bottom">
+
+        <div class="system-card">
+
+            <small>
+                Support Team
+            </small>
+
+            <strong>
+                4 technicians online
+            </strong>
+
+            <p>
+                Workload and SLA
+                performance are
+                being monitored.
+            </p>
+
+        </div>
+
+    </div>
+
+</aside>
+
+
+<div
+    class="sidebar-backdrop"
+    id="sidebarBackdrop"
+></div>
+
+
+<!-- =========================================================
+     MAIN
+========================================================= -->
+
+<main class="main">
+
+
+<!-- =========================================================
+     TOPBAR
+========================================================= -->
+
+<header class="topbar">
+
+    <div
+        style="
+            display:flex;
+            align-items:center;
+            gap:12px;
+        "
+    >
+
+        <button
+            class="mobile-btn"
+            id="menuBtn"
+            type="button"
+        >
+            ☰
+        </button>
+
+
+        <div class="search">
+
+            <input
+                id="topSearch"
+                type="search"
+                placeholder="
+                    Search technicians...
+                "
+            >
+
+        </div>
+
+    </div>
+
+
+    <div class="top-actions">
+
+        <button
+            class="icon-btn"
+            type="button"
+        >
+            ?
+        </button>
+
+        <button
+            class="icon-btn"
+            type="button"
+        >
+            ●
+        </button>
+
+
+        <div class="profile">
+
+            <div class="avatar">
+                HH
+            </div>
+
+            <div class="profile-copy">
+
+                <strong>
+                    Haziq Hanif
+                </strong>
+
+                <span>
+                    Administrator
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<div class="content">
+
+
+<!-- =========================================================
+     HERO
+========================================================= -->
+
+<section class="hero">
+
+    <div class="hero-row">
+
+        <div>
+
+            <div class="eyebrow">
+                Support Team Operations
+            </div>
+
+
+            <h1>
+
+                See the team.
+
+                <span>
+                    Balance the workload.
+                </span>
+
+            </h1>
+
+
+            <p>
+
+                Monitor technician availability,
+                active ticket load,
+                SLA compliance,
+                resolution performance
+                and support specialization
+                from one workspace.
+
+            </p>
+
+        </div>
+
+
+        <button
+            class="primary-button"
+            id="assignTicketButton"
+            type="button"
+        >
+            ＋ Assign Ticket
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     TEAM STATS
+========================================================= -->
+
+<section class="stats">
+
+    <article class="stat">
+
+        <small>
+            Technicians
+        </small>
+
+        <strong id="technicianCount">
+            0
+        </strong>
+
+        <p>
+            Support team members
+        </p>
+
+    </article>
+
+
+    <article class="stat">
+
+        <small>
+            Available
+        </small>
+
+        <strong id="availableCount">
+            0
+        </strong>
+
+        <p>
+            Ready for assignment
+        </p>
+
+    </article>
+
+
+    <article class="stat">
+
+        <small>
+            Active Tickets
+        </small>
+
+        <strong id="activeTicketCount">
+            0
+        </strong>
+
+        <p>
+            Assigned across team
+        </p>
+
+    </article>
+
+
+    <article class="stat">
+
+        <small>
+            Team SLA
+        </small>
+
+        <strong id="averageSla">
+            0%
+        </strong>
+
+        <p>
+            Average compliance
+        </p>
+
+    </article>
+
+</section>
+
+
+<!-- =========================================================
+     FILTERS
+========================================================= -->
+
+<section class="filters">
+
+    <input
+        id="searchInput"
+        type="search"
+        placeholder="
+            Search technician
+            or specialization...
+        "
+    >
+
+
+    <select id="availabilityFilter">
+
+        <option value="">
+            All Availability
+        </option>
+
+        <option value="available">
+            Available
+        </option>
+
+        <option value="busy">
+            Busy
+        </option>
+
+        <option value="away">
+            Away
+        </option>
+
+    </select>
+
+
+    <select id="specializationFilter">
+
+        <option value="">
+            All Specializations
+        </option>
+
+        <option value="Network">
+            Network
+        </option>
+
+        <option value="Software">
+            Software
+        </option>
+
+        <option value="Hardware">
+            Hardware
+        </option>
+
+        <option value="Access">
+            Access
+        </option>
+
+        <option value="Applications">
+            Applications
+        </option>
+
+    </select>
+
+
+    <button
+        class="reset-button"
+        id="resetFilters"
+        type="button"
+    >
+        Reset
+    </button>
+
+</section>
+
+
+<!-- =========================================================
+     TECHNICIAN GRID
+========================================================= -->
+
+<section
+    class="technician-grid"
+    id="technicianGrid"
+>
+</section>
+
+
+<div
+    class="empty"
+    id="emptyState"
+>
+
+    <div class="empty-icon">
+        ♟
+    </div>
+
+    <h3>
+        No technicians found
+    </h3>
+
+    <p>
+        Try changing your filters.
+    </p>
+
+</div>
+
+</div>
+
+</main>
+
+
+<!-- =========================================================
+     TECHNICIAN DETAIL MODAL
+========================================================= -->
+
+<div
+    class="modal-backdrop"
+    id="techModal"
+>
+
+    <div class="modal">
+
+        <div class="modal-head">
+
+            <div>
+
+                <h2>
+                    Technician Performance
+                </h2>
+
+                <p>
+                    Workload and ticket activity
+                </p>
+
+            </div>
+
+
+            <button
+                class="close-button"
+                id="closeTechModal"
+                type="button"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <div
+            class="tech-modal-content"
+            id="techModalContent"
+        >
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     ASSIGN TICKET MODAL
+========================================================= -->
+
+<div
+    class="modal-backdrop"
+    id="assignModal"
+>
+
+    <div class="modal">
+
+        <div class="modal-head">
+
+            <div>
+
+                <h2>
+                    Assign Ticket
+                </h2>
+
+                <p>
+                    Assign an unassigned
+                    ticket to a technician.
+                </p>
+
+            </div>
+
+
+            <button
+                class="close-button"
+                id="closeAssignModal"
+                type="button"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <form
+            class="form"
+            id="assignForm"
+        >
+
+            <div class="field">
+
+                <label>
+                    Ticket
+                </label>
+
+                <select id="assignTicket">
+                    <option value="">
+                        Loading unassigned tickets...
+                    </option>
+                </select>
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    Technician
+                </label>
+
+                <select
+                    id="assignTechnician"
+                >
+                </select>
+
+            </div>
+
+
+            <div class="modal-actions">
+
+                <button
+                    class="secondary-button"
+                    id="cancelAssign"
+                    type="button"
+                >
+                    Cancel
+                </button>
+
+
+                <button
+                    class="primary-button"
+                    type="submit"
+                >
+                    Assign Ticket
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<div
+    class="toast"
+    id="toast"
+></div>
+
+
+<script>
+
+/* =========================================================
+   TECHNICIAN STATE
+   Live data is loaded from /api/technicians
+========================================================= */
+
+let technicians = [];
+
+
+/* =========================================================
+   HELPERS
+========================================================= */
+
+function escapeHtml(
+    value
+) {
+
+    return String(
+        value ?? ""
+    )
+        .replaceAll(
+            "&",
+            "&amp;"
+        )
+        .replaceAll(
+            "<",
+            "&lt;"
+        )
+        .replaceAll(
+            ">",
+            "&gt;"
+        )
+        .replaceAll(
+            '"',
+            "&quot;"
+        )
+        .replaceAll(
+            "'",
+            "&#039;"
+        );
+}
+
+
+function initials(
+    name
+) {
+
+    return String(
+        name || ""
+    )
+        .split(
+            " "
+        )
+        .filter(
+            Boolean
+        )
+        .slice(
+            0,
+            2
+        )
+        .map(
+            word =>
+                word[0]
+        )
+        .join(
+            ""
+        )
+        .toUpperCase();
+}
+
+
+/* =========================================================
+   FILTER
+========================================================= */
+
+function getFilteredTechnicians() {
+
+    const search =
+        document
+            .getElementById(
+                "searchInput"
+            )
+            .value
+            .trim()
+            .toLowerCase();
+
+
+    const availability =
+        document
+            .getElementById(
+                "availabilityFilter"
+            )
+            .value;
+
+
+    const specialization =
+        document
+            .getElementById(
+                "specializationFilter"
+            )
+            .value;
+
+
+    return technicians.filter(
+        technician => {
+
+            const searchable =
+                [
+                    technician.name,
+                    technician.title,
+                    technician.email,
+                    ...technician.specializations
+                ]
+                    .join(
+                        " "
+                    )
+                    .toLowerCase();
+
+
+            const matchesSearch =
+                !search ||
+                searchable.includes(
+                    search
+                );
+
+
+            const matchesAvailability =
+                !availability ||
+                technician.availability ===
+                    availability;
+
+
+            const matchesSpecialization =
+                !specialization ||
+                technician.specializations.includes(
+                    specialization
+                );
+
+
+            return (
+                matchesSearch &&
+                matchesAvailability &&
+                matchesSpecialization
+            );
+        }
+    );
+}
+
+
+/* =========================================================
+   RENDER
+========================================================= */
+
+function renderTechnicians() {
+
+    const grid =
+        document.getElementById(
+            "technicianGrid"
+        );
+
+
+    const empty =
+        document.getElementById(
+            "emptyState"
+        );
+
+
+    const data =
+        getFilteredTechnicians();
+
+
+    if (
+        data.length ===
+        0
+    ) {
+
+        grid.innerHTML =
+            "";
+
+        empty.style.display =
+            "block";
+
+        return;
+    }
+
+
+    empty.style.display =
+        "none";
+
+
+    grid.innerHTML =
+        data
+            .map(
+                technician => {
+
+                    const workload =
+                        Math.min(
+                            100,
+                            (
+                                technician.activeTickets /
+                                technician.maxTickets
+                            ) *
+                            100
+                        );
+
+
+                    return `
+
+                    <article
+                        class="tech-card"
+                    >
+
+                        <div class="tech-top">
+
+                            <div class="tech-profile">
+
+                                <div
+                                    class="tech-avatar"
+                                >
+                                    ${escapeHtml(
+                                        initials(
+                                            technician.name
+                                        )
+                                    )}
+                                </div>
+
+
+                                <div>
+
+                                    <strong>
+                                        ${escapeHtml(
+                                            technician.name
+                                        )}
+                                    </strong>
+
+                                    <span>
+                                        ${escapeHtml(
+                                            technician.title
+                                        )}
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+
+                            <span
+                                class="
+                                    availability
+                                    ${escapeHtml(
+                                        technician.availability
+                                    )}
+                                "
+                            >
+
+                                ${escapeHtml(
+                                    technician.availability
+                                )}
+
+                            </span>
+
+                        </div>
+
+
+                        <div
+                            class="specializations"
+                        >
+
+                            ${
+                                technician
+                                    .specializations
+                                    .map(
+                                        specialization => `
+
+                                        <span
+                                            class="specialization"
+                                        >
+                                            ${escapeHtml(
+                                                specialization
+                                            )}
+                                        </span>
+
+                                        `
+                                    )
+                                    .join(
+                                        ""
+                                    )
+                            }
+
+                        </div>
+
+
+                        <div
+                            class="tech-stats"
+                        >
+
+                            <div class="tech-stat">
+
+                                <small>
+                                    Active
+                                </small>
+
+                                <strong>
+                                    ${technician.activeTickets}
+                                </strong>
+
+                            </div>
+
+
+                            <div class="tech-stat">
+
+                                <small>
+                                    Today
+                                </small>
+
+                                <strong>
+                                    ${technician.resolvedToday}
+                                </strong>
+
+                            </div>
+
+
+                            <div class="tech-stat">
+
+                                <small>
+                                    SLA
+                                </small>
+
+                                <strong>
+                                    ${technician.slaCompliance}%
+                                </strong>
+
+                            </div>
+
+
+                            <div class="tech-stat">
+
+                                <small>
+                                    Avg Time
+                                </small>
+
+                                <strong>
+                                    ${escapeHtml(
+                                        technician.averageResolution
+                                    )}
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="workload">
+
+                            <div
+                                class="workload-row"
+                            >
+
+                                <span>
+                                    Workload
+                                </span>
+
+                                <strong>
+                                    ${technician.activeTickets}
+                                    /
+                                    ${technician.maxTickets}
+                                    tickets
+                                </strong>
+
+                            </div>
+
+
+                            <div
+                                class="workload-bar"
+                            >
+
+                                <span
+                                    style="
+                                        width:
+                                        ${workload}%;
+                                    "
+                                ></span>
+
+                            </div>
+
+                        </div>
+
+
+                        <div
+                            class="tech-actions"
+                        >
+
+                            <button
+                                class="
+                                    action-button
+                                    primary
+                                "
+                                type="button"
+                                onclick="
+                                    viewTechnician(
+                                        ${technician.id}
+                                    )
+                                "
+                            >
+                                View Performance
+                            </button>
+
+
+                            <button
+                                class="
+                                    action-button
+                                "
+                                type="button"
+                                onclick="
+                                    quickAssign(
+                                        ${technician.id}
+                                    )
+                                "
+                            >
+                                Assign Ticket
+                            </button>
+
+                        </div>
+
+                    </article>
+
+                    `;
+                }
+            )
+            .join(
+                ""
+            );
+}
+
+
+/* =========================================================
+   STATS
+========================================================= */
+
+function updateStats() {
+
+    document.getElementById(
+        "technicianCount"
+    ).textContent =
+        technicians.length;
+
+
+    document.getElementById(
+        "availableCount"
+    ).textContent =
+        technicians.filter(
+            technician =>
+                technician.availability ===
+                "available"
+        ).length;
+
+
+    document.getElementById(
+        "activeTicketCount"
+    ).textContent =
+        technicians.reduce(
+            (
+                total,
+                technician
+            ) =>
+                total +
+                technician.activeTickets,
+            0
+        );
+
+
+    const slaAverage =
+        technicians.reduce(
+            (
+                total,
+                technician
+            ) =>
+                total +
+                technician.slaCompliance,
+            0
+        ) /
+        technicians.length;
+
+
+    document.getElementById(
+        "averageSla"
+    ).textContent =
+        `${Math.round(
+            slaAverage
+        )}%`;
+}
+
+
+/* =========================================================
+   PERFORMANCE MODAL
+========================================================= */
+
+const techModal =
+    document.getElementById(
+        "techModal"
+    );
+
+
+function viewTechnician(
+    id
+) {
+
+    const technician =
+        technicians.find(
+            item =>
+                item.id ===
+                id
+        );
+
+
+    if (
+        !technician
+    ) {
+
+        return;
+    }
+
+
+    document.getElementById(
+        "techModalContent"
+    ).innerHTML = `
+
+        <div
+            class="modal-tech-profile"
+        >
+
+            <div
+                class="
+                    modal-tech-avatar
+                "
+            >
+                ${escapeHtml(
+                    initials(
+                        technician.name
+                    )
+                )}
+            </div>
+
+
+            <div>
+
+                <h3>
+                    ${escapeHtml(
+                        technician.name
+                    )}
+                </h3>
+
+                <p>
+
+                    ${escapeHtml(
+                        technician.title
+                    )}
+                    ·
+                    ${escapeHtml(
+                        technician.email
+                    )}
+
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div
+            class="modal-performance"
+        >
+
+            <div
+                class="performance-card"
+            >
+
+                <small>
+                    Active Tickets
+                </small>
+
+                <strong>
+                    ${technician.activeTickets}
+                </strong>
+
+            </div>
+
+
+            <div
+                class="performance-card"
+            >
+
+                <small>
+                    Resolved Today
+                </small>
+
+                <strong>
+                    ${technician.resolvedToday}
+                </strong>
+
+            </div>
+
+
+            <div
+                class="performance-card"
+            >
+
+                <small>
+                    Resolved Month
+                </small>
+
+                <strong>
+                    ${technician.resolvedMonth}
+                </strong>
+
+            </div>
+
+
+            <div
+                class="performance-card"
+            >
+
+                <small>
+                    SLA Compliance
+                </small>
+
+                <strong>
+                    ${technician.slaCompliance}%
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <div
+            class="assignment-list"
+        >
+
+            <h4>
+                Active Assignments
+            </h4>
+
+
+            ${
+                technician.tickets
+                    .map(
+                        ticket => `
+
+                        <div
+                            class="assignment"
+                        >
+
+                            <div>
+
+                                <strong>
+
+                                    ${escapeHtml(
+                                        ticket.id
+                                    )}
+                                    —
+                                    ${escapeHtml(
+                                        ticket.subject
+                                    )}
+
+                                </strong>
+
+                                <span>
+                                    Assigned to
+                                    ${escapeHtml(
+                                        technician.name
+                                    )}
+                                </span>
+
+                            </div>
+
+
+                            <span
+                                class="
+                                    ticket-priority
+                                    ${escapeHtml(
+                                        ticket.priority
+                                    )}
+                                "
+                            >
+                                ${escapeHtml(
+                                    ticket.priority
+                                )}
+                            </span>
+
+                        </div>
+
+                        `
+                    )
+                    .join(
+                        ""
+                    )
+            }
+
+        </div>
+
+    `;
+
+
+    techModal.classList.add(
+        "open"
+    );
+
+
+    document.body.style.overflow =
+        "hidden";
+}
+
+
+function closeTechModal() {
+
+    techModal.classList.remove(
+        "open"
+    );
+
+
+    document.body.style.overflow =
+        "";
+}
+
+
+/* =========================================================
+   ASSIGN MODAL
+========================================================= */
+
+const assignModal =
+    document.getElementById(
+        "assignModal"
+    );
+
+
+function populateTechnicians() {
+
+    const select =
+        document.getElementById(
+            "assignTechnician"
+        );
+
+
+    select.innerHTML =
+        technicians
+            .map(
+                technician => `
+
+                <option
+                    value="${technician.id}"
+                >
+
+                    ${escapeHtml(
+                        technician.name
+                    )}
+                    —
+                    ${technician.activeTickets}
+                    active
+
+                </option>
+
+                `
+            )
+            .join(
+                ""
+            );
+}
+
+
+function openAssignModal(
+    technicianId = null
+) {
+
+    populateTechnicians();
+
+
+    if (
+        technicianId
+    ) {
+
+        document.getElementById(
+            "assignTechnician"
+        ).value =
+            technicianId;
+    }
+
+
+    assignModal.classList.add(
+        "open"
+    );
+
+
+    document.body.style.overflow =
+        "hidden";
+}
+
+
+function closeAssignModal() {
+
+    assignModal.classList.remove(
+        "open"
+    );
+
+
+    document.body.style.overflow =
+        "";
+}
+
+
+/* =========================================================
+   QUICK ASSIGN
+========================================================= */
+
+function quickAssign(
+    id
+) {
+
+    openAssignModal(
+        id
+    );
+}
+
+
+/* =========================================================
+   ASSIGN SUBMIT
+========================================================= */
+
+document
+    .getElementById(
+        "assignForm"
+    )
+    .addEventListener(
+        "submit",
+        event => {
+
+            event.preventDefault();
+
+
+            const ticket =
+                document
+                    .getElementById(
+                        "assignTicket"
+                    )
+                    .value;
+
+
+            const technicianId =
+                Number(
+                    document
+                        .getElementById(
+                            "assignTechnician"
+                        )
+                        .value
+                );
+
+
+            const technician =
+                technicians.find(
+                    item =>
+                        item.id ===
+                        technicianId
+                );
+
+
+            if (
+                !technician
+            ) {
+
+                return;
+            }
+
+
+            if (
+                technician.activeTickets >=
+                technician.maxTickets
+            ) {
+
+                showToast(
+                    `${technician.name} is at maximum workload.`
+                );
+
+                return;
+            }
+
+
+            technician.activeTickets++;
+
+
+            technician.tickets.unshift(
+                {
+                    id:
+                        ticket,
+
+                    subject:
+                        "New assigned support ticket",
+
+                    priority:
+                        "medium"
+                }
+            );
+
+
+            closeAssignModal();
+
+
+            renderTechnicians();
+
+            updateStats();
+
+
+            showToast(
+                `${ticket} assigned to ${technician.name}.`
+            );
+        }
+    );
+
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+document
+    .getElementById(
+        "assignTicketButton"
+    )
+    .addEventListener(
+        "click",
+        () => {
+
+            openAssignModal();
+        }
+    );
+
+
+document
+    .getElementById(
+        "closeTechModal"
+    )
+    .addEventListener(
+        "click",
+        closeTechModal
+    );
+
+
+document
+    .getElementById(
+        "closeAssignModal"
+    )
+    .addEventListener(
+        "click",
+        closeAssignModal
+    );
+
+
+document
+    .getElementById(
+        "cancelAssign"
+    )
+    .addEventListener(
+        "click",
+        closeAssignModal
+    );
+
+
+techModal.addEventListener(
+    "click",
+    event => {
+
+        if (
+            event.target ===
+            techModal
+        ) {
+
+            closeTechModal();
+        }
+    }
+);
+
+
+assignModal.addEventListener(
+    "click",
+    event => {
+
+        if (
+            event.target ===
+            assignModal
+        ) {
+
+            closeAssignModal();
+        }
+    }
+);
+
+
+/* =========================================================
+   FILTERS
+========================================================= */
+
+[
+    "searchInput",
+    "availabilityFilter",
+    "specializationFilter"
+]
+.forEach(
+    id => {
+
+        document
+            .getElementById(
+                id
+            )
+            .addEventListener(
+                id ===
+                    "searchInput"
+                    ? "input"
+                    : "change",
+                renderTechnicians
+            );
+    }
+);
+
+
+document
+    .getElementById(
+        "resetFilters"
+    )
+    .addEventListener(
+        "click",
+        () => {
+
+            document.getElementById(
+                "searchInput"
+            ).value =
+                "";
+
+
+            document.getElementById(
+                "availabilityFilter"
+            ).value =
+                "";
+
+
+            document.getElementById(
+                "specializationFilter"
+            ).value =
+                "";
+
+
+            renderTechnicians();
+        }
+    );
+
+
+/* =========================================================
+   TOP SEARCH
+========================================================= */
+
+document
+    .getElementById(
+        "topSearch"
+    )
+    .addEventListener(
+        "input",
+        event => {
+
+            document.getElementById(
+                "searchInput"
+            ).value =
+                event.target.value;
+
+
+            renderTechnicians();
+        }
+    );
+
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+let toastTimer;
+
+
+function showToast(
+    message
+) {
+
+    const toast =
+        document.getElementById(
+            "toast"
+        );
+
+
+    toast.textContent =
+        message;
+
+
+    toast.classList.add(
+        "show"
+    );
+
+
+    clearTimeout(
+        toastTimer
+    );
+
+
+    toastTimer =
+        setTimeout(
+            () => {
+
+                toast.classList.remove(
+                    "show"
+                );
+            },
+            2400
+        );
+}
+
+
+/* =========================================================
+   MOBILE SIDEBAR
+========================================================= */
+
+const sidebar =
+    document.getElementById(
+        "sidebar"
+    );
+
+
+const backdrop =
+    document.getElementById(
+        "sidebarBackdrop"
+    );
+
+
+document
+    .getElementById(
+        "menuBtn"
+    )
+    .addEventListener(
+        "click",
+        () => {
+
+            sidebar.classList.toggle(
+                "open"
+            );
+
+
+            backdrop.classList.toggle(
+                "open"
+            );
+        }
+    );
+
+
+backdrop.addEventListener(
+    "click",
+    () => {
+
+        sidebar.classList.remove(
+            "open"
+        );
+
+
+        backdrop.classList.remove(
+            "open"
+        );
+    }
+);
+
+
+/* =========================================================
+   ESCAPE
+========================================================= */
+
+document.addEventListener(
+    "keydown",
+    event => {
+
+        if (
+            event.key ===
+            "Escape"
+        ) {
+
+            closeTechModal();
+
+            closeAssignModal();
+        }
+    }
+);
+
+
+/* =========================================================
+   INITIAL
+========================================================= */
+
+renderTechnicians();
+
+updateStats();
+
+populateTechnicians();
+
+</script>
+
+
+<script src="/js/auth-session.js"></script>
+
+
+<script src="/js/technicians-live.js"></script>
+<script src="/js/role-navigation.js"></script>
+</body>
+</html>

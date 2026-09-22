@@ -1,0 +1,4192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>
+    ResolveDesk — SLA Monitor
+</title>
+
+<style>
+
+/* =========================================================
+   RESOLVEDESK THEME
+========================================================= */
+
+:root {
+
+    --topaz: #67AECA;
+    --amethyst: #675682;
+    --jewel: #5F0F4E;
+    --rose: #E52A6F;
+
+    --bg: #08060b;
+    --bg2: #120b16;
+
+    --text: #ffffff;
+    --muted: #95899d;
+
+    --line:
+        rgba(
+            103,
+            174,
+            202,
+            .14
+        );
+
+    --line-soft:
+        rgba(
+            103,
+            174,
+            202,
+            .07
+        );
+
+    --sidebar:
+        250px;
+
+    --shadow:
+        0 30px 90px
+        rgba(
+            25,
+            5,
+            30,
+            .45
+        );
+}
+
+
+/* =========================================================
+   RESET
+========================================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+html {
+    scroll-behavior: smooth;
+}
+
+
+body {
+
+    min-height: 100vh;
+
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Inter,
+        Arial,
+        sans-serif;
+
+    color:
+        var(--text);
+
+    background:
+
+        radial-gradient(
+            circle at 87% 5%,
+            rgba(
+                103,
+                174,
+                202,
+                .16
+            ),
+            transparent 25%
+        ),
+
+        radial-gradient(
+            circle at 10% 82%,
+            rgba(
+                229,
+                42,
+                111,
+                .08
+            ),
+            transparent 25%
+        ),
+
+        radial-gradient(
+            circle at 62% 94%,
+            rgba(
+                103,
+                86,
+                130,
+                .14
+            ),
+            transparent 30%
+        ),
+
+        linear-gradient(
+            180deg,
+            var(--bg),
+            var(--bg2) 55%,
+            var(--bg)
+        );
+
+    overflow-x: hidden;
+}
+
+
+body::before {
+
+    content: "";
+
+    position: fixed;
+
+    inset: 0;
+
+    pointer-events: none;
+
+    z-index: -1;
+
+    opacity: .13;
+
+    background-image:
+
+        linear-gradient(
+            rgba(
+                103,
+                174,
+                202,
+                .035
+            )
+            1px,
+            transparent 1px
+        ),
+
+        linear-gradient(
+            90deg,
+            rgba(
+                103,
+                174,
+                202,
+                .035
+            )
+            1px,
+            transparent 1px
+        );
+
+    background-size:
+        64px 64px;
+
+    mask-image:
+        linear-gradient(
+            #000,
+            transparent 90%
+        );
+}
+
+
+button,
+input,
+select {
+    font: inherit;
+}
+
+
+button {
+    cursor: pointer;
+}
+
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+
+/* =========================================================
+   SIDEBAR
+========================================================= */
+
+.sidebar {
+
+    position: fixed;
+
+    inset:
+        0 auto 0 0;
+
+    width:
+        var(--sidebar);
+
+    z-index: 50;
+
+    padding:
+        18px 14px;
+
+    background:
+        rgba(
+            8,
+            5,
+            11,
+            .94
+        );
+
+    border-right:
+        1px solid
+        rgba(
+            103,
+            174,
+            202,
+            .09
+        );
+
+    backdrop-filter:
+        blur(20px);
+}
+
+
+.brand {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding:
+        7px 9px 22px;
+}
+
+
+.brand-mark {
+
+    width: 42px;
+    height: 42px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 12px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--topaz),
+            var(--amethyst) 58%,
+            var(--rose)
+        );
+
+    font-size: 20px;
+    font-weight: 950;
+
+    box-shadow:
+        0 14px 34px
+        rgba(
+            103,
+            86,
+            130,
+            .25
+        );
+}
+
+
+.brand strong {
+
+    display: block;
+
+    font-size: 16px;
+}
+
+
+.brand span {
+
+    display: block;
+
+    margin-top: 3px;
+
+    color: #7d7085;
+
+    font-size: 9px;
+    font-weight: 900;
+
+    letter-spacing: .12em;
+
+    text-transform: uppercase;
+}
+
+
+.nav-label {
+
+    margin:
+        12px 10px 8px;
+
+    color: #615568;
+
+    font-size: 9px;
+    font-weight: 950;
+
+    letter-spacing: .14em;
+
+    text-transform: uppercase;
+}
+
+
+.nav {
+
+    display: grid;
+
+    gap: 4px;
+}
+
+
+.nav a {
+
+    min-height: 45px;
+
+    padding:
+        0 12px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 11px;
+
+    border:
+        1px solid transparent;
+
+    border-radius: 12px;
+
+    color: #988ba0;
+
+    font-size: 13px;
+
+    font-weight: 760;
+
+    transition: .18s ease;
+}
+
+
+.nav a:hover {
+
+    color: #fff;
+
+    background:
+        rgba(
+            103,
+            174,
+            202,
+            .05
+        );
+}
+
+
+.nav a.active {
+
+    color: #fff;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(
+                103,
+                174,
+                202,
+                .13
+            ),
+            rgba(
+                103,
+                86,
+                130,
+                .10
+            )
+        );
+
+    border-color:
+        rgba(
+            103,
+            174,
+            202,
+            .18
+        );
+}
+
+
+.nav-icon {
+
+    width: 28px;
+    height: 28px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 8px;
+
+    background:
+        rgba(
+            103,
+            86,
+            130,
+            .08
+        );
+
+    border:
+        1px solid
+        rgba(
+            103,
+            174,
+            202,
+            .09
+        );
+
+    font-size: 12px;
+}
+
+
+.nav a.active
+.nav-icon {
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--topaz),
+            var(--amethyst)
+        );
+}
+
+
+.nav-badge {
+
+    margin-left: auto;
+
+    min-width: 22px;
+    height: 20px;
+
+    padding:
+        0 6px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 999px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--rose),
+            var(--jewel)
+        );
+
+    font-size: 9px;
+    font-weight: 950;
+}
+
+
+.sidebar-bottom {
+
+    position: absolute;
+
+    left: 14px;
+    right: 14px;
+    bottom: 16px;
+}
+
+
+.system-card {
+
+    padding: 14px;
+
+    border:
+        1px solid
+        rgba(
+            229,
+            42,
+            111,
+            .13
+        );
+
+    border-radius: 15px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(
+                95,
+                15,
+                78,
+                .13
+            ),
+            rgba(
+                10,
+                6,
+                13,
+                .9
+            )
+        );
+}
+
+
+.system-card small {
+
+    color: #9f7993;
+
+    font-size: 9px;
+
+    font-weight: 900;
+
+    letter-spacing: .10em;
+
+    text-transform: uppercase;
+}
+
+
+.system-card strong {
+
+    display: block;
+
+    margin-top: 7px;
+
+    font-size: 12px;
+}
+
+
+.system-card p {
+
+    margin-top: 5px;
+
+    color: #81748a;
+
+    font-size: 10px;
+
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   MAIN
+========================================================= */
+
+.main {
+
+    margin-left:
+        var(--sidebar);
+
+    min-height:
+        100vh;
+}
+
+
+/* =========================================================
+   TOPBAR
+========================================================= */
+
+.topbar {
+
+    position: sticky;
+
+    top: 0;
+
+    z-index: 40;
+
+    height: 74px;
+
+    padding:
+        0 24px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 16px;
+
+    background:
+        rgba(
+            9,
+            6,
+            12,
+            .8
+        );
+
+    border-bottom:
+        1px solid
+        rgba(
+            103,
+            174,
+            202,
+            .08
+        );
+
+    backdrop-filter:
+        blur(18px);
+}
+
+
+.mobile-btn {
+
+    display: none;
+
+    width: 42px;
+    height: 42px;
+
+    border:
+        1px solid
+        var(--line);
+
+    border-radius: 11px;
+
+    background:
+        rgba(
+            103,
+            86,
+            130,
+            .08
+        );
+
+    color: #fff;
+}
+
+
+.search {
+
+    width:
+        min(
+            450px,
+            45vw
+        );
+}
+
+
+.search input {
+
+    width: 100%;
+    height: 42px;
+
+    padding:
+        0 14px;
+
+    border:
+        1px solid
+        var(--line);
+
+    border-radius: 11px;
+
+    background:
+        rgba(
+            12,
+            8,
+            16,
+            .82
+        );
+
+    color: #fff;
+
+    outline: none;
+}
+
+
+.search input:focus {
+
+    border-color:
+        var(--topaz);
+}
+
+
+.search input::placeholder {
+
+    color: #73667b;
+}
+
+
+.top-actions {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+}
+
+
+.icon-btn {
+
+    width: 40px;
+    height: 40px;
+
+    border:
+        1px solid
+        var(--line);
+
+    border-radius: 11px;
+
+    background:
+        rgba(
+            103,
+            86,
+            130,
+            .07
+        );
+
+    color: #c5bacb;
+}
+
+
+.profile {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    padding:
+        5px 8px 5px 5px;
+
+    border:
+        1px solid
+        var(--line);
+
+    border-radius: 12px;
+
+    background:
+        rgba(
+            103,
+            86,
+            130,
+            .07
+        );
+}
+
+
+.avatar {
+
+    width: 32px;
+    height: 32px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 9px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--topaz),
+            var(--amethyst)
+        );
+
+    font-size: 10px;
+
+    font-weight: 950;
+}
+
+
+.profile strong {
+
+    display: block;
+
+    font-size: 11px;
+}
+
+
+.profile span {
+
+    display: block;
+
+    margin-top: 2px;
+
+    color: #82758c;
+
+    font-size: 9px;
+}
+
+
+/* =========================================================
+   CONTENT
+========================================================= */
+
+.content {
+
+    padding: 26px;
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.hero {
+
+    position: relative;
+
+    overflow: hidden;
+
+    padding: 28px;
+
+    border:
+        1px solid
+        var(--line);
+
+    border-radius: 26px;
+
+    background:
+
+        radial-gradient(
+            circle at 88% 8%,
+            rgba(
+                103,
+                174,
+                202,
+                .16
+            ),
+            transparent 27%
+        ),
+
+        radial-gradient(
+            circle at 9% 100%,
+            rgba(
+                229,
+                42,
+                111,
+                .09
+            ),
+            transparent 27%
+        ),
+
+        linear-gradient(
+            135deg,
+            rgba(
+                20,
+                12,
+                25,
+                .98
+            ),
+            rgba(
+                10,
+                7,
+                13,
+                .98
+            )
+        );
+
+    box-shadow:
+        var(--shadow);
+}
+
+
+.hero-row {
+
+    position: relative;
+
+    z-index: 2;
+
+    display: flex;
+
+    align-items: flex-end;
+
+    justify-content: space-between;
+
+    gap: 22px;
+}
+
+
+.eyebrow {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    padding:
+        7px 10px;
+
+    border:
+        1px solid
+        rgba(
+            103,
+            174,
+            202,
+            .16
+        );
+
+    border-radius: 999px;
+
+    background:
+        rgba(
+            103,
+            174,
+            202,
+            .06
+        );
+
+    color: #b9dce8;
+
+    font-size: 9px;
+
+    font-weight: 950;
+
+    letter-spacing: .11em;
+
+    text-transform: uppercase;
+}
+
+
+.eyebrow::before {
+
+    content: "";
+
+    width: 7px;
+    height: 7px;
+
+    border-radius: 50%;
+
+    background:
+        var(--topaz);
+
+    box-shadow:
+        0 0 16px
+        rgba(
+            103,
+            174,
+            202,
+            .6
+        );
+}
+
+
+.hero h1 {
+
+    margin-top: 13px;
+
+    font-size:
+        clamp(
+            34px,
+            4vw,
+            52px
+        );
+
+    letter-spacing:
+        -2.3px;
+}
+
+
+.hero h1 span {
+
+    background:
+        linear-gradient(
+            90deg,
+            var(--topaz),
+            #b79ac9,
+            var(--rose)
+        );
+
+    -webkit-background-clip:
+        text;
+
+    background-clip:
+        text;
+
+    color:
+        transparent;
+}
+
+
+.hero p {
+
+    max-width: 730px;
+
+    margin-top: 11px;
+
+    color: #95899d;
+
+    font-size: 12.5px;
+
+    line-height: 1.7;
+}
+
+
+/* =========================================================
+   HERO HEALTH
+========================================================= */
+
+.health-card {
+
+    min-width: 245px;
+
+    padding: 16px;
+
+    border:
+        1px solid
+        var(--line);
+
+    border-radius: 17px;
+
+    background:
+        rgba(
+            10,
+            7,
+            13,
+            .52
+        );
+}
+
+
+.health-card small {
+
+    display: block;
+
+    color: #786b80;
+
+    font-size: 8px;
+
+    font-weight: 950;
+
+    letter-spacing: .10em;
+
+    text-transform: uppercase;
+}
+
+
+.health-number {
+
+    margin-top: 8px;
+
+    display: flex;
+
+    align-items: end;
+
+    gap: 6px;
+}
+
+
+.health-number strong {
+
+    font-size: 30px;
+
+    letter-spacing: -1px;
+}
+
+
+.health-number span {
+
+    margin-bottom: 5px;
+
+    color: #8c7f94;
+
+    font-size: 9px;
+}
+
+
+.health-bar {
+
+    height: 6px;
+
+    margin-top: 11px;
+
+    overflow: hidden;
+
+    border-radius: 999px;
+
+    background:
+        rgba(
+            255,
+            255,
+            255,
+            .06
+        );
+}
+
+
+.health-bar span {
+
+    display: block;
+
+    width: 84%;
+
+    height: 100%;
+
+    border-radius: inherit;
+
+    background:
+        linear-gradient(
+            90deg,
+            var(--topaz),
+            var(--amethyst),
+            var(--rose)
+        );
+}
+
+
+/* =========================================================
+   STATS
+========================================================= */
+
+.stats {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            4,
+            1fr
+        );
+
+    gap: 13px;
+
+    margin-top: 16px;
+}
+
+
+.stat {
+
+    position: relative;
+
+    overflow: hidden;
+
+    padding: 17px;
+
+    border:
+        1px solid
+        var(--line);
+
+    border-radius: 17px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(
+                103,
+                86,
+                130,
+                .10
+            ),
+            rgba(
+                10,
+                7,
+                13,
+                .96
+            )
+        );
+}
+
+
+.stat small {
+
+    display: block;
+
+    color: #766a80;
+
+    font-size: 8.5px;
+
+    font-weight: 950;
+
+    letter-spacing: .09em;
+
+    text-transform: uppercase;
+}
+
+
+.stat strong {
+
+    display: block;
+
+    margin-top: 7px;
+
+    font-size: 27px;
+
+    letter-spacing: -1px;
+}
+
+
+.stat p {
+
+    margin-top: 5px;
+
+    color: #776b80;
+
+    font-size: 9px;
+}
+
+
+.stat.risk::after,
+.stat.breach::after {
+
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    height: 2px;
+}
+
+
+.stat.risk::after {
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            var(--amethyst),
+            var(--rose),
+            transparent
+        );
+}
+
+
+.stat.breach::after {
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            var(--rose),
+            transparent
+        );
+}
+
+
+/* =========================================================
+   LAYOUT
+========================================================= */
+
+.monitor-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        minmax(
+            0,
+            1.25fr
+        )
+        minmax(
+            300px,
+            .75fr
+        );
+
+    gap: 16px;
+
+    margin-top: 16px;
+}
+
+
+.stack {
+
+    display: grid;
+
+    gap: 16px;
+}
+
+
+.panel {
+
+    overflow: hidden;
+
+    border:
+        1px solid
+        var(--line);
+
+    border-radius: 20px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(
+                103,
+                86,
+                130,
+                .09
+            ),
+            rgba(
+                9,
+                6,
+                12,
+                .97
+            )
+        );
+}
+
+
+.panel-head {
+
+    padding:
+        16px 18px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 14px;
+
+    border-bottom:
+        1px solid
+        var(--line-soft);
+}
+
+
+.panel-title strong {
+
+    display: block;
+
+    font-size: 13px;
+}
+
+
+.panel-title span {
+
+    display: block;
+
+    margin-top: 4px;
+
+    color: #74677d;
+
+    font-size: 9.5px;
+}
+
+
+.count-badge {
+
+    padding:
+        6px 9px;
+
+    border:
+        1px solid
+        rgba(
+            229,
+            42,
+            111,
+            .14
+        );
+
+    border-radius: 999px;
+
+    color: #f3a7c2;
+
+    background:
+        rgba(
+            229,
+            42,
+            111,
+            .07
+        );
+
+    font-size: 8px;
+
+    font-weight: 950;
+}
+
+
+/* =========================================================
+   AT RISK CARDS
+========================================================= */
+
+.risk-list {
+
+    padding: 12px;
+}
+
+
+.risk-ticket {
+
+    padding: 13px;
+
+    border:
+        1px solid transparent;
+
+    border-radius: 14px;
+
+    transition: .16s ease;
+}
+
+
+.risk-ticket:hover {
+
+    background:
+        rgba(
+            103,
+            174,
+            202,
+            .035
+        );
+
+    border-color:
+        rgba(
+            103,
+            174,
+            202,
+            .08
+        );
+}
+
+
+.risk-top {
+
+    display: flex;
+
+    align-items: flex-start;
+
+    justify-content: space-between;
+
+    gap: 12px;
+}
+
+
+.risk-id {
+
+    color: #a8d4e4;
+
+    font-size: 8.5px;
+
+    font-weight: 950;
+
+    letter-spacing: .08em;
+}
+
+
+.risk-ticket h3 {
+
+    margin-top: 5px;
+
+    font-size: 11.5px;
+}
+
+
+.risk-ticket p {
+
+    margin-top: 5px;
+
+    color: #776a7f;
+
+    font-size: 9px;
+}
+
+
+.countdown {
+
+    min-width: 88px;
+
+    text-align: right;
+
+    font-size: 11px;
+
+    font-weight: 950;
+}
+
+
+.countdown.danger {
+
+    color: #ff82ad;
+}
+
+
+.countdown.warning {
+
+    color: #cba2c7;
+}
+
+
+.countdown.safe {
+
+    color: #a6d4e5;
+}
+
+
+.progress {
+
+    height: 5px;
+
+    margin-top: 10px;
+
+    overflow: hidden;
+
+    border-radius: 999px;
+
+    background:
+        rgba(
+            255,
+            255,
+            255,
+            .06
+        );
+}
+
+
+.progress span {
+
+    display: block;
+
+    height: 100%;
+
+    border-radius: inherit;
+
+    background:
+        linear-gradient(
+            90deg,
+            var(--topaz),
+            var(--amethyst),
+            var(--rose)
+        );
+}
+
+
+.risk-footer {
+
+    margin-top: 9px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 10px;
+}
+
+
+.risk-meta {
+
+    color: #74687c;
+
+    font-size: 8.5px;
+}
+
+
+.open-ticket {
+
+    min-height: 31px;
+
+    padding:
+        0 10px;
+
+    border:
+        1px solid
+        var(--line);
+
+    border-radius: 8px;
+
+    background:
+        rgba(
+            103,
+            86,
+            130,
+            .07
+        );
+
+    color: #b9dce7;
+
+    font-size: 8px;
+
+    font-weight: 900;
+}
+
+
+/* =========================================================
+   BREACH TABLE
+========================================================= */
+
+.table-wrap {
+
+    overflow-x: auto;
+}
+
+
+table {
+
+    width: 100%;
+
+    min-width: 760px;
+
+    border-collapse: collapse;
+}
+
+
+th {
+
+    padding:
+        11px 13px;
+
+    text-align: left;
+
+    color: #72667b;
+
+    font-size: 8px;
+
+    font-weight: 950;
+
+    letter-spacing: .08em;
+
+    text-transform: uppercase;
+
+    border-bottom:
+        1px solid
+        var(--line-soft);
+}
+
+
+td {
+
+    padding:
+        13px;
+
+    color: #bfb3c5;
+
+    font-size: 9.5px;
+
+    border-bottom:
+        1px solid
+        rgba(
+            103,
+            174,
+            202,
+            .055
+        );
+}
+
+
+tbody tr:last-child td {
+
+    border-bottom: none;
+}
+
+
+.ticket-link {
+
+    color: #a7d4e4;
+
+    font-weight: 950;
+}
+
+
+.breach-time {
+
+    color: #ff88b0;
+
+    font-weight: 900;
+}
+
+
+.priority {
+
+    display: inline-flex;
+
+    padding:
+        5px 7px;
+
+    border-radius: 999px;
+
+    font-size: 7.5px;
+
+    font-weight: 950;
+
+    text-transform: uppercase;
+}
+
+
+.priority.critical {
+
+    color: #ffb1cc;
+
+    border:
+        1px solid
+        rgba(
+            229,
+            42,
+            111,
+            .18
+        );
+
+    background:
+        rgba(
+            229,
+            42,
+            111,
+            .09
+        );
+}
+
+
+.priority.high {
+
+    color: #d5afcf;
+
+    border:
+        1px solid
+        rgba(
+            95,
+            15,
+            78,
+            .30
+        );
+
+    background:
+        rgba(
+            95,
+            15,
+            78,
+            .18
+        );
+}
+
+
+/* =========================================================
+   SLA POLICIES
+========================================================= */
+
+.policies {
+
+    padding: 14px;
+}
+
+
+.policy {
+
+    padding: 13px;
+
+    border:
+        1px solid
+        rgba(
+            103,
+            174,
+            202,
+            .08
+        );
+
+    border-radius: 13px;
+
+    background:
+        rgba(
+            103,
+            86,
+            130,
+            .045
+        );
+
+    margin-bottom: 10px;
+}
+
+
+.policy:last-child {
+
+    margin-bottom: 0;
+}
+
+
+.policy-top {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 10px;
+}
+
+
+.policy-name {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+}
+
+
+.policy-dot {
+
+    width: 9px;
+    height: 9px;
+
+    border-radius: 50%;
+}
+
+
+.policy-dot.critical {
+
+    background:
+        var(--rose);
+}
+
+
+.policy-dot.high {
+
+    background:
+        var(--jewel);
+}
+
+
+.policy-dot.medium {
+
+    background:
+        var(--topaz);
+}
+
+
+.policy-dot.low {
+
+    background:
+        var(--amethyst);
+}
+
+
+.policy strong {
+
+    font-size: 10.5px;
+}
+
+
+.policy-status {
+
+    color: #a7d4e4;
+
+    font-size: 8px;
+
+    font-weight: 900;
+}
+
+
+.policy-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap: 8px;
+
+    margin-top: 11px;
+}
+
+
+.policy-item {
+
+    padding: 9px;
+
+    border-radius: 10px;
+
+    background:
+        rgba(
+            255,
+            255,
+            255,
+            .025
+        );
+}
+
+
+.policy-item small {
+
+    display: block;
+
+    color: #6f6377;
+
+    font-size: 7px;
+
+    font-weight: 900;
+
+    text-transform: uppercase;
+
+    letter-spacing: .06em;
+}
+
+
+.policy-item span {
+
+    display: block;
+
+    margin-top: 4px;
+
+    font-size: 9px;
+
+    font-weight: 850;
+}
+
+
+/* =========================================================
+   ESCALATION
+========================================================= */
+
+.timeline {
+
+    padding: 15px;
+}
+
+
+.timeline-item {
+
+    position: relative;
+
+    display: grid;
+
+    grid-template-columns:
+        auto 1fr;
+
+    gap: 10px;
+
+    padding-bottom: 16px;
+}
+
+
+.timeline-item:last-child {
+
+    padding-bottom: 0;
+}
+
+
+.timeline-item:not(:last-child)::after {
+
+    content: "";
+
+    position: absolute;
+
+    left: 14px;
+
+    top: 31px;
+
+    bottom: 0;
+
+    width: 1px;
+
+    background:
+        rgba(
+            103,
+            174,
+            202,
+            .09
+        );
+}
+
+
+.timeline-icon {
+
+    width: 29px;
+    height: 29px;
+
+    z-index: 1;
+
+    display: grid;
+
+    place-items: center;
+
+    border-radius: 9px;
+
+    background:
+        rgba(
+            103,
+            86,
+            130,
+            .12
+        );
+
+    border:
+        1px solid
+        rgba(
+            103,
+            174,
+            202,
+            .10
+        );
+
+    color: #b7dbe7;
+
+    font-size: 9px;
+}
+
+
+.timeline-item strong {
+
+    display: block;
+
+    font-size: 9.5px;
+}
+
+
+.timeline-item p {
+
+    margin-top: 4px;
+
+    color: #776b80;
+
+    font-size: 8.5px;
+
+    line-height: 1.5;
+}
+
+
+.timeline-item time {
+
+    display: block;
+
+    margin-top: 4px;
+
+    color: #62566a;
+
+    font-size: 7.5px;
+}
+
+
+/* =========================================================
+   FILTER
+========================================================= */
+
+.filters {
+
+    margin-top: 16px;
+
+    padding: 13px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    border:
+        1px solid
+        var(--line);
+
+    border-radius: 17px;
+
+    background:
+        rgba(
+            13,
+            8,
+            16,
+            .82
+        );
+}
+
+
+.filters select {
+
+    height: 40px;
+
+    padding:
+        0 11px;
+
+    border:
+        1px solid
+        var(--line);
+
+    border-radius: 10px;
+
+    outline: none;
+
+    background:
+        rgba(
+            103,
+            86,
+            130,
+            .07
+        );
+
+    color: #fff;
+}
+
+
+.filters select:focus {
+
+    border-color:
+        var(--topaz);
+}
+
+
+.refresh-btn {
+
+    margin-left: auto;
+
+    min-height: 40px;
+
+    padding:
+        0 13px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background:
+        linear-gradient(
+            100deg,
+            var(--topaz),
+            var(--amethyst) 56%,
+            var(--rose)
+        );
+
+    color: #fff;
+
+    font-size: 9px;
+
+    font-weight: 900;
+}
+
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+.toast {
+
+    position: fixed;
+
+    right: 24px;
+    bottom: 24px;
+
+    z-index: 100;
+
+    min-width: 250px;
+
+    padding:
+        13px 15px;
+
+    border:
+        1px solid
+        rgba(
+            103,
+            174,
+            202,
+            .17
+        );
+
+    border-radius: 12px;
+
+    background:
+        rgba(
+            13,
+            9,
+            16,
+            .97
+        );
+
+    color: #dfd4e3;
+
+    box-shadow:
+        0 20px 60px
+        rgba(
+            0,
+            0,
+            0,
+            .45
+        );
+
+    font-size: 10px;
+
+    opacity: 0;
+
+    transform:
+        translateY(
+            10px
+        );
+
+    pointer-events: none;
+
+    transition:
+        .2s ease;
+}
+
+
+.toast.show {
+
+    opacity: 1;
+
+    transform: none;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+.sidebar-backdrop {
+
+    display: none;
+}
+
+
+@media (
+    max-width: 1100px
+) {
+
+    .stats {
+
+        grid-template-columns:
+            1fr 1fr;
+    }
+
+
+    .monitor-grid {
+
+        grid-template-columns:
+            1fr;
+    }
+}
+
+
+@media (
+    max-width: 900px
+) {
+
+    .sidebar {
+
+        transform:
+            translateX(-100%);
+
+        transition:
+            .2s ease;
+    }
+
+
+    .sidebar.open {
+
+        transform: none;
+    }
+
+
+    .sidebar-backdrop {
+
+        position: fixed;
+
+        inset: 0;
+
+        z-index: 45;
+
+        background:
+            rgba(
+                0,
+                0,
+                0,
+                .64
+            );
+    }
+
+
+    .sidebar-backdrop.open {
+
+        display: block;
+    }
+
+
+    .main {
+
+        margin-left: 0;
+    }
+
+
+    .mobile-btn {
+
+        display: grid;
+
+        place-items: center;
+    }
+
+
+    .hero-row {
+
+        flex-direction: column;
+
+        align-items: flex-start;
+    }
+
+
+    .health-card {
+
+        width: 100%;
+
+        min-width: 0;
+    }
+}
+
+
+@media (
+    max-width: 620px
+) {
+
+    .content {
+
+        padding: 16px;
+    }
+
+
+    .topbar {
+
+        padding:
+            0 14px;
+    }
+
+
+    .search {
+
+        display: none;
+    }
+
+
+    .profile-copy {
+
+        display: none;
+    }
+
+
+    .hero {
+
+        padding: 21px;
+    }
+
+
+    .hero h1 {
+
+        font-size: 37px;
+    }
+
+
+    .stats {
+
+        grid-template-columns:
+            1fr;
+    }
+
+
+    .filters {
+
+        align-items: stretch;
+
+        flex-direction: column;
+    }
+
+
+    .filters select,
+    .refresh-btn {
+
+        width: 100%;
+    }
+
+
+    .refresh-btn {
+
+        margin-left: 0;
+    }
+
+
+    .policy-grid {
+
+        grid-template-columns:
+            1fr;
+    }
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     SIDEBAR
+========================================================= -->
+
+<aside
+    class="sidebar"
+    id="sidebar"
+>
+
+    <div class="brand">
+
+        <div class="brand-mark">
+            R
+        </div>
+
+        <div>
+
+            <strong>
+                ResolveDesk
+            </strong>
+
+            <span>
+                IT Service Management
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <div class="nav-label">
+        Workspace
+    </div>
+
+
+    <nav class="nav">
+
+        <a href="/dashboard.html">
+
+            <span class="nav-icon">
+                ⌂
+            </span>
+
+            Dashboard
+
+        </a>
+
+
+        <a href="/tickets.html">
+
+            <span class="nav-icon">
+                ◫
+            </span>
+
+            Tickets
+
+        </a>
+
+
+        <a href="/my-queue.html">
+
+            <span class="nav-icon">
+                ◎
+            </span>
+
+            My Queue
+
+        </a>
+
+
+        <a
+            class="active"
+            href="/sla-monitor.html"
+        >
+
+            <span class="nav-icon">
+                ⏱
+            </span>
+
+            SLA Monitor
+
+            <span
+                class="nav-badge"
+                id="slaBadge"
+            >
+                0
+            </span>
+
+        </a>
+
+
+        <a href="/knowledge-base.html">
+
+            <span class="nav-icon">
+                ▤
+            </span>
+
+            Knowledge Base
+
+        </a>
+
+    </nav>
+
+
+    <div class="nav-label">
+        Management
+    </div>
+
+
+    <nav class="nav">
+
+        <a href="/users.html">
+
+            <span class="nav-icon">
+                ♙
+            </span>
+
+            Users
+
+        </a>
+
+
+        <a href="/technicians.html">
+
+            <span class="nav-icon">
+                ♟
+            </span>
+
+            Technicians
+
+        </a>
+
+
+        <a href="/departments.html">
+
+            <span class="nav-icon">
+                ▦
+            </span>
+
+            Departments
+
+        </a>
+
+
+        <a href="/reports.html">
+
+            <span class="nav-icon">
+                ▥
+            </span>
+
+            Reports
+
+        </a>
+
+
+        <a href="/activity-log.html">
+
+            <span class="nav-icon">
+                ◷
+            </span>
+
+            Audit Log
+
+        </a>
+
+
+        <a href="/settings.html">
+
+            <span class="nav-icon">
+                ⚙
+            </span>
+
+            Settings
+
+        </a>
+
+    </nav>
+
+
+    <div class="sidebar-bottom">
+
+        <div class="system-card">
+
+            <small>
+                SLA Engine
+            </small>
+
+            <strong>
+                Monitoring active
+            </strong>
+
+            <p>
+                Response and
+                resolution deadlines
+                are being tracked.
+            </p>
+
+        </div>
+
+    </div>
+
+</aside>
+
+
+<div
+    class="sidebar-backdrop"
+    id="sidebarBackdrop"
+></div>
+
+
+<!-- =========================================================
+     MAIN
+========================================================= -->
+
+<main class="main">
+
+
+<header class="topbar">
+
+    <div
+        style="
+            display:flex;
+            align-items:center;
+            gap:12px;
+        "
+    >
+
+        <button
+            class="mobile-btn"
+            id="menuBtn"
+            type="button"
+        >
+            ☰
+        </button>
+
+
+        <div class="search">
+
+            <input
+                id="topSearch"
+                type="search"
+                placeholder="
+                    Search SLA tickets...
+                "
+            >
+
+        </div>
+
+    </div>
+
+
+    <div class="top-actions">
+
+        <button
+            class="icon-btn"
+            type="button"
+        >
+            ?
+        </button>
+
+
+        <button
+            class="icon-btn"
+            type="button"
+        >
+            ●
+        </button>
+
+
+        <div class="profile">
+
+            <div class="avatar">
+                HH
+            </div>
+
+
+            <div class="profile-copy">
+
+                <strong>
+                    Haziq Hanif
+                </strong>
+
+                <span>
+                    Administrator
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<div class="content">
+
+
+<!-- =========================================================
+     HERO
+========================================================= -->
+
+<section class="hero">
+
+
+    <div class="hero-row">
+
+
+        <div>
+
+            <div class="eyebrow">
+                Service Level Monitor
+            </div>
+
+
+            <h1>
+
+                Protect every
+
+                <span>
+                    support deadline.
+                </span>
+
+            </h1>
+
+
+            <p>
+
+                Track response and
+                resolution commitments,
+                identify tickets at risk
+                and escalate issues
+                before SLA deadlines
+                are missed.
+
+            </p>
+
+        </div>
+
+
+        <aside class="health-card">
+
+            <small>
+                SLA Compliance
+            </small>
+
+
+            <div class="health-number">
+
+                <strong>
+                    84%
+                </strong>
+
+                <span>
+                    this month
+                </span>
+
+            </div>
+
+
+            <div class="health-bar">
+
+                <span></span>
+
+            </div>
+
+        </aside>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     STATS
+========================================================= -->
+
+<section class="stats">
+
+
+    <article class="stat">
+
+        <small>
+            Active SLA
+        </small>
+
+        <strong id="activeCount">
+            0
+        </strong>
+
+        <p>
+            Currently monitored tickets
+        </p>
+
+    </article>
+
+
+    <article class="stat risk">
+
+        <small>
+            At Risk
+        </small>
+
+        <strong id="riskCount">
+            0
+        </strong>
+
+        <p>
+            Less than 60 minutes
+        </p>
+
+    </article>
+
+
+    <article class="stat breach">
+
+        <small>
+            Breached
+        </small>
+
+        <strong id="breachCount">
+            0
+        </strong>
+
+        <p>
+            SLA target exceeded
+        </p>
+
+    </article>
+
+
+    <article class="stat">
+
+        <small>
+            Avg Resolution
+        </small>
+
+        <strong>
+            2h 14m
+        </strong>
+
+        <p>
+            Current monthly average
+        </p>
+
+    </article>
+
+</section>
+
+
+<!-- =========================================================
+     FILTER
+========================================================= -->
+
+<section class="filters">
+
+
+    <select id="priorityFilter">
+
+        <option value="">
+            All Priorities
+        </option>
+
+        <option value="critical">
+            Critical
+        </option>
+
+        <option value="high">
+            High
+        </option>
+
+        <option value="medium">
+            Medium
+        </option>
+
+        <option value="low">
+            Low
+        </option>
+
+    </select>
+
+
+    <select id="riskFilter">
+
+        <option value="">
+            All SLA Conditions
+        </option>
+
+        <option value="danger">
+            Under 30 Minutes
+        </option>
+
+        <option value="warning">
+            Under 60 Minutes
+        </option>
+
+        <option value="safe">
+            Safe
+        </option>
+
+    </select>
+
+
+    <button
+        class="refresh-btn"
+        id="refreshButton"
+        type="button"
+    >
+        ↻ Refresh Monitor
+    </button>
+
+</section>
+
+
+<!-- =========================================================
+     MAIN GRID
+========================================================= -->
+
+<section class="monitor-grid">
+
+
+<div class="stack">
+
+
+<!-- =========================================================
+     AT RISK
+========================================================= -->
+
+<article class="panel">
+
+    <div class="panel-head">
+
+        <div class="panel-title">
+
+            <strong>
+                SLA At Risk
+            </strong>
+
+            <span>
+                Tickets closest
+                to deadline
+            </span>
+
+        </div>
+
+
+        <div
+            class="count-badge"
+            id="riskBadge"
+        >
+            0 requiring attention
+        </div>
+
+    </div>
+
+
+    <div
+        class="risk-list"
+        id="riskList"
+    >
+    </div>
+
+</article>
+
+
+<!-- =========================================================
+     BREACHED TABLE
+========================================================= -->
+
+<article class="panel">
+
+    <div class="panel-head">
+
+        <div class="panel-title">
+
+            <strong>
+                Recent SLA Breaches
+            </strong>
+
+            <span>
+                Tickets that exceeded
+                their resolution target
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <div class="table-wrap">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Ticket
+                    </th>
+
+                    <th>
+                        Subject
+                    </th>
+
+                    <th>
+                        Priority
+                    </th>
+
+                    <th>
+                        Technician
+                    </th>
+
+                    <th>
+                        Breached By
+                    </th>
+
+                    <th>
+                        Action
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody id="breachRows">
+            </tbody>
+
+        </table>
+
+    </div>
+
+</article>
+
+</div>
+
+
+<!-- =========================================================
+     RIGHT COLUMN
+========================================================= -->
+
+<div class="stack">
+
+
+<!-- =========================================================
+     POLICIES
+========================================================= -->
+
+<article class="panel">
+
+    <div class="panel-head">
+
+        <div class="panel-title">
+
+            <strong>
+                SLA Policies
+            </strong>
+
+            <span>
+                Active service targets
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <div class="policies">
+
+
+        <div class="policy">
+
+            <div class="policy-top">
+
+                <div class="policy-name">
+
+                    <span
+                        class="
+                            policy-dot
+                            critical
+                        "
+                    ></span>
+
+                    <strong>
+                        Critical
+                    </strong>
+
+                </div>
+
+                <span class="policy-status">
+                    Active
+                </span>
+
+            </div>
+
+
+            <div class="policy-grid">
+
+                <div class="policy-item">
+
+                    <small>
+                        First Response
+                    </small>
+
+                    <span>
+                        15 min
+                    </span>
+
+                </div>
+
+
+                <div class="policy-item">
+
+                    <small>
+                        Resolution
+                    </small>
+
+                    <span>
+                        1 hour
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="policy">
+
+            <div class="policy-top">
+
+                <div class="policy-name">
+
+                    <span
+                        class="
+                            policy-dot
+                            high
+                        "
+                    ></span>
+
+                    <strong>
+                        High
+                    </strong>
+
+                </div>
+
+                <span class="policy-status">
+                    Active
+                </span>
+
+            </div>
+
+
+            <div class="policy-grid">
+
+                <div class="policy-item">
+
+                    <small>
+                        First Response
+                    </small>
+
+                    <span>
+                        30 min
+                    </span>
+
+                </div>
+
+
+                <div class="policy-item">
+
+                    <small>
+                        Resolution
+                    </small>
+
+                    <span>
+                        4 hours
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="policy">
+
+            <div class="policy-top">
+
+                <div class="policy-name">
+
+                    <span
+                        class="
+                            policy-dot
+                            medium
+                        "
+                    ></span>
+
+                    <strong>
+                        Medium
+                    </strong>
+
+                </div>
+
+                <span class="policy-status">
+                    Active
+                </span>
+
+            </div>
+
+
+            <div class="policy-grid">
+
+                <div class="policy-item">
+
+                    <small>
+                        First Response
+                    </small>
+
+                    <span>
+                        2 hours
+                    </span>
+
+                </div>
+
+
+                <div class="policy-item">
+
+                    <small>
+                        Resolution
+                    </small>
+
+                    <span>
+                        8 hours
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="policy">
+
+            <div class="policy-top">
+
+                <div class="policy-name">
+
+                    <span
+                        class="
+                            policy-dot
+                            low
+                        "
+                    ></span>
+
+                    <strong>
+                        Low
+                    </strong>
+
+                </div>
+
+                <span class="policy-status">
+                    Active
+                </span>
+
+            </div>
+
+
+            <div class="policy-grid">
+
+                <div class="policy-item">
+
+                    <small>
+                        First Response
+                    </small>
+
+                    <span>
+                        4 hours
+                    </span>
+
+                </div>
+
+
+                <div class="policy-item">
+
+                    <small>
+                        Resolution
+                    </small>
+
+                    <span>
+                        24 hours
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</article>
+
+
+<!-- =========================================================
+     SLA ATTENTION
+========================================================= -->
+
+<article class="panel">
+
+    <div class="panel-head">
+
+        <div class="panel-title">
+
+            <strong>
+                SLA Attention
+            </strong>
+
+            <span>
+                Current tickets requiring attention
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <div
+        class="timeline"
+        id="slaAttentionTimeline"
+    >
+
+        <div class="timeline-item">
+
+            <div class="timeline-icon">
+                •
+            </div>
+
+            <div>
+
+                <strong>
+                    Loading SLA status...
+                </strong>
+
+                <p>
+                    Checking current ticket deadlines.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</article>
+
+</div>
+
+</section>
+
+</div>
+
+</main>
+
+
+<div
+    class="toast"
+    id="toast"
+></div>
+
+
+<script>
+
+/* =========================================================
+   ACTIVE SLA STATE
+   Live data is loaded by /js/sla-monitor-live.js
+========================================================= */
+
+let activeTickets = [];
+
+
+/* =========================================================
+   BREACH STATE
+   Live breach data is loaded by /js/sla-monitor-live.js
+========================================================= */
+
+const breachedTickets = [];
+
+
+/* =========================================================
+   HELPERS
+========================================================= */
+
+function escapeHtml(
+    value
+) {
+
+    return String(
+        value ?? ""
+    )
+        .replaceAll(
+            "&",
+            "&amp;"
+        )
+        .replaceAll(
+            "<",
+            "&lt;"
+        )
+        .replaceAll(
+            ">",
+            "&gt;"
+        )
+        .replaceAll(
+            '"',
+            "&quot;"
+        )
+        .replaceAll(
+            "'",
+            "&#039;"
+        );
+}
+
+
+function formatTime(
+    seconds
+) {
+
+    if (
+        seconds <=
+        0
+    ) {
+
+        return "BREACHED";
+    }
+
+
+    const hours =
+        Math.floor(
+            seconds /
+            3600
+        );
+
+
+    const minutes =
+        Math.floor(
+            (
+                seconds %
+                3600
+            ) /
+            60
+        );
+
+
+    const secs =
+        seconds %
+        60;
+
+
+    return `${String(
+        hours
+    ).padStart(
+        2,
+        "0"
+    )}:${String(
+        minutes
+    ).padStart(
+        2,
+        "0"
+    )}:${String(
+        secs
+    ).padStart(
+        2,
+        "0"
+    )}`;
+}
+
+
+function getRiskClass(
+    seconds
+) {
+
+    if (
+        seconds <=
+        30 * 60
+    ) {
+
+        return "danger";
+    }
+
+
+    if (
+        seconds <=
+        60 * 60
+    ) {
+
+        return "warning";
+    }
+
+
+    return "safe";
+}
+
+
+function progressPercent(
+    ticket
+) {
+
+    return Math.max(
+        4,
+        Math.min(
+            100,
+            (
+                ticket.seconds /
+                ticket.originalSeconds
+            ) *
+            100
+        )
+    );
+}
+
+
+/* =========================================================
+   FILTERED SLA
+========================================================= */
+
+function getFilteredTickets() {
+
+    const priority =
+        document
+            .getElementById(
+                "priorityFilter"
+            )
+            .value;
+
+
+    const condition =
+        document
+            .getElementById(
+                "riskFilter"
+            )
+            .value;
+
+
+    const search =
+        document
+            .getElementById(
+                "topSearch"
+            )
+            .value
+            .trim()
+            .toLowerCase();
+
+
+    return activeTickets.filter(
+        ticket => {
+
+            const risk =
+                getRiskClass(
+                    ticket.seconds
+                );
+
+
+            const matchesPriority =
+                !priority ||
+                ticket.priority ===
+                    priority;
+
+
+            const matchesCondition =
+                !condition ||
+                risk ===
+                    condition;
+
+
+            const text =
+                [
+                    ticket.id,
+                    ticket.subject,
+                    ticket.technician,
+                    ticket.department
+                ]
+                    .join(
+                        " "
+                    )
+                    .toLowerCase();
+
+
+            const matchesSearch =
+                !search ||
+                text.includes(
+                    search
+                );
+
+
+            return (
+                matchesPriority &&
+                matchesCondition &&
+                matchesSearch
+            );
+        }
+    );
+}
+
+
+/* =========================================================
+   RENDER SLA RISK
+========================================================= */
+
+function renderRiskTickets() {
+
+    const list =
+        document.getElementById(
+            "riskList"
+        );
+
+
+    const filtered =
+        getFilteredTickets();
+
+
+    list.innerHTML =
+        filtered
+            .map(
+                ticket => {
+
+                    const riskClass =
+                        getRiskClass(
+                            ticket.seconds
+                        );
+
+
+                    return `
+
+                    <div
+                        class="risk-ticket"
+                    >
+
+                        <div
+                            class="risk-top"
+                        >
+
+                            <div>
+
+                                <div
+                                    class="risk-id"
+                                >
+                                    ${escapeHtml(
+                                        ticket.id
+                                    )}
+                                </div>
+
+                                <h3>
+                                    ${escapeHtml(
+                                        ticket.subject
+                                    )}
+                                </h3>
+
+                                <p>
+                                    ${escapeHtml(
+                                        ticket.department
+                                    )}
+                                    ·
+                                    ${escapeHtml(
+                                        ticket.technician
+                                    )}
+                                </p>
+
+                            </div>
+
+
+                            <div
+                                class="
+                                    countdown
+                                    ${riskClass}
+                                "
+                                data-sla-id="
+                                    ${escapeHtml(
+                                        ticket.id
+                                    )}
+                                "
+                            >
+                                ${formatTime(
+                                    ticket.seconds
+                                )}
+                            </div>
+
+                        </div>
+
+
+                        <div
+                            class="progress"
+                        >
+
+                            <span
+                                style="
+                                    width:
+                                    ${progressPercent(
+                                        ticket
+                                    )}%;
+                                "
+                            ></span>
+
+                        </div>
+
+
+                        <div
+                            class="risk-footer"
+                        >
+
+                            <div
+                                class="risk-meta"
+                            >
+                                ${
+                                    ticket.priority
+                                        .charAt(
+                                            0
+                                        )
+                                        .toUpperCase() +
+                                    ticket.priority
+                                        .slice(
+                                            1
+                                        )
+                                }
+                                priority
+                            </div>
+
+
+                            <button
+                                class="
+                                    open-ticket
+                                "
+                                type="button"
+                                onclick="
+                                    openTicket(
+                                        '${escapeHtml(
+                                            ticket.id
+                                        )}'
+                                    )
+                                "
+                            >
+                                Open Ticket →
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                    `;
+                }
+            )
+            .join(
+                ""
+            );
+
+
+    const atRisk =
+        activeTickets.filter(
+            ticket =>
+                ticket.seconds <=
+                    60 * 60
+        ).length;
+
+
+    document.getElementById(
+        "riskBadge"
+    ).textContent =
+        `${atRisk} requiring attention`;
+}
+
+
+/* =========================================================
+   BREACH TABLE
+========================================================= */
+
+function renderBreaches() {
+
+    const rows =
+        document.getElementById(
+            "breachRows"
+        );
+
+
+    rows.innerHTML =
+        breachedTickets
+            .map(
+                ticket => `
+
+                <tr>
+
+                    <td>
+
+                        <span
+                            class="
+                                ticket-link
+                            "
+                        >
+                            ${escapeHtml(
+                                ticket.id
+                            )}
+                        </span>
+
+                    </td>
+
+
+                    <td>
+
+                        ${escapeHtml(
+                            ticket.subject
+                        )}
+
+                    </td>
+
+
+                    <td>
+
+                        <span
+                            class="
+                                priority
+                                ${escapeHtml(
+                                    ticket.priority
+                                )}
+                            "
+                        >
+                            ${escapeHtml(
+                                ticket.priority
+                            )}
+                        </span>
+
+                    </td>
+
+
+                    <td>
+
+                        ${escapeHtml(
+                            ticket.technician
+                        )}
+
+                    </td>
+
+
+                    <td>
+
+                        <span
+                            class="
+                                breach-time
+                            "
+                        >
+                            +${escapeHtml(
+                                ticket.breachedBy
+                            )}
+                        </span>
+
+                    </td>
+
+
+                    <td>
+
+                        <button
+                            class="
+                                open-ticket
+                            "
+                            onclick="
+                                openTicket(
+                                    '${escapeHtml(
+                                        ticket.id
+                                    )}'
+                                )
+                            "
+                        >
+                            View →
+                        </button>
+
+                    </td>
+
+                </tr>
+
+                `
+            )
+            .join(
+                ""
+            );
+}
+
+
+/* =========================================================
+   UPDATE STATS
+========================================================= */
+
+function updateStats() {
+
+    const atRisk =
+        activeTickets.filter(
+            ticket =>
+                ticket.seconds <=
+                    60 * 60
+        ).length;
+
+
+    document.getElementById(
+        "activeCount"
+    ).textContent =
+        activeTickets.length;
+
+
+    document.getElementById(
+        "riskCount"
+    ).textContent =
+        atRisk;
+
+
+    document.getElementById(
+        "breachCount"
+    ).textContent =
+        breachedTickets.length;
+
+
+    document.getElementById(
+        "slaBadge"
+    ).textContent =
+        atRisk;
+}
+
+
+/* =========================================================
+   LIVE COUNTDOWN
+========================================================= */
+
+function tickSla() {
+
+    let rerenderNeeded =
+        false;
+
+
+    activeTickets.forEach(
+        ticket => {
+
+            if (
+                ticket.seconds >
+                0
+            ) {
+
+                ticket.seconds--;
+            }
+
+
+            const element =
+                document.querySelector(
+                    `[data-sla-id="${ticket.id}"]`
+                );
+
+
+            if (element) {
+
+                const newClass =
+                    getRiskClass(
+                        ticket.seconds
+                    );
+
+
+                element.textContent =
+                    formatTime(
+                        ticket.seconds
+                    );
+
+
+                element.className =
+                    `countdown ${newClass}`;
+            }
+
+
+            if (
+                ticket.seconds ===
+                    60 * 60 ||
+                ticket.seconds ===
+                    30 * 60
+            ) {
+
+                rerenderNeeded =
+                    true;
+            }
+        }
+    );
+
+
+    if (
+        rerenderNeeded
+    ) {
+
+        updateStats();
+
+        renderRiskTickets();
+    }
+}
+
+
+setInterval(
+    tickSla,
+    1000
+);
+
+
+/* =========================================================
+   FILTER EVENTS
+========================================================= */
+
+document
+    .getElementById(
+        "priorityFilter"
+    )
+    .addEventListener(
+        "change",
+        renderRiskTickets
+    );
+
+
+document
+    .getElementById(
+        "riskFilter"
+    )
+    .addEventListener(
+        "change",
+        renderRiskTickets
+    );
+
+
+document
+    .getElementById(
+        "topSearch"
+    )
+    .addEventListener(
+        "input",
+        renderRiskTickets
+    );
+
+
+/* =========================================================
+   REFRESH
+========================================================= */
+
+document
+    .getElementById(
+        "refreshButton"
+    )
+    .addEventListener(
+        "click",
+        () => {
+
+            renderRiskTickets();
+
+            renderBreaches();
+
+            updateStats();
+
+            showToast(
+                "SLA monitor refreshed."
+            );
+        }
+    );
+
+
+/* =========================================================
+   OPEN TICKET
+========================================================= */
+
+function openTicket(
+    ticketId
+) {
+
+    window.location.href =
+        `/ticket-detail.html?id=${encodeURIComponent(
+            ticketId
+        )}`;
+}
+
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+let toastTimer;
+
+
+function showToast(
+    message
+) {
+
+    const toast =
+        document.getElementById(
+            "toast"
+        );
+
+
+    toast.textContent =
+        message;
+
+
+    toast.classList.add(
+        "show"
+    );
+
+
+    clearTimeout(
+        toastTimer
+    );
+
+
+    toastTimer =
+        setTimeout(
+            () => {
+
+                toast.classList.remove(
+                    "show"
+                );
+            },
+            2300
+        );
+}
+
+
+/* =========================================================
+   MOBILE SIDEBAR
+========================================================= */
+
+const sidebar =
+    document.getElementById(
+        "sidebar"
+    );
+
+
+const sidebarBackdrop =
+    document.getElementById(
+        "sidebarBackdrop"
+    );
+
+
+document
+    .getElementById(
+        "menuBtn"
+    )
+    .addEventListener(
+        "click",
+        () => {
+
+            sidebar.classList.toggle(
+                "open"
+            );
+
+
+            sidebarBackdrop
+                .classList
+                .toggle(
+                    "open"
+                );
+        }
+    );
+
+
+sidebarBackdrop
+    .addEventListener(
+        "click",
+        () => {
+
+            sidebar.classList.remove(
+                "open"
+            );
+
+
+            sidebarBackdrop
+                .classList
+                .remove(
+                    "open"
+                );
+        }
+    );
+
+
+/* =========================================================
+   INITIAL LOAD
+========================================================= */
+
+renderRiskTickets();
+
+renderBreaches();
+
+updateStats();
+
+</script>
+
+
+<script src="/js/auth-session.js"></script>
+
+
+<script src="/js/sla-monitor-live.js"></script>
+<script src="/js/role-navigation.js"></script>
+<script src="/js/create-ticket-nav.js"></script>
+
+<script src="/js/sla-attention-live.js"></script>
+</body>
+</html>

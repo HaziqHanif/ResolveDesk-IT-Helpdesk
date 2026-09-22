@@ -1,0 +1,3041 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>ResolveDesk — My Queue</title>
+
+<style>
+
+:root {
+    --topaz: #67AECA;
+    --amethyst: #675682;
+    --jewel: #5F0F4E;
+    --rose: #E52A6F;
+
+    --bg: #08060b;
+    --bg2: #120b16;
+
+    --text: #ffffff;
+    --muted: #95889d;
+
+    --line: rgba(103,174,202,.14);
+    --line-soft: rgba(103,174,202,.07);
+
+    --sidebar: 250px;
+
+    --shadow:
+        0 30px 90px
+        rgba(25,5,30,.45);
+}
+
+
+/* =========================================================
+   RESET
+========================================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    min-height: 100vh;
+
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Inter,
+        Arial,
+        sans-serif;
+
+    color: var(--text);
+
+    background:
+        radial-gradient(
+            circle at 88% 6%,
+            rgba(103,174,202,.15),
+            transparent 25%
+        ),
+
+        radial-gradient(
+            circle at 10% 82%,
+            rgba(229,42,111,.08),
+            transparent 25%
+        ),
+
+        radial-gradient(
+            circle at 60% 94%,
+            rgba(103,86,130,.14),
+            transparent 30%
+        ),
+
+        linear-gradient(
+            180deg,
+            var(--bg),
+            var(--bg2) 55%,
+            var(--bg)
+        );
+
+    overflow-x: hidden;
+}
+
+body::before {
+    content: "";
+
+    position: fixed;
+    inset: 0;
+
+    pointer-events: none;
+    z-index: -1;
+
+    opacity: .13;
+
+    background-image:
+        linear-gradient(
+            rgba(103,174,202,.035) 1px,
+            transparent 1px
+        ),
+
+        linear-gradient(
+            90deg,
+            rgba(103,174,202,.035) 1px,
+            transparent 1px
+        );
+
+    background-size: 64px 64px;
+
+    mask-image:
+        linear-gradient(
+            #000,
+            transparent 90%
+        );
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+button,
+input,
+select {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+
+/* =========================================================
+   SIDEBAR
+========================================================= */
+
+.sidebar {
+    position: fixed;
+
+    inset: 0 auto 0 0;
+
+    width: var(--sidebar);
+
+    z-index: 50;
+
+    padding: 18px 14px;
+
+    background:
+        rgba(8,5,11,.94);
+
+    border-right:
+        1px solid
+        rgba(103,174,202,.09);
+
+    backdrop-filter:
+        blur(20px);
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    padding:
+        7px 9px 22px;
+}
+
+.brand-mark {
+    width: 42px;
+    height: 42px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 12px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--topaz),
+            var(--amethyst) 58%,
+            var(--rose)
+        );
+
+    font-size: 20px;
+    font-weight: 950;
+
+    box-shadow:
+        0 14px 34px
+        rgba(103,86,130,.25);
+}
+
+.brand strong {
+    display: block;
+    font-size: 16px;
+}
+
+.brand span {
+    display: block;
+
+    margin-top: 3px;
+
+    color: #7d7085;
+
+    font-size: 9px;
+    font-weight: 900;
+
+    letter-spacing: .12em;
+
+    text-transform: uppercase;
+}
+
+.nav-label {
+    margin:
+        12px 10px 8px;
+
+    color: #615568;
+
+    font-size: 9px;
+    font-weight: 950;
+
+    letter-spacing: .14em;
+
+    text-transform: uppercase;
+}
+
+.nav {
+    display: grid;
+    gap: 4px;
+}
+
+.nav a {
+    min-height: 45px;
+
+    padding:
+        0 12px;
+
+    display: flex;
+    align-items: center;
+    gap: 11px;
+
+    border:
+        1px solid transparent;
+
+    border-radius: 12px;
+
+    color: #988ba0;
+
+    font-size: 13px;
+    font-weight: 760;
+
+    transition: .18s ease;
+}
+
+.nav a:hover {
+    color: #fff;
+
+    background:
+        rgba(103,174,202,.05);
+}
+
+.nav a.active {
+    color: #fff;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(103,174,202,.13),
+            rgba(103,86,130,.10)
+        );
+
+    border-color:
+        rgba(103,174,202,.18);
+}
+
+.nav-icon {
+    width: 28px;
+    height: 28px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 8px;
+
+    background:
+        rgba(103,86,130,.08);
+
+    border:
+        1px solid
+        rgba(103,174,202,.09);
+
+    font-size: 12px;
+}
+
+.nav a.active .nav-icon {
+    background:
+        linear-gradient(
+            135deg,
+            var(--topaz),
+            var(--amethyst)
+        );
+}
+
+.nav-badge {
+    margin-left: auto;
+
+    min-width: 22px;
+    height: 20px;
+
+    padding: 0 6px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 999px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--rose),
+            var(--jewel)
+        );
+
+    font-size: 9px;
+    font-weight: 950;
+}
+
+.sidebar-bottom {
+    position: absolute;
+
+    left: 14px;
+    right: 14px;
+    bottom: 16px;
+}
+
+.status-card {
+    padding: 14px;
+
+    border:
+        1px solid
+        rgba(103,174,202,.11);
+
+    border-radius: 15px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(103,86,130,.11),
+            rgba(10,6,13,.9)
+        );
+}
+
+.status-card small {
+    color: #746779;
+
+    font-size: 9px;
+    font-weight: 900;
+
+    text-transform: uppercase;
+    letter-spacing: .1em;
+}
+
+.status-card strong {
+    display: block;
+
+    margin-top: 7px;
+
+    font-size: 12px;
+}
+
+.status-card p {
+    margin-top: 5px;
+
+    color: #81748a;
+
+    font-size: 10px;
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   MAIN
+========================================================= */
+
+.main {
+    margin-left:
+        var(--sidebar);
+
+    min-height: 100vh;
+}
+
+
+/* =========================================================
+   TOPBAR
+========================================================= */
+
+.topbar {
+    position: sticky;
+    top: 0;
+
+    z-index: 40;
+
+    height: 74px;
+
+    padding:
+        0 24px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 16px;
+
+    background:
+        rgba(9,6,12,.8);
+
+    border-bottom:
+        1px solid
+        rgba(103,174,202,.08);
+
+    backdrop-filter:
+        blur(18px);
+}
+
+.mobile-btn {
+    display: none;
+
+    width: 42px;
+    height: 42px;
+
+    border:
+        1px solid var(--line);
+
+    border-radius: 11px;
+
+    background:
+        rgba(103,86,130,.08);
+
+    color: #fff;
+}
+
+.search {
+    width:
+        min(
+            450px,
+            45vw
+        );
+}
+
+.search input {
+    width: 100%;
+    height: 42px;
+
+    padding:
+        0 14px;
+
+    border:
+        1px solid var(--line);
+
+    border-radius: 11px;
+
+    background:
+        rgba(12,8,16,.82);
+
+    color: #fff;
+
+    outline: none;
+}
+
+.search input:focus {
+    border-color:
+        var(--topaz);
+}
+
+.search input::placeholder {
+    color: #73667b;
+}
+
+.top-actions {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+}
+
+.icon-btn {
+    width: 40px;
+    height: 40px;
+
+    border:
+        1px solid var(--line);
+
+    border-radius: 11px;
+
+    background:
+        rgba(103,86,130,.07);
+
+    color: #c5bacb;
+}
+
+.profile {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    padding:
+        5px 8px 5px 5px;
+
+    border:
+        1px solid var(--line);
+
+    border-radius: 12px;
+
+    background:
+        rgba(103,86,130,.07);
+}
+
+.avatar {
+    width: 32px;
+    height: 32px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 9px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--topaz),
+            var(--amethyst)
+        );
+
+    font-size: 10px;
+    font-weight: 950;
+}
+
+.profile strong {
+    display: block;
+
+    font-size: 11px;
+}
+
+.profile span {
+    display: block;
+
+    margin-top: 2px;
+
+    color: #82758c;
+
+    font-size: 9px;
+}
+
+
+/* =========================================================
+   CONTENT
+========================================================= */
+
+.content {
+    padding: 26px;
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.hero {
+    position: relative;
+
+    overflow: hidden;
+
+    padding: 27px;
+
+    border:
+        1px solid var(--line);
+
+    border-radius: 26px;
+
+    background:
+        radial-gradient(
+            circle at 88% 10%,
+            rgba(103,174,202,.16),
+            transparent 26%
+        ),
+
+        radial-gradient(
+            circle at 8% 100%,
+            rgba(229,42,111,.08),
+            transparent 26%
+        ),
+
+        linear-gradient(
+            135deg,
+            rgba(20,12,25,.98),
+            rgba(10,7,13,.98)
+        );
+
+    box-shadow:
+        var(--shadow);
+}
+
+.hero-row {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    position: relative;
+    z-index: 2;
+}
+
+.eyebrow {
+    display: inline-flex;
+    align-items: center;
+
+    gap: 8px;
+
+    padding:
+        7px 10px;
+
+    border:
+        1px solid
+        rgba(103,174,202,.16);
+
+    border-radius: 999px;
+
+    background:
+        rgba(103,174,202,.06);
+
+    color: #b9dce8;
+
+    font-size: 9px;
+    font-weight: 950;
+
+    letter-spacing: .11em;
+
+    text-transform: uppercase;
+}
+
+.eyebrow::before {
+    content: "";
+
+    width: 7px;
+    height: 7px;
+
+    border-radius: 50%;
+
+    background:
+        var(--topaz);
+
+    box-shadow:
+        0 0 16px
+        rgba(103,174,202,.6);
+}
+
+.hero h1 {
+    margin-top: 13px;
+
+    font-size:
+        clamp(
+            34px,
+            4vw,
+            52px
+        );
+
+    letter-spacing: -2.3px;
+}
+
+.hero h1 span {
+    background:
+        linear-gradient(
+            90deg,
+            var(--topaz),
+            #b79ac9,
+            var(--rose)
+        );
+
+    -webkit-background-clip: text;
+    background-clip: text;
+
+    color: transparent;
+}
+
+.hero p {
+    max-width: 720px;
+
+    margin-top: 11px;
+
+    color: #95899d;
+
+    font-size: 12.5px;
+    line-height: 1.7;
+}
+
+.availability {
+    min-width: 230px;
+
+    padding: 15px;
+
+    border:
+        1px solid
+        var(--line);
+
+    border-radius: 16px;
+
+    background:
+        rgba(10,7,13,.48);
+}
+
+.availability small {
+    color: #776a80;
+
+    font-size: 8px;
+    font-weight: 950;
+
+    text-transform: uppercase;
+    letter-spacing: .1em;
+}
+
+.availability strong {
+    display: block;
+
+    margin-top: 7px;
+
+    font-size: 20px;
+}
+
+.availability span {
+    display: block;
+
+    margin-top: 4px;
+
+    color: #81748a;
+
+    font-size: 9px;
+}
+
+
+/* =========================================================
+   STATS
+========================================================= */
+
+.stats {
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            4,
+            1fr
+        );
+
+    gap: 13px;
+
+    margin-top: 16px;
+}
+
+.stat {
+    padding: 17px;
+
+    border:
+        1px solid var(--line);
+
+    border-radius: 17px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(103,86,130,.10),
+            rgba(10,7,13,.96)
+        );
+}
+
+.stat small {
+    display: block;
+
+    color: #766a80;
+
+    font-size: 8.5px;
+    font-weight: 950;
+
+    text-transform: uppercase;
+    letter-spacing: .09em;
+}
+
+.stat strong {
+    display: block;
+
+    margin-top: 7px;
+
+    font-size: 26px;
+    letter-spacing: -1px;
+}
+
+.stat span {
+    display: block;
+
+    margin-top: 5px;
+
+    color: #776b80;
+
+    font-size: 9px;
+}
+
+
+/* =========================================================
+   FILTERS
+========================================================= */
+
+.filters {
+    margin-top: 16px;
+
+    padding: 13px;
+
+    display: grid;
+
+    grid-template-columns:
+        minmax(
+            250px,
+            1fr
+        )
+        170px
+        170px
+        auto;
+
+    gap: 10px;
+
+    border:
+        1px solid var(--line);
+
+    border-radius: 17px;
+
+    background:
+        rgba(13,8,16,.82);
+}
+
+.filters input,
+.filters select {
+    height: 42px;
+
+    padding:
+        0 12px;
+
+    border:
+        1px solid var(--line);
+
+    border-radius: 10px;
+
+    background:
+        rgba(103,86,130,.07);
+
+    color: #fff;
+
+    outline: none;
+}
+
+.filters input:focus,
+.filters select:focus {
+    border-color:
+        var(--topaz);
+}
+
+.filters input::placeholder {
+    color: #73667b;
+}
+
+.reset-btn {
+    min-height: 42px;
+
+    padding:
+        0 13px;
+
+    border:
+        1px solid var(--line);
+
+    border-radius: 10px;
+
+    background:
+        rgba(103,86,130,.08);
+
+    color: #c6bacd;
+
+    font-size: 10px;
+    font-weight: 850;
+}
+
+
+/* =========================================================
+   QUEUE GRID
+========================================================= */
+
+.queue-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            2,
+            minmax(
+                0,
+                1fr
+            )
+        );
+
+    gap: 15px;
+
+    margin-top: 16px;
+}
+
+.ticket-card {
+    position: relative;
+
+    overflow: hidden;
+
+    padding: 18px;
+
+    border:
+        1px solid var(--line);
+
+    border-radius: 19px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(103,86,130,.09),
+            rgba(9,6,12,.97)
+        );
+
+    transition: .18s ease;
+}
+
+.ticket-card:hover {
+    transform:
+        translateY(-2px);
+
+    border-color:
+        rgba(103,174,202,.24);
+
+    box-shadow:
+        0 20px 50px
+        rgba(0,0,0,.24);
+}
+
+.ticket-card::after {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    height: 1px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            var(--topaz),
+            var(--rose),
+            transparent
+        );
+
+    opacity: .7;
+}
+
+.ticket-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 14px;
+}
+
+.ticket-id {
+    color: #a9d4e4;
+
+    font-size: 9px;
+    font-weight: 950;
+
+    letter-spacing: .09em;
+}
+
+.ticket-card h3 {
+    margin-top: 8px;
+
+    font-size: 16px;
+    letter-spacing: -.4px;
+}
+
+.ticket-card p {
+    margin-top: 7px;
+
+    color: #82758b;
+
+    font-size: 10px;
+    line-height: 1.6;
+}
+
+.priority {
+    padding:
+        6px 8px;
+
+    border-radius: 999px;
+
+    font-size: 8px;
+    font-weight: 950;
+
+    text-transform: uppercase;
+
+    letter-spacing: .06em;
+}
+
+.priority.critical {
+    background:
+        rgba(229,42,111,.12);
+
+    color: #ffacc9;
+
+    border:
+        1px solid
+        rgba(229,42,111,.18);
+}
+
+.priority.high {
+    background:
+        rgba(95,15,78,.20);
+
+    color: #d8a8cf;
+
+    border:
+        1px solid
+        rgba(229,42,111,.12);
+}
+
+.priority.medium {
+    background:
+        rgba(103,174,202,.08);
+
+    color: #bce1ed;
+
+    border:
+        1px solid
+        rgba(103,174,202,.13);
+}
+
+.ticket-meta {
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            3,
+            1fr
+        );
+
+    gap: 9px;
+
+    margin-top: 14px;
+}
+
+.meta {
+    padding: 10px;
+
+    border:
+        1px solid
+        rgba(103,174,202,.08);
+
+    border-radius: 11px;
+
+    background:
+        rgba(103,86,130,.05);
+}
+
+.meta small {
+    display: block;
+
+    color: #6e6177;
+
+    font-size: 7.5px;
+    font-weight: 900;
+
+    text-transform: uppercase;
+    letter-spacing: .07em;
+}
+
+.meta strong {
+    display: block;
+
+    margin-top: 5px;
+
+    font-size: 9.5px;
+}
+
+.sla-section {
+    margin-top: 14px;
+
+    padding-top: 13px;
+
+    border-top:
+        1px solid
+        rgba(103,174,202,.07);
+}
+
+.sla-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 12px;
+}
+
+.sla-row span {
+    color: #74687c;
+
+    font-size: 8.5px;
+}
+
+.sla {
+    font-size: 13px;
+    font-weight: 950;
+}
+
+.sla.danger {
+    color: #ff82ad;
+}
+
+.sla.warning {
+    color: #cda4c9;
+}
+
+.sla.safe {
+    color: #a6d4e5;
+}
+
+.sla-track {
+    height: 5px;
+
+    margin-top: 8px;
+
+    overflow: hidden;
+
+    border-radius: 999px;
+
+    background:
+        rgba(255,255,255,.06);
+}
+
+.sla-track span {
+    display: block;
+
+    height: 100%;
+
+    border-radius: inherit;
+
+    background:
+        linear-gradient(
+            90deg,
+            var(--topaz),
+            var(--amethyst),
+            var(--rose)
+        );
+}
+
+.ticket-actions {
+    display: flex;
+    flex-wrap: wrap;
+
+    gap: 8px;
+
+    margin-top: 14px;
+}
+
+.action {
+    min-height: 36px;
+
+    padding:
+        0 11px;
+
+    border:
+        1px solid var(--line);
+
+    border-radius: 9px;
+
+    background:
+        rgba(103,86,130,.07);
+
+    color: #c5b9ca;
+
+    font-size: 9px;
+    font-weight: 850;
+}
+
+.action:hover {
+    color: #fff;
+
+    border-color:
+        var(--topaz);
+}
+
+.action.primary {
+    border: none;
+
+    background:
+        linear-gradient(
+            100deg,
+            var(--topaz),
+            var(--amethyst) 57%,
+            var(--rose)
+        );
+
+    color: #fff;
+}
+
+.action.resolve {
+    border-color:
+        rgba(103,174,202,.18);
+
+    background:
+        rgba(103,174,202,.08);
+
+    color: #c7e6f1;
+}
+
+
+/* =========================================================
+   EMPTY STATE
+========================================================= */
+
+.empty {
+    display: none;
+
+    margin-top: 16px;
+
+    padding: 70px 20px;
+
+    text-align: center;
+
+    border:
+        1px solid var(--line);
+
+    border-radius: 20px;
+
+    background:
+        rgba(13,8,16,.76);
+}
+
+.empty-icon {
+    width: 54px;
+    height: 54px;
+
+    margin:
+        0 auto;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 16px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(103,174,202,.14),
+            rgba(103,86,130,.15)
+        );
+
+    font-size: 22px;
+}
+
+.empty h3 {
+    margin-top: 14px;
+
+    font-size: 16px;
+}
+
+.empty p {
+    margin-top: 6px;
+
+    color: #786b80;
+
+    font-size: 10px;
+}
+
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+.toast {
+    position: fixed;
+
+    right: 24px;
+    bottom: 24px;
+
+    z-index: 100;
+
+    min-width: 250px;
+
+    padding:
+        13px 15px;
+
+    border:
+        1px solid
+        rgba(103,174,202,.17);
+
+    border-radius: 12px;
+
+    background:
+        rgba(13,9,16,.97);
+
+    color: #dfd4e3;
+
+    box-shadow:
+        0 20px 60px
+        rgba(0,0,0,.45);
+
+    font-size: 10px;
+
+    opacity: 0;
+
+    transform:
+        translateY(10px);
+
+    pointer-events: none;
+
+    transition: .2s ease;
+}
+
+.toast.show {
+    opacity: 1;
+
+    transform: none;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+.sidebar-backdrop {
+    display: none;
+}
+
+@media (
+    max-width: 1100px
+) {
+
+    .stats {
+        grid-template-columns:
+            repeat(
+                2,
+                1fr
+            );
+    }
+
+    .filters {
+        grid-template-columns:
+            1fr 1fr;
+    }
+
+    .filters input {
+        grid-column:
+            1 / -1;
+    }
+}
+
+
+@media (
+    max-width: 900px
+) {
+
+    .sidebar {
+        transform:
+            translateX(-100%);
+
+        transition: .2s ease;
+    }
+
+    .sidebar.open {
+        transform: none;
+    }
+
+    .sidebar-backdrop {
+        position: fixed;
+
+        inset: 0;
+
+        z-index: 45;
+
+        background:
+            rgba(0,0,0,.64);
+    }
+
+    .sidebar-backdrop.open {
+        display: block;
+    }
+
+    .main {
+        margin-left: 0;
+    }
+
+    .mobile-btn {
+        display: grid;
+        place-items: center;
+    }
+
+    .hero-row {
+        flex-direction: column;
+
+        align-items: flex-start;
+    }
+
+    .availability {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .queue-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+@media (
+    max-width: 620px
+) {
+
+    .content {
+        padding: 16px;
+    }
+
+    .topbar {
+        padding:
+            0 14px;
+    }
+
+    .search {
+        display: none;
+    }
+
+    .profile-copy {
+        display: none;
+    }
+
+    .hero {
+        padding: 21px;
+    }
+
+    .hero h1 {
+        font-size: 37px;
+    }
+
+    .stats {
+        grid-template-columns: 1fr;
+    }
+
+    .filters {
+        grid-template-columns: 1fr;
+    }
+
+    .filters input {
+        grid-column: auto;
+    }
+
+    .ticket-meta {
+        grid-template-columns:
+            1fr 1fr;
+    }
+}
+
+</style>
+
+<style>
+/* MY QUEUE ACTION BUTTON POLISH */
+
+.ticket-actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 9px;
+    margin-top: 18px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(103,174,202,.08);
+}
+
+.ticket-actions button {
+    min-height: 40px;
+    padding: 0 15px;
+    border-radius: 11px;
+    font: inherit;
+    font-size: 12px;
+    font-weight: 760;
+    letter-spacing: -.01em;
+    cursor: pointer;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+
+    transition:
+        transform .18s ease,
+        box-shadow .18s ease,
+        border-color .18s ease,
+        background .18s ease,
+        color .18s ease;
+}
+
+.ticket-actions button:hover {
+    transform: translateY(-2px);
+}
+
+.ticket-actions button:active {
+    transform: translateY(0);
+}
+
+.ticket-actions button:focus-visible {
+    outline: 2px solid rgba(103,174,202,.8);
+    outline-offset: 3px;
+}
+
+
+/* OPEN TICKET */
+
+.ticket-actions .live-open-ticket {
+    color: #d8edf5;
+    border: 1px solid rgba(103,174,202,.24);
+    background:
+        linear-gradient(
+            145deg,
+            rgba(103,174,202,.09),
+            rgba(103,174,202,.035)
+        );
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.035);
+}
+
+.ticket-actions .live-open-ticket:hover {
+    color: #ffffff;
+    border-color: rgba(103,174,202,.46);
+    background: rgba(103,174,202,.14);
+    box-shadow:
+        0 10px 24px rgba(103,174,202,.10);
+}
+
+
+/* ASSIGN TO ME */
+
+.ticket-actions .live-take-ticket {
+    color: #f2eafa;
+    border: 1px solid rgba(103,86,130,.34);
+    background:
+        linear-gradient(
+            135deg,
+            rgba(103,86,130,.24),
+            rgba(95,15,78,.15)
+        );
+}
+
+.ticket-actions .live-take-ticket:hover {
+    border-color: rgba(148,124,180,.50);
+    background:
+        linear-gradient(
+            135deg,
+            rgba(103,86,130,.34),
+            rgba(95,15,78,.24)
+        );
+}
+
+
+/* START WORK */
+
+.ticket-actions .live-start-ticket {
+    color: #071017;
+    border: 1px solid rgba(122,196,223,.58);
+    background:
+        linear-gradient(
+            135deg,
+            #80c9e3,
+            #67AECA
+        );
+    box-shadow:
+        0 9px 22px rgba(103,174,202,.17);
+}
+
+.ticket-actions .live-start-ticket:hover {
+    background:
+        linear-gradient(
+            135deg,
+            #91d4eb,
+            #72bad5
+        );
+    box-shadow:
+        0 13px 30px rgba(103,174,202,.25);
+}
+
+
+/* RESOLVE */
+
+.ticket-actions .live-resolve-ticket {
+    color: #baf2d1;
+    border: 1px solid rgba(89,211,143,.24);
+    background:
+        linear-gradient(
+            145deg,
+            rgba(89,211,143,.10),
+            rgba(89,211,143,.04)
+        );
+}
+
+.ticket-actions .live-resolve-ticket::before {
+    content: "✓";
+    font-size: 12px;
+    font-weight: 900;
+}
+
+.ticket-actions .live-resolve-ticket:hover {
+    color: #d8ffe8;
+    border-color: rgba(89,211,143,.43);
+    background: rgba(89,211,143,.14);
+    box-shadow:
+        0 10px 24px rgba(89,211,143,.10);
+}
+
+
+@media (max-width: 640px) {
+    .ticket-actions {
+        display: grid;
+        grid-template-columns:
+            repeat(2, minmax(0,1fr));
+    }
+
+    .ticket-actions button {
+        width: 100%;
+    }
+}
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     SIDEBAR
+========================================================= -->
+
+<aside
+    class="sidebar"
+    id="sidebar"
+>
+
+    <div class="brand">
+
+        <div class="brand-mark">
+            R
+        </div>
+
+        <div>
+
+            <strong>
+                ResolveDesk
+            </strong>
+
+            <span>
+                IT Service Management
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <div class="nav-label">
+        Workspace
+    </div>
+
+
+    <nav class="nav">
+
+        <a href="/dashboard.html">
+
+            <span class="nav-icon">
+                ⌂
+            </span>
+
+            Dashboard
+
+        </a>
+
+
+        <a href="/tickets.html">
+
+            <span class="nav-icon">
+                ◫
+            </span>
+
+            Tickets
+
+        </a>
+
+
+        <a
+            class="active"
+            href="/my-queue.html"
+        >
+
+            <span class="nav-icon">
+                ◎
+            </span>
+
+            My Queue
+
+            <span
+                class="nav-badge"
+                id="queueBadge"
+            >
+                0
+            </span>
+
+        </a>
+
+
+        <a href="/sla-monitor.html">
+
+            <span class="nav-icon">
+                ⏱
+            </span>
+
+            SLA Monitor
+
+        </a>
+
+
+        <a href="/knowledge-base.html">
+
+            <span class="nav-icon">
+                ▤
+            </span>
+
+            Knowledge Base
+
+        </a>
+
+    </nav>
+
+
+    <div class="nav-label">
+        Management
+    </div>
+
+
+    <nav class="nav">
+
+        <a href="/users.html">
+
+            <span class="nav-icon">
+                ♙
+            </span>
+
+            Users
+
+        </a>
+
+
+        <a href="/technicians.html">
+
+            <span class="nav-icon">
+                ♟
+            </span>
+
+            Technicians
+
+        </a>
+
+
+        <a href="/departments.html">
+
+            <span class="nav-icon">
+                ▦
+            </span>
+
+            Departments
+
+        </a>
+
+
+        <a href="/reports.html">
+
+            <span class="nav-icon">
+                ▥
+            </span>
+
+            Reports
+
+        </a>
+
+
+        <a href="/activity-log.html">
+
+            <span class="nav-icon">
+                ◷
+            </span>
+
+            Audit Log
+
+        </a>
+
+
+        <a href="/settings.html">
+
+            <span class="nav-icon">
+                ⚙
+            </span>
+
+            Settings
+
+        </a>
+
+    </nav>
+
+
+    <div class="sidebar-bottom">
+
+        <div class="status-card">
+
+            <small>
+                Technician Status
+            </small>
+
+            <strong>
+                Available
+            </strong>
+
+            <p>
+                New tickets can
+                be assigned to
+                your queue.
+            </p>
+
+        </div>
+
+    </div>
+
+</aside>
+
+
+<div
+    class="sidebar-backdrop"
+    id="sidebarBackdrop"
+></div>
+
+
+<!-- =========================================================
+     MAIN
+========================================================= -->
+
+<main class="main">
+
+
+<header class="topbar">
+
+    <div
+        style="
+            display:flex;
+            align-items:center;
+            gap:12px;
+        "
+    >
+
+        <button
+            class="mobile-btn"
+            id="menuBtn"
+            type="button"
+        >
+            ☰
+        </button>
+
+
+        <div class="search">
+
+            <input
+                id="topSearch"
+                type="search"
+                placeholder="
+                    Search assigned tickets...
+                "
+            >
+
+        </div>
+
+    </div>
+
+
+    <div class="top-actions">
+
+
+        <button
+            class="icon-btn"
+            type="button"
+        >
+            ?
+        </button>
+
+
+        <button
+            class="icon-btn"
+            type="button"
+        >
+            ●
+        </button>
+
+
+        <div class="profile">
+
+            <div class="avatar">
+                HH
+            </div>
+
+
+            <div class="profile-copy">
+
+                <strong>
+                    Haziq Hanif
+                </strong>
+
+                <span>
+                    Technician
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<div class="content">
+
+
+<!-- =========================================================
+     HERO
+========================================================= -->
+
+<section class="hero">
+
+
+    <div class="hero-row">
+
+
+        <div>
+
+            <div class="eyebrow">
+                Technician Workspace
+            </div>
+
+
+            <h1>
+
+                Your tickets.
+
+                <span>
+                    Your priority.
+                </span>
+
+            </h1>
+
+
+            <p>
+
+                Focus on the tickets
+                assigned to you,
+                protect SLA deadlines
+                and move every request
+                toward resolution.
+
+            </p>
+
+        </div>
+
+
+        <div class="availability">
+
+            <small>
+                Current Status
+            </small>
+
+            <strong>
+                Available
+            </strong>
+
+            <span>
+                8 active tickets assigned
+            </span>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     STATS
+========================================================= -->
+
+<section class="stats">
+
+
+    <article class="stat">
+
+        <small>
+            My Tickets
+        </small>
+
+        <strong id="totalCount">
+            0
+        </strong>
+
+        <span>
+            Assigned to you
+        </span>
+
+    </article>
+
+
+    <article class="stat">
+
+        <small>
+            In Progress
+        </small>
+
+        <strong id="progressCount">
+            0
+        </strong>
+
+        <span>
+            Currently being worked
+        </span>
+
+    </article>
+
+
+    <article class="stat">
+
+        <small>
+            SLA Risk
+        </small>
+
+        <strong id="riskCount">
+            0
+        </strong>
+
+        <span>
+            Less than 60 minutes
+        </span>
+
+    </article>
+
+
+    <article class="stat">
+
+        <small>
+            Resolved Today
+        </small>
+
+        <strong id="resolvedCount">
+            3
+        </strong>
+
+        <span>
+            Completed by you
+        </span>
+
+    </article>
+
+</section>
+
+
+<!-- =========================================================
+     FILTERS
+========================================================= -->
+
+<section class="filters">
+
+
+    <input
+        id="searchInput"
+        type="search"
+        placeholder="
+            Search ID,
+            subject or requester...
+        "
+    >
+
+
+    <select id="statusFilter">
+
+        <option value="">
+            All Status
+        </option>
+
+        <option value="open">
+            Open
+        </option>
+
+        <option value="in-progress">
+            In Progress
+        </option>
+
+        <option value="pending">
+            Pending
+        </option>
+
+    </select>
+
+
+    <select id="priorityFilter">
+
+        <option value="">
+            All Priority
+        </option>
+
+        <option value="critical">
+            Critical
+        </option>
+
+        <option value="high">
+            High
+        </option>
+
+        <option value="medium">
+            Medium
+        </option>
+
+    </select>
+
+
+    <button
+        class="reset-btn"
+        id="resetButton"
+        type="button"
+    >
+        Reset Filters
+    </button>
+
+</section>
+
+
+<!-- =========================================================
+     QUEUE
+========================================================= -->
+
+<section
+    class="queue-grid"
+    id="queueGrid"
+>
+</section>
+
+
+<div
+    class="empty"
+    id="emptyState"
+>
+
+    <div class="empty-icon">
+        ✓
+    </div>
+
+    <h3>
+        Queue is clear
+    </h3>
+
+    <p>
+        No assigned tickets
+        match your current filters.
+    </p>
+
+</div>
+
+</div>
+
+</main>
+
+
+<div
+    class="toast"
+    id="toast"
+></div>
+
+
+<script>
+
+/* =========================================================
+   TICKET STATE
+   Live queue data is loaded by /js/my-queue-live.js
+========================================================= */
+
+let tickets = [];
+
+
+/* =========================================================
+   HELPERS
+========================================================= */
+
+function escapeHtml(
+    value
+) {
+
+    return String(
+        value ?? ""
+    )
+        .replaceAll(
+            "&",
+            "&amp;"
+        )
+        .replaceAll(
+            "<",
+            "&lt;"
+        )
+        .replaceAll(
+            ">",
+            "&gt;"
+        )
+        .replaceAll(
+            '"',
+            "&quot;"
+        )
+        .replaceAll(
+            "'",
+            "&#039;"
+        );
+}
+
+
+function label(
+    value
+) {
+
+    return String(
+        value || ""
+    )
+        .split(
+            "-"
+        )
+        .map(
+            word =>
+                word
+                    .charAt(
+                        0
+                    )
+                    .toUpperCase() +
+                word.slice(
+                    1
+                )
+        )
+        .join(
+            " "
+        );
+}
+
+
+function formatSla(
+    minutes
+) {
+
+    const hours =
+        Math.floor(
+            minutes /
+            60
+        );
+
+
+    const mins =
+        minutes %
+        60;
+
+
+    return `${String(
+        hours
+    ).padStart(
+        2,
+        "0"
+    )}:${String(
+        mins
+    ).padStart(
+        2,
+        "0"
+    )}:00`;
+}
+
+
+function getSlaClass(
+    minutes
+) {
+
+    if (
+        minutes <=
+        60
+    ) {
+
+        return "danger";
+    }
+
+
+    if (
+        minutes <=
+        120
+    ) {
+
+        return "warning";
+    }
+
+
+    return "safe";
+}
+
+
+function getSlaWidth(
+    minutes
+) {
+
+    const max =
+        480;
+
+
+    return Math.max(
+        5,
+        Math.min(
+            100,
+            (
+                minutes /
+                max
+            ) *
+            100
+        )
+    );
+}
+
+
+/* =========================================================
+   FILTERING
+========================================================= */
+
+function filteredTickets() {
+
+    const search =
+        document
+            .getElementById(
+                "searchInput"
+            )
+            .value
+            .trim()
+            .toLowerCase();
+
+
+    const status =
+        document
+            .getElementById(
+                "statusFilter"
+            )
+            .value;
+
+
+    const priority =
+        document
+            .getElementById(
+                "priorityFilter"
+            )
+            .value;
+
+
+    return tickets.filter(
+        ticket => {
+
+            const text =
+                [
+                    ticket.id,
+                    ticket.subject,
+                    ticket.requester,
+                    ticket.department,
+                    ticket.category
+                ]
+                    .join(
+                        " "
+                    )
+                    .toLowerCase();
+
+
+            return (
+                (
+                    !search ||
+                    text.includes(
+                        search
+                    )
+                ) &&
+                (
+                    !status ||
+                    ticket.status ===
+                        status
+                ) &&
+                (
+                    !priority ||
+                    ticket.priority ===
+                        priority
+                )
+            );
+        }
+    );
+}
+
+
+/* =========================================================
+   RENDER QUEUE
+========================================================= */
+
+function renderQueue() {
+
+    const grid =
+        document.getElementById(
+            "queueGrid"
+        );
+
+
+    const empty =
+        document.getElementById(
+            "emptyState"
+        );
+
+
+    const data =
+        filteredTickets();
+
+
+    if (
+        data.length ===
+        0
+    ) {
+
+        grid.innerHTML =
+            "";
+
+        empty.style.display =
+            "block";
+
+        return;
+    }
+
+
+    empty.style.display =
+        "none";
+
+
+    grid.innerHTML =
+        data
+            .map(
+                ticket => {
+
+                    const slaClass =
+                        getSlaClass(
+                            ticket.sla
+                        );
+
+
+                    return `
+
+                    <article
+                        class="ticket-card"
+                    >
+
+                        <div
+                            class="ticket-top"
+                        >
+
+                            <div>
+
+                                <div
+                                    class="ticket-id"
+                                >
+                                    ${escapeHtml(
+                                        ticket.id
+                                    )}
+                                </div>
+
+                                <h3>
+                                    ${escapeHtml(
+                                        ticket.subject
+                                    )}
+                                </h3>
+
+                                <p>
+                                    ${escapeHtml(
+                                        ticket.description
+                                    )}
+                                </p>
+
+                            </div>
+
+
+                            <span
+                                class="
+                                    priority
+                                    ${escapeHtml(
+                                        ticket.priority
+                                    )}
+                                "
+                            >
+
+                                ${escapeHtml(
+                                    ticket.priority
+                                )}
+
+                            </span>
+
+                        </div>
+
+
+                        <div
+                            class="ticket-meta"
+                        >
+
+                            <div class="meta">
+
+                                <small>
+                                    Requester
+                                </small>
+
+                                <strong>
+                                    ${escapeHtml(
+                                        ticket.requester
+                                    )}
+                                </strong>
+
+                            </div>
+
+
+                            <div class="meta">
+
+                                <small>
+                                    Department
+                                </small>
+
+                                <strong>
+                                    ${escapeHtml(
+                                        ticket.department
+                                    )}
+                                </strong>
+
+                            </div>
+
+
+                            <div class="meta">
+
+                                <small>
+                                    Status
+                                </small>
+
+                                <strong>
+                                    ${escapeHtml(
+                                        label(
+                                            ticket.status
+                                        )
+                                    )}
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+                        <div
+                            class="sla-section"
+                        >
+
+                            <div
+                                class="sla-row"
+                            >
+
+                                <span>
+                                    SLA remaining
+                                </span>
+
+                                <strong
+                                    class="
+                                        sla
+                                        ${slaClass}
+                                    "
+                                >
+
+                                    ${formatSla(
+                                        ticket.sla
+                                    )}
+
+                                </strong>
+
+                            </div>
+
+
+                            <div
+                                class="sla-track"
+                            >
+
+                                <span
+                                    style="
+                                        width:
+                                        ${getSlaWidth(
+                                            ticket.sla
+                                        )}%;
+                                    "
+                                ></span>
+
+                            </div>
+
+                        </div>
+
+
+                        <div
+                            class="ticket-actions"
+                        >
+
+                            <button
+                                class="
+                                    action
+                                    primary
+                                "
+                                onclick="
+                                    openTicket(
+                                        '${escapeHtml(
+                                            ticket.id
+                                        )}'
+                                    )
+                                "
+                            >
+                                Open Ticket →
+                            </button>
+
+
+                            ${
+                                ticket.status ===
+                                "open"
+                                    ? `
+                                    <button
+                                        class="action"
+                                        onclick="
+                                            startWork(
+                                                '${escapeHtml(
+                                                    ticket.id
+                                                )}'
+                                            )
+                                        "
+                                    >
+                                        Start Work
+                                    </button>
+                                    `
+                                    : ""
+                            }
+
+
+                            ${
+                                ticket.status !==
+                                "resolved"
+                                    ? `
+                                    <button
+                                        class="
+                                            action
+                                            resolve
+                                        "
+                                        onclick="
+                                            resolveTicket(
+                                                '${escapeHtml(
+                                                    ticket.id
+                                                )}'
+                                            )
+                                        "
+                                    >
+                                        Resolve
+                                    </button>
+                                    `
+                                    : ""
+                            }
+
+                        </div>
+
+                    </article>
+
+                    `;
+                }
+            )
+            .join(
+                ""
+            );
+}
+
+
+/* =========================================================
+   STATS
+========================================================= */
+
+function updateStats() {
+
+    document.getElementById(
+        "totalCount"
+    ).textContent =
+        tickets.length;
+
+
+    document.getElementById(
+        "queueBadge"
+    ).textContent =
+        tickets.length;
+
+
+    document.getElementById(
+        "progressCount"
+    ).textContent =
+        tickets.filter(
+            ticket =>
+                ticket.status ===
+                "in-progress"
+        ).length;
+
+
+    document.getElementById(
+        "riskCount"
+    ).textContent =
+        tickets.filter(
+            ticket =>
+                ticket.sla <=
+                60
+        ).length;
+}
+
+
+/* =========================================================
+   OPEN TICKET
+========================================================= */
+
+function openTicket(
+    id
+) {
+
+    window.location.href =
+        `/ticket-detail.html?id=${encodeURIComponent(
+            id
+        )}`;
+}
+
+
+/* =========================================================
+   START WORK
+========================================================= */
+
+function startWork(
+    id
+) {
+
+    const ticket =
+        tickets.find(
+            item =>
+                item.id ===
+                id
+        );
+
+
+    if (!ticket) {
+        return;
+    }
+
+
+    ticket.status =
+        "in-progress";
+
+
+    updateStats();
+
+    renderQueue();
+
+
+    showToast(
+        `${id} moved to In Progress.`
+    );
+}
+
+
+/* =========================================================
+   RESOLVE
+========================================================= */
+
+function resolveTicket(
+    id
+) {
+
+    const ticket =
+        tickets.find(
+            item =>
+                item.id ===
+                id
+        );
+
+
+    if (!ticket) {
+        return;
+    }
+
+
+    tickets =
+        tickets.filter(
+            item =>
+                item.id !==
+                id
+        );
+
+
+    const resolved =
+        document.getElementById(
+            "resolvedCount"
+        );
+
+
+    resolved.textContent =
+        Number(
+            resolved.textContent
+        ) +
+        1;
+
+
+    updateStats();
+
+    renderQueue();
+
+
+    showToast(
+        `${id} resolved successfully.`
+    );
+}
+
+
+/* =========================================================
+   FILTER EVENTS
+========================================================= */
+
+[
+    "searchInput",
+    "statusFilter",
+    "priorityFilter"
+]
+.forEach(
+    id => {
+
+        document
+            .getElementById(
+                id
+            )
+            .addEventListener(
+                id ===
+                    "searchInput"
+                    ? "input"
+                    : "change",
+                renderQueue
+            );
+    }
+);
+
+
+document
+    .getElementById(
+        "resetButton"
+    )
+    .addEventListener(
+        "click",
+        () => {
+
+            document.getElementById(
+                "searchInput"
+            ).value =
+                "";
+
+
+            document.getElementById(
+                "statusFilter"
+            ).value =
+                "";
+
+
+            document.getElementById(
+                "priorityFilter"
+            ).value =
+                "";
+
+
+            renderQueue();
+        }
+    );
+
+
+/* =========================================================
+   TOP SEARCH SYNC
+========================================================= */
+
+document
+    .getElementById(
+        "topSearch"
+    )
+    .addEventListener(
+        "input",
+        event => {
+
+            document.getElementById(
+                "searchInput"
+            ).value =
+                event.target.value;
+
+
+            renderQueue();
+        }
+    );
+
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+let toastTimer;
+
+
+function showToast(
+    text
+) {
+
+    const toast =
+        document.getElementById(
+            "toast"
+        );
+
+
+    toast.textContent =
+        text;
+
+
+    toast.classList.add(
+        "show"
+    );
+
+
+    clearTimeout(
+        toastTimer
+    );
+
+
+    toastTimer =
+        setTimeout(
+            () => {
+
+                toast.classList.remove(
+                    "show"
+                );
+            },
+            2400
+        );
+}
+
+
+/* =========================================================
+   MOBILE SIDEBAR
+========================================================= */
+
+const sidebar =
+    document.getElementById(
+        "sidebar"
+    );
+
+
+const backdrop =
+    document.getElementById(
+        "sidebarBackdrop"
+    );
+
+
+document
+    .getElementById(
+        "menuBtn"
+    )
+    .addEventListener(
+        "click",
+        () => {
+
+            sidebar.classList.toggle(
+                "open"
+            );
+
+
+            backdrop.classList.toggle(
+                "open"
+            );
+        }
+    );
+
+
+backdrop.addEventListener(
+    "click",
+    () => {
+
+        sidebar.classList.remove(
+            "open"
+        );
+
+
+        backdrop.classList.remove(
+            "open"
+        );
+    }
+);
+
+
+/* =========================================================
+   INITIAL
+========================================================= */
+
+updateStats();
+
+renderQueue();
+
+</script>
+
+
+<script src="/js/auth-session.js"></script>
+
+
+<script src="/js/my-queue-live.js"></script>
+<script src="/js/role-navigation.js"></script>
+<script src="/js/create-ticket-nav.js"></script>
+</body>
+</html>

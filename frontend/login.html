@@ -1,0 +1,2001 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>ResolveDesk — Sign In</title>
+
+<style>
+
+/* =========================================================
+   RESOLVEDESK AUTH
+========================================================= */
+
+:root {
+    --topaz: #67AECA;
+    --amethyst: #675682;
+    --jewel: #5F0F4E;
+    --rose: #E52A6F;
+
+    --bg: #070509;
+    --bg-soft: #100914;
+
+    --white: #ffffff;
+    --text: #f7f3f8;
+    --muted: #8d8194;
+
+    --line: rgba(103,174,202,.14);
+    --line-soft: rgba(255,255,255,.055);
+
+    --shadow:
+        0 40px 120px
+        rgba(0,0,0,.52);
+}
+
+
+/* =========================================================
+   RESET
+========================================================= */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    min-height: 100%;
+}
+
+body {
+    min-height: 100vh;
+
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Inter,
+        Arial,
+        sans-serif;
+
+    color: var(--text);
+
+    background:
+        radial-gradient(
+            circle at 12% 8%,
+            rgba(103,174,202,.19),
+            transparent 25%
+        ),
+        radial-gradient(
+            circle at 88% 92%,
+            rgba(229,42,111,.13),
+            transparent 28%
+        ),
+        radial-gradient(
+            circle at 74% 10%,
+            rgba(103,86,130,.16),
+            transparent 30%
+        ),
+        linear-gradient(
+            135deg,
+            #060407,
+            #0b0710 48%,
+            #120914
+        );
+
+    overflow-x: hidden;
+}
+
+body::before {
+    content: "";
+
+    position: fixed;
+    inset: 0;
+
+    pointer-events: none;
+
+    opacity: .16;
+
+    background-image:
+        linear-gradient(
+            rgba(103,174,202,.04) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            90deg,
+            rgba(103,174,202,.04) 1px,
+            transparent 1px
+        );
+
+    background-size:
+        60px 60px;
+
+    mask-image:
+        radial-gradient(
+            circle at center,
+            black 20%,
+            transparent 85%
+        );
+}
+
+body::after {
+    content: "";
+
+    position: fixed;
+
+    width: 420px;
+    height: 420px;
+
+    right: -180px;
+    top: -170px;
+
+    border-radius: 50%;
+
+    pointer-events: none;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(103,174,202,.13),
+            transparent 65%
+        );
+
+    filter:
+        blur(10px);
+}
+
+button,
+input {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+
+/* =========================================================
+   PAGE
+========================================================= */
+
+.auth-page {
+    position: relative;
+
+    min-height: 100vh;
+
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 1.08fr)
+        minmax(430px, .92fr);
+}
+
+
+/* =========================================================
+   LEFT EXPERIENCE PANEL
+========================================================= */
+
+.experience {
+    position: relative;
+
+    min-height: 100vh;
+
+    padding:
+        38px
+        clamp(
+            38px,
+            6vw,
+            90px
+        );
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    overflow: hidden;
+
+    border-right:
+        1px solid
+        rgba(103,174,202,.07);
+}
+
+.experience::before {
+    content: "";
+
+    position: absolute;
+
+    width: 520px;
+    height: 520px;
+
+    left: -200px;
+    bottom: -230px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(95,15,78,.24),
+            transparent 67%
+        );
+
+    filter:
+        blur(12px);
+}
+
+.experience::after {
+    content: "";
+
+    position: absolute;
+
+    width: 350px;
+    height: 350px;
+
+    right: -100px;
+    top: 150px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(103,86,130,.17),
+            transparent 68%
+        );
+
+    filter:
+        blur(8px);
+}
+
+
+/* =========================================================
+   BRAND
+========================================================= */
+
+.brand {
+    position: relative;
+
+    z-index: 2;
+
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    width: max-content;
+}
+
+.brand-mark {
+    width: 46px;
+    height: 46px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 14px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--topaz),
+            var(--amethyst) 55%,
+            var(--rose)
+        );
+
+    box-shadow:
+        0 18px 45px
+        rgba(103,86,130,.30);
+
+    font-size: 21px;
+    font-weight: 950;
+}
+
+.brand-copy strong {
+    display: block;
+
+    font-size: 17px;
+}
+
+.brand-copy span {
+    display: block;
+
+    margin-top: 3px;
+
+    color: #796e81;
+
+    font-size: 8px;
+    font-weight: 900;
+
+    letter-spacing: .14em;
+
+    text-transform: uppercase;
+}
+
+
+/* =========================================================
+   LEFT HERO
+========================================================= */
+
+.left-content {
+    position: relative;
+
+    z-index: 2;
+
+    max-width: 680px;
+
+    margin:
+        70px 0;
+}
+
+.pill {
+    display: inline-flex;
+    align-items: center;
+
+    gap: 8px;
+
+    padding:
+        7px 11px;
+
+    border:
+        1px solid
+        rgba(103,174,202,.17);
+
+    border-radius: 999px;
+
+    background:
+        rgba(103,174,202,.055);
+
+    color: #b8dce9;
+
+    font-size: 8.5px;
+    font-weight: 950;
+
+    letter-spacing: .11em;
+
+    text-transform: uppercase;
+}
+
+.pill::before {
+    content: "";
+
+    width: 7px;
+    height: 7px;
+
+    border-radius: 50%;
+
+    background:
+        var(--topaz);
+
+    box-shadow:
+        0 0 14px
+        rgba(103,174,202,.75);
+}
+
+.left-content h1 {
+    max-width: 660px;
+
+    margin-top: 18px;
+
+    font-size:
+        clamp(
+            46px,
+            6vw,
+            82px
+        );
+
+    line-height: .98;
+
+    letter-spacing:
+        -4.5px;
+}
+
+.left-content h1 span {
+    background:
+        linear-gradient(
+            90deg,
+            var(--topaz),
+            #a797c1 52%,
+            var(--rose)
+        );
+
+    -webkit-background-clip: text;
+    background-clip: text;
+
+    color: transparent;
+}
+
+.left-content > p {
+    max-width: 620px;
+
+    margin-top: 22px;
+
+    color: #918596;
+
+    font-size: 13px;
+    line-height: 1.8;
+}
+
+
+/* =========================================================
+   BENEFITS
+========================================================= */
+
+.feature-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            3,
+            1fr
+        );
+
+    gap: 11px;
+
+    margin-top: 30px;
+}
+
+.feature {
+    padding: 15px;
+
+    border:
+        1px solid
+        rgba(103,174,202,.09);
+
+    border-radius: 15px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(103,86,130,.08),
+            rgba(7,4,9,.25)
+        );
+
+    backdrop-filter:
+        blur(10px);
+}
+
+.feature-icon {
+    width: 32px;
+    height: 32px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 9px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(103,174,202,.12),
+            rgba(103,86,130,.18)
+        );
+
+    color: #b7dce8;
+
+    font-size: 12px;
+}
+
+.feature strong {
+    display: block;
+
+    margin-top: 11px;
+
+    font-size: 9.5px;
+}
+
+.feature span {
+    display: block;
+
+    margin-top: 5px;
+
+    color: #706578;
+
+    font-size: 8px;
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   SYSTEM STRIP
+========================================================= */
+
+.system-strip {
+    position: relative;
+
+    z-index: 2;
+
+    display: flex;
+    align-items: center;
+
+    gap: 20px;
+
+    color: #655a6d;
+
+    font-size: 8px;
+}
+
+.system-status {
+    display: flex;
+    align-items: center;
+
+    gap: 7px;
+}
+
+.live-dot {
+    width: 7px;
+    height: 7px;
+
+    border-radius: 50%;
+
+    background:
+        var(--topaz);
+
+    box-shadow:
+        0 0 12px
+        rgba(103,174,202,.7);
+}
+
+
+/* =========================================================
+   LOGIN SIDE
+========================================================= */
+
+.login-side {
+    position: relative;
+
+    min-height: 100vh;
+
+    padding: 30px;
+
+    display: grid;
+    place-items: center;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(8,5,11,.52),
+            rgba(8,5,11,.82)
+        );
+
+    backdrop-filter:
+        blur(15px);
+}
+
+.login-shell {
+    width:
+        min(
+            455px,
+            100%
+        );
+}
+
+
+/* =========================================================
+   MOBILE BRAND
+========================================================= */
+
+.mobile-brand {
+    display: none;
+
+    align-items: center;
+
+    gap: 10px;
+
+    margin-bottom: 22px;
+}
+
+.mobile-brand .brand-mark {
+    width: 40px;
+    height: 40px;
+
+    font-size: 18px;
+}
+
+
+/* =========================================================
+   AUTH CARD
+========================================================= */
+
+.auth-card {
+    position: relative;
+
+    overflow: hidden;
+
+    padding: 31px;
+
+    border:
+        1px solid
+        rgba(103,174,202,.14);
+
+    border-radius: 26px;
+
+    background:
+        linear-gradient(
+            150deg,
+            rgba(18,11,22,.94),
+            rgba(8,5,11,.97)
+        );
+
+    box-shadow:
+        var(--shadow);
+
+    backdrop-filter:
+        blur(24px);
+}
+
+.auth-card::before {
+    content: "";
+
+    position: absolute;
+
+    width: 210px;
+    height: 210px;
+
+    right: -100px;
+    top: -110px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(103,174,202,.13),
+            transparent 68%
+        );
+}
+
+.auth-card::after {
+    content: "";
+
+    position: absolute;
+
+    width: 170px;
+    height: 170px;
+
+    left: -95px;
+    bottom: -100px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(229,42,111,.09),
+            transparent 70%
+        );
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.auth-header {
+    position: relative;
+
+    z-index: 2;
+}
+
+.auth-label {
+    color: #9acbdb;
+
+    font-size: 8px;
+    font-weight: 950;
+
+    letter-spacing: .13em;
+
+    text-transform: uppercase;
+}
+
+.auth-header h2 {
+    margin-top: 9px;
+
+    font-size: 31px;
+
+    letter-spacing:
+        -1.4px;
+}
+
+.auth-header p {
+    margin-top: 8px;
+
+    color: #81758a;
+
+    font-size: 10px;
+    line-height: 1.6;
+}
+
+
+/* =========================================================
+   FORM
+========================================================= */
+
+.form {
+    position: relative;
+
+    z-index: 2;
+
+    margin-top: 25px;
+}
+
+.field {
+    margin-bottom: 15px;
+}
+
+.field label {
+    display: block;
+
+    margin-bottom: 7px;
+
+    color: #a69aa9;
+
+    font-size: 9px;
+    font-weight: 850;
+}
+
+.input-shell {
+    position: relative;
+}
+
+.input-icon {
+    position: absolute;
+
+    left: 13px;
+    top: 50%;
+
+    transform:
+        translateY(-50%);
+
+    color: #6f6477;
+
+    font-size: 11px;
+
+    pointer-events: none;
+}
+
+.field input {
+    width: 100%;
+    height: 48px;
+
+    padding:
+        0 44px
+        0 38px;
+
+    border:
+        1px solid
+        rgba(103,174,202,.12);
+
+    border-radius: 12px;
+
+    outline: none;
+
+    background:
+        rgba(103,86,130,.055);
+
+    color: #fff;
+
+    transition:
+        .18s ease;
+}
+
+.field input:focus {
+    border-color:
+        rgba(103,174,202,.55);
+
+    background:
+        rgba(103,174,202,.055);
+
+    box-shadow:
+        0 0 0 4px
+        rgba(103,174,202,.045);
+}
+
+.field input::placeholder {
+    color: #62576a;
+}
+
+.password-toggle {
+    position: absolute;
+
+    right: 8px;
+    top: 50%;
+
+    transform:
+        translateY(-50%);
+
+    width: 33px;
+    height: 33px;
+
+    display: grid;
+    place-items: center;
+
+    border: 0;
+
+    border-radius: 8px;
+
+    background:
+        transparent;
+
+    color: #81758a;
+
+    font-size: 10px;
+}
+
+.password-toggle:hover {
+    color: #fff;
+
+    background:
+        rgba(103,174,202,.05);
+}
+
+
+/* =========================================================
+   FORM OPTIONS
+========================================================= */
+
+.form-options {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 12px;
+
+    margin-top: 3px;
+}
+
+.remember {
+    display: flex;
+    align-items: center;
+
+    gap: 7px;
+
+    color: #75697e;
+
+    font-size: 8.5px;
+
+    cursor: pointer;
+}
+
+.remember input {
+    accent-color:
+        var(--topaz);
+}
+
+.forgot {
+    border: 0;
+
+    background: transparent;
+
+    color: #9bcadb;
+
+    font-size: 8.5px;
+
+    font-weight: 850;
+}
+
+.forgot:hover {
+    color: #fff;
+}
+
+
+/* =========================================================
+   ERROR
+========================================================= */
+
+.message {
+    display: none;
+
+    margin-top: 14px;
+
+    padding: 11px 12px;
+
+    border-radius: 10px;
+
+    font-size: 8.5px;
+
+    line-height: 1.55;
+}
+
+.message.show {
+    display: block;
+}
+
+.message.error {
+    color: #f1a6c0;
+
+    border:
+        1px solid
+        rgba(229,42,111,.16);
+
+    background:
+        rgba(229,42,111,.06);
+}
+
+.message.success {
+    color: #b9dde9;
+
+    border:
+        1px solid
+        rgba(103,174,202,.15);
+
+    background:
+        rgba(103,174,202,.055);
+}
+
+
+/* =========================================================
+   LOGIN BUTTON
+========================================================= */
+
+.login-button {
+    width: 100%;
+    height: 49px;
+
+    margin-top: 18px;
+
+    position: relative;
+
+    overflow: hidden;
+
+    border: 0;
+
+    border-radius: 12px;
+
+    color: #fff;
+
+    background:
+        linear-gradient(
+            100deg,
+            var(--topaz),
+            var(--amethyst) 54%,
+            var(--rose)
+        );
+
+    box-shadow:
+        0 15px 35px
+        rgba(103,86,130,.27);
+
+    font-size: 9.5px;
+    font-weight: 950;
+
+    letter-spacing: .02em;
+
+    transition:
+        transform .18s ease,
+        box-shadow .18s ease;
+}
+
+.login-button:hover {
+    transform:
+        translateY(-1px);
+
+    box-shadow:
+        0 20px 45px
+        rgba(103,86,130,.36);
+}
+
+.login-button:disabled {
+    opacity: .65;
+
+    cursor: not-allowed;
+
+    transform: none;
+}
+
+.login-button::after {
+    content: "";
+
+    position: absolute;
+
+    top: -50%;
+    left: -70%;
+
+    width: 45%;
+    height: 200%;
+
+    transform:
+        rotate(25deg);
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(255,255,255,.17),
+            transparent
+        );
+
+    transition:
+        .55s ease;
+}
+
+.login-button:hover::after {
+    left: 130%;
+}
+
+
+/* =========================================================
+   DIVIDER
+========================================================= */
+
+.divider {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    margin: 23px 0 18px;
+
+    color: #594f60;
+
+    font-size: 7.5px;
+
+    text-transform: uppercase;
+
+    letter-spacing: .09em;
+}
+
+.divider::before,
+.divider::after {
+    content: "";
+
+    flex: 1;
+
+    height: 1px;
+
+    background:
+        var(--line-soft);
+}
+
+
+/* =========================================================
+   REGISTER LINK
+========================================================= */
+
+.register-link {
+    padding: 13px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 10px;
+
+    border:
+        1px solid
+        rgba(103,174,202,.09);
+
+    border-radius: 12px;
+
+    background:
+        rgba(103,86,130,.035);
+
+    transition:
+        .18s ease;
+}
+
+.register-link:hover {
+    border-color:
+        rgba(103,174,202,.22);
+
+    background:
+        rgba(103,174,202,.04);
+}
+
+.register-link strong {
+    display: block;
+
+    font-size: 9.5px;
+}
+
+.register-link span {
+    display: block;
+
+    margin-top: 4px;
+
+    color: #73677b;
+
+    font-size: 8px;
+}
+
+.register-arrow {
+    color: #9bcddd;
+
+    font-size: 14px;
+}
+
+
+/* =========================================================
+   SECURITY
+========================================================= */
+
+.security-note {
+    position: relative;
+
+    z-index: 2;
+
+    margin-top: 18px;
+
+    display: flex;
+
+    gap: 9px;
+
+    padding: 11px;
+
+    border-radius: 11px;
+
+    background:
+        rgba(103,174,202,.035);
+
+    border:
+        1px solid
+        rgba(103,174,202,.07);
+}
+
+.security-icon {
+    width: 28px;
+    height: 28px;
+
+    flex-shrink: 0;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 8px;
+
+    background:
+        rgba(103,174,202,.07);
+
+    color: #a6d4e4;
+
+    font-size: 9px;
+}
+
+.security-note strong {
+    display: block;
+
+    font-size: 8.5px;
+}
+
+.security-note p {
+    margin-top: 3px;
+
+    color: #685d70;
+
+    font-size: 7.5px;
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.auth-footer {
+    margin-top: 17px;
+
+    text-align: center;
+
+    color: #554b5b;
+
+    font-size: 7.5px;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 980px) {
+
+    .auth-page {
+        grid-template-columns:
+            1fr;
+    }
+
+    .experience {
+        display: none;
+    }
+
+    .login-side {
+        min-height: 100vh;
+
+        padding: 24px;
+    }
+
+    .mobile-brand {
+        display: flex;
+    }
+}
+
+@media (max-width: 520px) {
+
+    .login-side {
+        display: block;
+
+        padding:
+            24px 16px;
+    }
+
+    .login-shell {
+        margin:
+            0 auto;
+    }
+
+    .auth-card {
+        padding: 23px;
+
+        border-radius: 21px;
+    }
+
+    .auth-header h2 {
+        font-size: 28px;
+    }
+
+    .form-options {
+        align-items: flex-start;
+
+        flex-direction: column;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+
+<main class="auth-page">
+
+
+<!-- =========================================================
+     LEFT
+========================================================= -->
+
+<section class="experience">
+
+
+    <a
+        class="brand"
+        href="/login.html"
+    >
+
+        <div class="brand-mark">
+            R
+        </div>
+
+
+        <div class="brand-copy">
+
+            <strong>
+                ResolveDesk
+            </strong>
+
+            <span>
+                IT Service Management
+            </span>
+
+        </div>
+
+    </a>
+
+
+    <div class="left-content">
+
+        <div class="pill">
+            Service Operations Platform
+        </div>
+
+
+        <h1>
+
+            Support teams
+
+            <span>
+                move faster.
+            </span>
+
+        </h1>
+
+
+        <p>
+
+            One secure workspace for incidents,
+            service requests,
+            technician collaboration,
+            SLA monitoring,
+            knowledge management
+            and operational visibility.
+
+        </p>
+
+
+        <div class="feature-grid">
+
+
+            <article class="feature">
+
+                <div class="feature-icon">
+                    ◫
+                </div>
+
+                <strong>
+                    Ticket Operations
+                </strong>
+
+                <span>
+                    Track every request from creation to resolution.
+                </span>
+
+            </article>
+
+
+            <article class="feature">
+
+                <div class="feature-icon">
+                    ⏱
+                </div>
+
+                <strong>
+                    SLA Intelligence
+                </strong>
+
+                <span>
+                    Surface risk before critical deadlines are missed.
+                </span>
+
+            </article>
+
+
+            <article class="feature">
+
+                <div class="feature-icon">
+                    ◆
+                </div>
+
+                <strong>
+                    Controlled Access
+                </strong>
+
+                <span>
+                    Role-based access for admins, technicians and staff.
+                </span>
+
+            </article>
+
+        </div>
+
+    </div>
+
+
+    <div class="system-strip">
+
+        <div class="system-status">
+
+            <span class="live-dot"></span>
+
+            ResolveDesk services operational
+
+        </div>
+
+
+        <span>
+            Secure session access
+        </span>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     LOGIN SIDE
+========================================================= -->
+
+<section class="login-side">
+
+
+<div class="login-shell">
+
+
+    <div class="mobile-brand">
+
+        <div class="brand-mark">
+            R
+        </div>
+
+        <div class="brand-copy">
+
+            <strong>
+                ResolveDesk
+            </strong>
+
+            <span>
+                IT Service Management
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <section class="auth-card">
+
+
+        <header class="auth-header">
+
+            <div class="auth-label">
+                Secure Workspace
+            </div>
+
+
+            <h2>
+                Welcome back.
+            </h2>
+
+
+            <p>
+
+                Sign in to manage your tickets,
+                queue and service desk workspace.
+
+            </p>
+
+        </header>
+
+
+        <form
+            class="form"
+            id="loginForm"
+            novalidate
+        >
+
+
+            <div class="field">
+
+                <label for="email">
+                    Email address
+                </label>
+
+
+                <div class="input-shell">
+
+                    <span class="input-icon">
+                        @
+                    </span>
+
+
+                    <input
+                        id="email"
+                        name="email"
+                        type="email"
+                        autocomplete="email"
+                        placeholder="name@company.com"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="field">
+
+                <label for="password">
+                    Password
+                </label>
+
+
+                <div class="input-shell">
+
+                    <span class="input-icon">
+                        ◆
+                    </span>
+
+
+                    <input
+                        id="password"
+                        name="password"
+                        type="password"
+                        autocomplete="current-password"
+                        placeholder="Enter your password"
+                        required
+                    >
+
+
+                    <button
+                        class="password-toggle"
+                        id="passwordToggle"
+                        type="button"
+                        aria-label="Show password"
+                    >
+                        SHOW
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <div class="form-options">
+
+                <label class="remember">
+
+                    <input
+                        id="remember"
+                        type="checkbox"
+                    >
+
+                    Keep me signed in
+
+                </label>
+
+
+                <button
+                    class="forgot"
+                    id="forgotButton"
+                    type="button"
+                >
+                    Forgot password?
+                </button>
+
+            </div>
+
+
+            <div
+                class="message"
+                id="message"
+                role="status"
+            ></div>
+
+
+            <button
+                class="login-button"
+                id="loginButton"
+                type="submit"
+            >
+                Sign In to ResolveDesk
+            </button>
+
+        </form>
+
+
+        <div class="divider">
+            New to ResolveDesk?
+        </div>
+
+
+        <a
+            class="register-link"
+            href="/register.html"
+        >
+
+            <div>
+
+                <strong>
+                    Request an account
+                </strong>
+
+                <span>
+                    Register as a staff member
+                </span>
+
+            </div>
+
+
+            <div class="register-arrow">
+                →
+            </div>
+
+        </a>
+
+
+        <div class="security-note">
+
+            <div class="security-icon">
+                ◆
+            </div>
+
+
+            <div>
+
+                <strong>
+                    Protected authentication
+                </strong>
+
+                <p>
+                    Passwords will be verified securely by the ResolveDesk backend and are never stored in this page.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="auth-footer">
+
+            ResolveDesk · Internal IT Service Management
+
+        </div>
+
+    </section>
+
+</div>
+
+</section>
+
+</main>
+
+
+<script>
+
+/* =========================================================
+   BACKEND AUTHENTICATION
+   ResolveDesk uses the live server session.
+========================================================= */
+
+
+/* =========================================================
+   ELEMENTS
+========================================================= */
+
+const loginForm =
+    document.getElementById(
+        "loginForm"
+    );
+
+
+const emailInput =
+    document.getElementById(
+        "email"
+    );
+
+
+const passwordInput =
+    document.getElementById(
+        "password"
+    );
+
+
+const loginButton =
+    document.getElementById(
+        "loginButton"
+    );
+
+
+const message =
+    document.getElementById(
+        "message"
+    );
+
+
+/* =========================================================
+   PASSWORD VISIBILITY
+========================================================= */
+
+document
+    .getElementById(
+        "passwordToggle"
+    )
+    .addEventListener(
+        "click",
+        event => {
+
+            const visible =
+                passwordInput.type ===
+                "text";
+
+
+            passwordInput.type =
+                visible
+                    ? "password"
+                    : "text";
+
+
+            event.currentTarget.textContent =
+                visible
+                    ? "SHOW"
+                    : "HIDE";
+
+
+            event.currentTarget.setAttribute(
+                "aria-label",
+                visible
+                    ? "Show password"
+                    : "Hide password"
+            );
+        }
+    );
+
+
+/* =========================================================
+   MESSAGE
+========================================================= */
+
+function showMessage(
+    text,
+    type = "error"
+) {
+
+    message.textContent =
+        text;
+
+
+    message.className =
+        `message show ${type}`;
+}
+
+
+function clearMessage() {
+
+    message.textContent =
+        "";
+
+
+    message.className =
+        "message";
+}
+
+
+/* =========================================================
+   EMAIL VALIDATION
+========================================================= */
+
+function validEmail(
+    email
+) {
+
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+        .test(
+            email
+        );
+}
+
+
+/* =========================================================
+   LOGIN
+========================================================= */
+
+loginForm.addEventListener(
+    "submit",
+    async event => {
+
+        event.preventDefault();
+
+
+        clearMessage();
+
+
+        const email =
+            emailInput
+                .value
+                .trim()
+                .toLowerCase();
+
+
+        const password =
+            passwordInput.value;
+
+
+        if (
+            !email
+        ) {
+
+            showMessage(
+                "Enter your email address."
+            );
+
+
+            emailInput.focus();
+
+
+            return;
+        }
+
+
+        if (
+            !validEmail(
+                email
+            )
+        ) {
+
+            showMessage(
+                "Enter a valid email address."
+            );
+
+
+            emailInput.focus();
+
+
+            return;
+        }
+
+
+        if (
+            !password
+        ) {
+
+            showMessage(
+                "Enter your password."
+            );
+
+
+            passwordInput.focus();
+
+
+            return;
+        }
+
+
+        loginButton.disabled =
+            true;
+
+
+        loginButton.textContent =
+            "Authenticating...";
+
+
+        try {
+
+            /* =============================================
+               BACKEND AUTHENTICATION
+
+               
+               POST /api/auth/login
+               {
+                   email,
+                   password
+               }
+            ============================================= */
+
+            const response =
+                await fetch(
+                    "/api/auth/login",
+                    {
+                        method:
+                            "POST",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        credentials:
+                            "include",
+
+                        body:
+                            JSON.stringify(
+                                {
+                                    email,
+                                    password
+                                }
+                            )
+                    }
+                );
+
+
+            const data =
+                await response.json();
+
+
+            if (
+                !response.ok
+            ) {
+
+                throw new Error(
+                    data.message ||
+                    "Unable to sign in."
+                );
+            }
+
+
+            showMessage(
+                "Authentication successful. Opening workspace...",
+                "success"
+            );
+
+
+            setTimeout(
+                () => {
+
+                    window.location.href =
+                        "/dashboard.html";
+
+                },
+                500
+            );
+
+        } catch (
+            error
+        ) {
+
+            showMessage(
+                error.message ||
+                "Unable to sign in."
+            );
+
+
+            loginButton.disabled =
+                false;
+
+
+            loginButton.textContent =
+                "Sign In to ResolveDesk";
+        }
+    }
+);
+
+
+/* =========================================================
+   FORGOT PASSWORD
+========================================================= */
+
+document
+    .getElementById(
+        "forgotButton"
+    )
+    .addEventListener(
+        "click",
+        () => {
+
+            showMessage(
+                "Password recovery will be connected when the ResolveDesk authentication backend is ready.",
+                "success"
+            );
+        }
+    );
+
+
+/* =========================================================
+   ENTER EMAIL FROM REGISTER PAGE
+========================================================= */
+
+try {
+
+    const registeredEmail =
+        sessionStorage.getItem(
+            "resolvedesk_registered_email"
+        );
+
+
+    if (
+        registeredEmail
+    ) {
+
+        emailInput.value =
+            registeredEmail;
+
+
+        sessionStorage.removeItem(
+            "resolvedesk_registered_email"
+        );
+
+
+        showMessage(
+            "Registration submitted. Sign in after your account has been approved.",
+            "success"
+        );
+    }
+
+} catch (
+    error
+) {
+
+    console.error(
+        error
+    );
+}
+
+</script>
+
+</body>
+</html>

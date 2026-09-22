@@ -1,0 +1,4340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>ResolveDesk — Settings</title>
+
+<style>
+
+/* =========================================================
+   RESOLVEDESK THEME
+========================================================= */
+
+:root {
+    --topaz: #67AECA;
+    --amethyst: #675682;
+    --jewel: #5F0F4E;
+    --rose: #E52A6F;
+
+    --bg: #08060b;
+    --bg2: #120b16;
+
+    --text: #ffffff;
+    --muted: #95899d;
+
+    --line: rgba(103,174,202,.14);
+    --line-soft: rgba(103,174,202,.07);
+
+    --sidebar: 250px;
+
+    --shadow:
+        0 30px 90px
+        rgba(25,5,30,.45);
+}
+
+
+/* =========================================================
+   RESET
+========================================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    min-height: 100vh;
+
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Inter,
+        Arial,
+        sans-serif;
+
+    color: var(--text);
+
+    background:
+        radial-gradient(
+            circle at 88% 5%,
+            rgba(103,174,202,.16),
+            transparent 25%
+        ),
+        radial-gradient(
+            circle at 10% 82%,
+            rgba(229,42,111,.08),
+            transparent 25%
+        ),
+        radial-gradient(
+            circle at 62% 94%,
+            rgba(103,86,130,.14),
+            transparent 30%
+        ),
+        linear-gradient(
+            180deg,
+            var(--bg),
+            var(--bg2) 55%,
+            var(--bg)
+        );
+
+    overflow-x: hidden;
+}
+
+body::before {
+    content: "";
+
+    position: fixed;
+    inset: 0;
+
+    z-index: -1;
+
+    pointer-events: none;
+
+    opacity: .13;
+
+    background-image:
+        linear-gradient(
+            rgba(103,174,202,.035) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            90deg,
+            rgba(103,174,202,.035) 1px,
+            transparent 1px
+        );
+
+    background-size: 64px 64px;
+
+    mask-image:
+        linear-gradient(
+            #000,
+            transparent 90%
+        );
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+button,
+input,
+select,
+textarea {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+
+/* =========================================================
+   SIDEBAR
+========================================================= */
+
+.sidebar {
+    position: fixed;
+
+    inset:
+        0 auto 0 0;
+
+    width: var(--sidebar);
+
+    z-index: 50;
+
+    padding: 18px 14px;
+
+    background:
+        rgba(8,5,11,.94);
+
+    border-right:
+        1px solid
+        rgba(103,174,202,.09);
+
+    backdrop-filter:
+        blur(20px);
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    padding:
+        7px 9px 22px;
+}
+
+.brand-mark {
+    width: 42px;
+    height: 42px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 12px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--topaz),
+            var(--amethyst) 58%,
+            var(--rose)
+        );
+
+    font-size: 20px;
+    font-weight: 950;
+
+    box-shadow:
+        0 14px 34px
+        rgba(103,86,130,.25);
+}
+
+.brand strong {
+    display: block;
+
+    font-size: 16px;
+}
+
+.brand span {
+    display: block;
+
+    margin-top: 3px;
+
+    color: #7d7085;
+
+    font-size: 9px;
+    font-weight: 900;
+
+    letter-spacing: .12em;
+
+    text-transform: uppercase;
+}
+
+.nav-label {
+    margin:
+        12px 10px 8px;
+
+    color: #615568;
+
+    font-size: 9px;
+    font-weight: 950;
+
+    letter-spacing: .14em;
+
+    text-transform: uppercase;
+}
+
+.nav {
+    display: grid;
+
+    gap: 4px;
+}
+
+.nav a {
+    min-height: 45px;
+
+    padding:
+        0 12px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 11px;
+
+    border:
+        1px solid transparent;
+
+    border-radius: 12px;
+
+    color: #988ba0;
+
+    font-size: 13px;
+    font-weight: 760;
+
+    transition: .18s ease;
+}
+
+.nav a:hover {
+    color: #fff;
+
+    background:
+        rgba(103,174,202,.05);
+}
+
+.nav a.active {
+    color: #fff;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(103,174,202,.13),
+            rgba(103,86,130,.10)
+        );
+
+    border-color:
+        rgba(103,174,202,.18);
+}
+
+.nav-icon {
+    width: 28px;
+    height: 28px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 8px;
+
+    background:
+        rgba(103,86,130,.08);
+
+    border:
+        1px solid
+        rgba(103,174,202,.09);
+
+    font-size: 12px;
+}
+
+.nav a.active .nav-icon {
+    background:
+        linear-gradient(
+            135deg,
+            var(--topaz),
+            var(--amethyst)
+        );
+}
+
+.sidebar-bottom {
+    position: absolute;
+
+    left: 14px;
+    right: 14px;
+    bottom: 16px;
+}
+
+.system-card {
+    padding: 14px;
+
+    border:
+        1px solid
+        rgba(103,174,202,.11);
+
+    border-radius: 15px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(103,86,130,.11),
+            rgba(10,6,13,.9)
+        );
+}
+
+.system-card small {
+    color: #746779;
+
+    font-size: 9px;
+    font-weight: 900;
+
+    letter-spacing: .10em;
+
+    text-transform: uppercase;
+}
+
+.system-card strong {
+    display: block;
+
+    margin-top: 7px;
+
+    font-size: 12px;
+}
+
+.system-card p {
+    margin-top: 5px;
+
+    color: #81748a;
+
+    font-size: 10px;
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   MAIN
+========================================================= */
+
+.main {
+    margin-left:
+        var(--sidebar);
+
+    min-height: 100vh;
+}
+
+
+/* =========================================================
+   TOPBAR
+========================================================= */
+
+.topbar {
+    position: sticky;
+    top: 0;
+
+    z-index: 40;
+
+    height: 74px;
+
+    padding:
+        0 24px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 16px;
+
+    background:
+        rgba(9,6,12,.8);
+
+    border-bottom:
+        1px solid
+        rgba(103,174,202,.08);
+
+    backdrop-filter:
+        blur(18px);
+}
+
+.mobile-btn {
+    display: none;
+
+    width: 42px;
+    height: 42px;
+
+    border:
+        1px solid var(--line);
+
+    border-radius: 11px;
+
+    background:
+        rgba(103,86,130,.08);
+
+    color: #fff;
+}
+
+.top-title strong {
+    display: block;
+
+    font-size: 12px;
+}
+
+.top-title span {
+    display: block;
+
+    margin-top: 3px;
+
+    color: #766a80;
+
+    font-size: 8.5px;
+}
+
+.top-actions {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+}
+
+.icon-btn {
+    width: 40px;
+    height: 40px;
+
+    border:
+        1px solid var(--line);
+
+    border-radius: 11px;
+
+    background:
+        rgba(103,86,130,.07);
+
+    color: #c5bacb;
+}
+
+.profile {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    padding:
+        5px 8px 5px 5px;
+
+    border:
+        1px solid var(--line);
+
+    border-radius: 12px;
+
+    background:
+        rgba(103,86,130,.07);
+}
+
+.avatar {
+    width: 32px;
+    height: 32px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 9px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--topaz),
+            var(--amethyst)
+        );
+
+    font-size: 10px;
+    font-weight: 950;
+}
+
+.profile strong {
+    display: block;
+
+    font-size: 11px;
+}
+
+.profile span {
+    display: block;
+
+    margin-top: 2px;
+
+    color: #82758c;
+
+    font-size: 9px;
+}
+
+
+/* =========================================================
+   CONTENT
+========================================================= */
+
+.content {
+    padding: 26px;
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.hero {
+    position: relative;
+
+    overflow: hidden;
+
+    padding: 28px;
+
+    border:
+        1px solid var(--line);
+
+    border-radius: 26px;
+
+    background:
+        radial-gradient(
+            circle at 88% 10%,
+            rgba(103,174,202,.16),
+            transparent 27%
+        ),
+        radial-gradient(
+            circle at 8% 100%,
+            rgba(229,42,111,.08),
+            transparent 27%
+        ),
+        linear-gradient(
+            135deg,
+            rgba(20,12,25,.98),
+            rgba(10,7,13,.98)
+        );
+
+    box-shadow:
+        var(--shadow);
+}
+
+.hero-row {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    position: relative;
+
+    z-index: 2;
+}
+
+.eyebrow {
+    display: inline-flex;
+    align-items: center;
+
+    gap: 8px;
+
+    padding:
+        7px 10px;
+
+    border:
+        1px solid
+        rgba(103,174,202,.16);
+
+    border-radius: 999px;
+
+    background:
+        rgba(103,174,202,.06);
+
+    color: #b9dce8;
+
+    font-size: 9px;
+    font-weight: 950;
+
+    letter-spacing: .11em;
+
+    text-transform: uppercase;
+}
+
+.eyebrow::before {
+    content: "";
+
+    width: 7px;
+    height: 7px;
+
+    border-radius: 50%;
+
+    background:
+        var(--topaz);
+
+    box-shadow:
+        0 0 16px
+        rgba(103,174,202,.6);
+}
+
+.hero h1 {
+    margin-top: 13px;
+
+    font-size:
+        clamp(
+            34px,
+            4vw,
+            52px
+        );
+
+    letter-spacing:
+        -2.3px;
+}
+
+.hero h1 span {
+    background:
+        linear-gradient(
+            90deg,
+            var(--topaz),
+            #b79ac9,
+            var(--rose)
+        );
+
+    -webkit-background-clip:
+        text;
+
+    background-clip:
+        text;
+
+    color:
+        transparent;
+}
+
+.hero p {
+    max-width: 720px;
+
+    margin-top: 11px;
+
+    color: #95899d;
+
+    font-size: 12.5px;
+
+    line-height: 1.7;
+}
+
+.save-all-button {
+    min-height: 44px;
+
+    padding:
+        0 16px;
+
+    border: 0;
+
+    border-radius: 12px;
+
+    background:
+        linear-gradient(
+            100deg,
+            var(--topaz),
+            var(--amethyst) 56%,
+            var(--rose)
+        );
+
+    color: #fff;
+
+    font-size: 10px;
+    font-weight: 900;
+
+    box-shadow:
+        0 13px 30px
+        rgba(103,86,130,.26);
+}
+
+
+/* =========================================================
+   SYSTEM STATUS
+========================================================= */
+
+.status-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            4,
+            1fr
+        );
+
+    gap: 13px;
+
+    margin-top: 16px;
+}
+
+.status-card {
+    padding: 16px;
+
+    border:
+        1px solid var(--line);
+
+    border-radius: 16px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(103,86,130,.09),
+            rgba(10,7,13,.96)
+        );
+}
+
+.status-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 10px;
+}
+
+.status-card small {
+    color: #74687c;
+
+    font-size: 8px;
+
+    font-weight: 950;
+
+    letter-spacing: .07em;
+
+    text-transform: uppercase;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+
+    border-radius: 50%;
+
+    background:
+        var(--topaz);
+
+    box-shadow:
+        0 0 12px
+        rgba(103,174,202,.5);
+}
+
+.status-card strong {
+    display: block;
+
+    margin-top: 8px;
+
+    font-size: 12px;
+}
+
+.status-card p {
+    margin-top: 4px;
+
+    color: #776a80;
+
+    font-size: 8.5px;
+}
+
+
+/* =========================================================
+   SETTINGS LAYOUT
+========================================================= */
+
+.settings-layout {
+    display: grid;
+
+    grid-template-columns:
+        225px
+        minmax(
+            0,
+            1fr
+        );
+
+    gap: 16px;
+
+    margin-top: 16px;
+}
+
+
+/* =========================================================
+   SETTINGS NAV
+========================================================= */
+
+.settings-nav {
+    position: sticky;
+
+    top: 90px;
+
+    height: fit-content;
+
+    padding: 9px;
+
+    border:
+        1px solid var(--line);
+
+    border-radius: 18px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(103,86,130,.09),
+            rgba(9,6,12,.97)
+        );
+}
+
+.settings-tab {
+    width: 100%;
+
+    min-height: 45px;
+
+    padding:
+        0 12px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    border:
+        1px solid transparent;
+
+    border-radius: 11px;
+
+    background: transparent;
+
+    color: #8d8095;
+
+    text-align: left;
+
+    font-size: 10px;
+
+    font-weight: 850;
+
+    transition:
+        .16s ease;
+}
+
+.settings-tab:hover {
+    color: #fff;
+
+    background:
+        rgba(103,174,202,.04);
+}
+
+.settings-tab.active {
+    color: #fff;
+
+    border-color:
+        rgba(103,174,202,.16);
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(103,174,202,.11),
+            rgba(103,86,130,.11)
+        );
+}
+
+.tab-icon {
+    width: 27px;
+    height: 27px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 8px;
+
+    background:
+        rgba(103,86,130,.08);
+
+    border:
+        1px solid var(--line-soft);
+
+    font-size: 10px;
+}
+
+
+/* =========================================================
+   PANELS
+========================================================= */
+
+.settings-content {
+    min-width: 0;
+}
+
+.settings-section {
+    display: none;
+}
+
+.settings-section.active {
+    display: block;
+}
+
+.panel {
+    overflow: hidden;
+
+    margin-bottom: 16px;
+
+    border:
+        1px solid var(--line);
+
+    border-radius: 20px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(103,86,130,.09),
+            rgba(9,6,12,.97)
+        );
+}
+
+.panel:last-child {
+    margin-bottom: 0;
+}
+
+.panel-head {
+    padding:
+        17px 19px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 14px;
+
+    border-bottom:
+        1px solid var(--line-soft);
+}
+
+.panel-title strong {
+    display: block;
+
+    font-size: 13px;
+}
+
+.panel-title span {
+    display: block;
+
+    margin-top: 4px;
+
+    color: #74677d;
+
+    font-size: 9.5px;
+}
+
+.panel-body {
+    padding: 19px;
+}
+
+
+/* =========================================================
+   FORM
+========================================================= */
+
+.form-grid {
+    display: grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap: 14px;
+}
+
+.form-grid.three {
+    grid-template-columns:
+        repeat(
+            3,
+            1fr
+        );
+}
+
+.field {
+    margin-bottom: 15px;
+}
+
+.field:last-child {
+    margin-bottom: 0;
+}
+
+.field label {
+    display: block;
+
+    margin-bottom: 7px;
+
+    color: #9d91a5;
+
+    font-size: 9px;
+
+    font-weight: 850;
+}
+
+.field small {
+    display: block;
+
+    margin-top: 6px;
+
+    color: #685d70;
+
+    font-size: 8px;
+
+    line-height: 1.5;
+}
+
+.field input,
+.field select,
+.field textarea {
+    width: 100%;
+
+    border:
+        1px solid var(--line);
+
+    border-radius: 11px;
+
+    outline: none;
+
+    background:
+        rgba(103,86,130,.065);
+
+    color: #fff;
+}
+
+.field input,
+.field select {
+    height: 44px;
+
+    padding:
+        0 12px;
+}
+
+.field textarea {
+    min-height: 110px;
+
+    padding: 12px;
+
+    resize: vertical;
+
+    line-height: 1.6;
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+    border-color:
+        var(--topaz);
+
+    box-shadow:
+        0 0 0 3px
+        rgba(103,174,202,.04);
+}
+
+.field input::placeholder,
+.field textarea::placeholder {
+    color: #665a6f;
+}
+
+
+/* =========================================================
+   SETTING ROWS
+========================================================= */
+
+.setting-list {
+    display: grid;
+
+    gap: 0;
+}
+
+.setting-row {
+    min-height: 74px;
+
+    padding:
+        14px 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 25px;
+
+    border-bottom:
+        1px solid var(--line-soft);
+}
+
+.setting-row:first-child {
+    padding-top: 0;
+}
+
+.setting-row:last-child {
+    padding-bottom: 0;
+
+    border-bottom: 0;
+}
+
+.setting-copy strong {
+    display: block;
+
+    font-size: 10.5px;
+}
+
+.setting-copy span {
+    display: block;
+
+    max-width: 580px;
+
+    margin-top: 4px;
+
+    color: #74687c;
+
+    font-size: 8.7px;
+
+    line-height: 1.55;
+}
+
+
+/* =========================================================
+   SWITCH
+========================================================= */
+
+.switch {
+    position: relative;
+
+    width: 43px;
+    height: 24px;
+
+    flex-shrink: 0;
+}
+
+.switch input {
+    position: absolute;
+
+    opacity: 0;
+
+    pointer-events: none;
+}
+
+.slider {
+    position: absolute;
+
+    inset: 0;
+
+    border:
+        1px solid
+        rgba(103,174,202,.10);
+
+    border-radius: 999px;
+
+    background:
+        rgba(103,86,130,.14);
+
+    transition:
+        .18s ease;
+}
+
+.slider::before {
+    content: "";
+
+    position: absolute;
+
+    left: 3px;
+    top: 3px;
+
+    width: 16px;
+    height: 16px;
+
+    border-radius: 50%;
+
+    background:
+        #81738a;
+
+    transition:
+        .18s ease;
+}
+
+.switch input:checked + .slider {
+    border-color:
+        rgba(103,174,202,.20);
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(103,174,202,.7),
+            rgba(103,86,130,.85)
+        );
+}
+
+.switch input:checked + .slider::before {
+    transform:
+        translateX(19px);
+
+    background:
+        #fff;
+}
+
+
+/* =========================================================
+   SLA POLICY CARDS
+========================================================= */
+
+.sla-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            2,
+            minmax(
+                0,
+                1fr
+            )
+        );
+
+    gap: 12px;
+}
+
+.sla-card {
+    padding: 15px;
+
+    border:
+        1px solid var(--line-soft);
+
+    border-radius: 14px;
+
+    background:
+        rgba(103,86,130,.045);
+}
+
+.sla-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 10px;
+}
+
+.sla-name {
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+}
+
+.sla-dot {
+    width: 9px;
+    height: 9px;
+
+    border-radius: 50%;
+}
+
+.sla-dot.critical {
+    background: var(--rose);
+}
+
+.sla-dot.high {
+    background: var(--jewel);
+}
+
+.sla-dot.medium {
+    background: var(--topaz);
+}
+
+.sla-dot.low {
+    background: var(--amethyst);
+}
+
+.sla-name strong {
+    font-size: 10.5px;
+}
+
+.sla-badge {
+    padding:
+        5px 7px;
+
+    border-radius: 999px;
+
+    background:
+        rgba(103,174,202,.06);
+
+    border:
+        1px solid
+        rgba(103,174,202,.11);
+
+    color: #aad5e4;
+
+    font-size: 7px;
+
+    font-weight: 900;
+}
+
+.sla-fields {
+    display: grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap: 9px;
+
+    margin-top: 13px;
+}
+
+.sla-field label {
+    display: block;
+
+    margin-bottom: 6px;
+
+    color: #6d6175;
+
+    font-size: 7px;
+
+    font-weight: 900;
+
+    text-transform: uppercase;
+}
+
+.sla-field input {
+    width: 100%;
+
+    height: 39px;
+
+    padding:
+        0 10px;
+
+    border:
+        1px solid var(--line);
+
+    border-radius: 9px;
+
+    outline: none;
+
+    background:
+        rgba(7,5,9,.5);
+
+    color: #fff;
+}
+
+.sla-field input:focus {
+    border-color:
+        var(--topaz);
+}
+
+
+/* =========================================================
+   SECURITY
+========================================================= */
+
+.security-notice {
+    padding: 14px;
+
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 11px;
+
+    border:
+        1px solid
+        rgba(103,174,202,.12);
+
+    border-radius: 13px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(103,174,202,.065),
+            rgba(103,86,130,.06)
+        );
+
+    margin-bottom: 17px;
+}
+
+.security-icon {
+    width: 34px;
+    height: 34px;
+
+    display: grid;
+    place-items: center;
+
+    flex-shrink: 0;
+
+    border-radius: 10px;
+
+    background:
+        rgba(103,174,202,.09);
+
+    color: #b7dce8;
+
+    font-size: 12px;
+}
+
+.security-notice strong {
+    display: block;
+
+    font-size: 10px;
+}
+
+.security-notice p {
+    margin-top: 4px;
+
+    color: #81748a;
+
+    font-size: 8.5px;
+
+    line-height: 1.6;
+}
+
+
+/* =========================================================
+   DANGER ZONE
+========================================================= */
+
+.danger-panel {
+    border-color:
+        rgba(229,42,111,.16);
+}
+
+.danger-panel .panel-head {
+    border-bottom-color:
+        rgba(229,42,111,.10);
+}
+
+.danger-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+}
+
+.danger-copy strong {
+    display: block;
+
+    font-size: 10.5px;
+
+    color: #f1c4d3;
+}
+
+.danger-copy p {
+    margin-top: 5px;
+
+    max-width: 570px;
+
+    color: #826b78;
+
+    font-size: 8.7px;
+
+    line-height: 1.6;
+}
+
+.danger-button {
+    min-height: 38px;
+
+    padding:
+        0 13px;
+
+    flex-shrink: 0;
+
+    border:
+        1px solid
+        rgba(229,42,111,.18);
+
+    border-radius: 10px;
+
+    background:
+        rgba(229,42,111,.07);
+
+    color: #f1a1bf;
+
+    font-size: 8.5px;
+
+    font-weight: 900;
+}
+
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+.panel-actions {
+    display: flex;
+    justify-content: flex-end;
+
+    gap: 9px;
+
+    margin-top: 18px;
+
+    padding-top: 16px;
+
+    border-top:
+        1px solid var(--line-soft);
+}
+
+.secondary-button,
+.primary-button {
+    min-height: 40px;
+
+    padding:
+        0 14px;
+
+    border-radius: 10px;
+
+    font-size: 9px;
+
+    font-weight: 900;
+}
+
+.secondary-button {
+    border:
+        1px solid var(--line);
+
+    background:
+        rgba(103,86,130,.07);
+
+    color: #c2b6c8;
+}
+
+.primary-button {
+    border: 0;
+
+    background:
+        linear-gradient(
+            100deg,
+            var(--topaz),
+            var(--amethyst) 57%,
+            var(--rose)
+        );
+
+    color: #fff;
+}
+
+
+/* =========================================================
+   MODAL
+========================================================= */
+
+.modal-backdrop {
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 100;
+
+    display: none;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+
+    background:
+        rgba(0,0,0,.80);
+
+    backdrop-filter:
+        blur(9px);
+}
+
+.modal-backdrop.open {
+    display: flex;
+}
+
+.modal {
+    width:
+        min(
+            520px,
+            100%
+        );
+
+    border:
+        1px solid
+        rgba(229,42,111,.17);
+
+    border-radius: 20px;
+
+    background:
+        #0d0910;
+
+    box-shadow:
+        0 40px 120px
+        rgba(0,0,0,.7);
+}
+
+.modal-head {
+    padding:
+        18px 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    border-bottom:
+        1px solid var(--line-soft);
+}
+
+.modal-head h2 {
+    font-size: 17px;
+}
+
+.close-button {
+    width: 35px;
+    height: 35px;
+
+    border:
+        1px solid var(--line);
+
+    border-radius: 9px;
+
+    background:
+        rgba(103,86,130,.08);
+
+    color: #fff;
+}
+
+.modal-body {
+    padding: 20px;
+}
+
+.modal-body p {
+    color: #95899d;
+
+    font-size: 10px;
+
+    line-height: 1.7;
+}
+
+.modal-warning {
+    margin-top: 13px;
+
+    padding: 12px;
+
+    border:
+        1px solid
+        rgba(229,42,111,.13);
+
+    border-radius: 11px;
+
+    background:
+        rgba(229,42,111,.055);
+
+    color: #d9a2b6;
+
+    font-size: 8.5px;
+
+    line-height: 1.6;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+
+    gap: 9px;
+
+    margin-top: 18px;
+}
+
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+.toast {
+    position: fixed;
+
+    right: 24px;
+    bottom: 24px;
+
+    z-index: 200;
+
+    min-width: 260px;
+
+    padding:
+        13px 15px;
+
+    border:
+        1px solid
+        rgba(103,174,202,.17);
+
+    border-radius: 12px;
+
+    background:
+        rgba(13,9,16,.97);
+
+    color: #dfd4e3;
+
+    box-shadow:
+        0 20px 60px
+        rgba(0,0,0,.45);
+
+    font-size: 10px;
+
+    opacity: 0;
+
+    transform:
+        translateY(10px);
+
+    pointer-events: none;
+
+    transition:
+        .2s ease;
+}
+
+.toast.show {
+    opacity: 1;
+
+    transform: none;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+.sidebar-backdrop {
+    display: none;
+}
+
+@media (max-width: 1100px) {
+
+    .status-grid {
+        grid-template-columns:
+            1fr 1fr;
+    }
+
+    .sla-grid {
+        grid-template-columns:
+            1fr;
+    }
+}
+
+@media (max-width: 900px) {
+
+    .sidebar {
+        transform:
+            translateX(-100%);
+
+        transition:
+            .2s ease;
+    }
+
+    .sidebar.open {
+        transform: none;
+    }
+
+    .sidebar-backdrop {
+        position: fixed;
+
+        inset: 0;
+
+        z-index: 45;
+
+        background:
+            rgba(0,0,0,.64);
+    }
+
+    .sidebar-backdrop.open {
+        display: block;
+    }
+
+    .main {
+        margin-left: 0;
+    }
+
+    .mobile-btn {
+        display: grid;
+
+        place-items: center;
+    }
+
+    .hero-row {
+        flex-direction: column;
+
+        align-items: flex-start;
+    }
+
+    .settings-layout {
+        grid-template-columns:
+            1fr;
+    }
+
+    .settings-nav {
+        position: static;
+
+        display: flex;
+
+        overflow-x: auto;
+    }
+
+    .settings-tab {
+        min-width: max-content;
+    }
+}
+
+@media (max-width: 650px) {
+
+    .content {
+        padding: 16px;
+    }
+
+    .topbar {
+        padding:
+            0 14px;
+    }
+
+    .profile-copy {
+        display: none;
+    }
+
+    .hero {
+        padding: 21px;
+    }
+
+    .hero h1 {
+        font-size: 37px;
+    }
+
+    .status-grid,
+    .form-grid,
+    .form-grid.three,
+    .sla-fields {
+        grid-template-columns:
+            1fr;
+    }
+
+    .setting-row,
+    .danger-row {
+        align-items: flex-start;
+
+        flex-direction: column;
+    }
+
+    .danger-button {
+        width: 100%;
+    }
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     SIDEBAR
+========================================================= -->
+
+<aside
+    class="sidebar"
+    id="sidebar"
+>
+
+    <div class="brand">
+
+        <div class="brand-mark">
+            R
+        </div>
+
+        <div>
+
+            <strong>
+                ResolveDesk
+            </strong>
+
+            <span>
+                IT Service Management
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <div class="nav-label">
+        Workspace
+    </div>
+
+
+    <nav class="nav">
+
+        <a href="/dashboard.html">
+            <span class="nav-icon">⌂</span>
+            Dashboard
+        </a>
+
+        <a href="/tickets.html">
+            <span class="nav-icon">◫</span>
+            Tickets
+        </a>
+
+        <a href="/my-queue.html">
+            <span class="nav-icon">◎</span>
+            My Queue
+        </a>
+
+        <a href="/sla-monitor.html">
+            <span class="nav-icon">⏱</span>
+            SLA Monitor
+        </a>
+
+        <a href="/knowledge-base.html">
+            <span class="nav-icon">▤</span>
+            Knowledge Base
+        </a>
+
+    </nav>
+
+
+    <div class="nav-label">
+        Management
+    </div>
+
+
+    <nav class="nav">
+
+        <a href="/users.html">
+            <span class="nav-icon">♙</span>
+            Users
+        </a>
+
+        <a href="/technicians.html">
+            <span class="nav-icon">♟</span>
+            Technicians
+        </a>
+
+        <a href="/departments.html">
+            <span class="nav-icon">▦</span>
+            Departments
+        </a>
+
+        <a href="/reports.html">
+            <span class="nav-icon">▥</span>
+            Reports
+        </a>
+
+        <a href="/activity-log.html">
+            <span class="nav-icon">◷</span>
+            Audit Log
+        </a>
+
+        <a
+            class="active"
+            href="/settings.html"
+        >
+            <span class="nav-icon">⚙</span>
+            Settings
+        </a>
+
+    </nav>
+
+
+    <div class="sidebar-bottom">
+
+        <div class="system-card">
+
+            <small>
+                Configuration
+            </small>
+
+            <strong>
+                System healthy
+            </strong>
+
+            <p>
+                ResolveDesk services
+                and configuration
+                are operating normally.
+            </p>
+
+        </div>
+
+    </div>
+
+</aside>
+
+
+<div
+    class="sidebar-backdrop"
+    id="sidebarBackdrop"
+></div>
+
+
+<!-- =========================================================
+     MAIN
+========================================================= -->
+
+<main class="main">
+
+
+<header class="topbar">
+
+    <div
+        style="
+            display:flex;
+            align-items:center;
+            gap:12px;
+        "
+    >
+
+        <button
+            class="mobile-btn"
+            id="menuBtn"
+            type="button"
+        >
+            ☰
+        </button>
+
+
+        <div class="top-title">
+
+            <strong>
+                System Configuration
+            </strong>
+
+            <span>
+                Administrator access
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <div class="top-actions">
+
+        <button
+            class="icon-btn"
+            type="button"
+        >
+            ?
+        </button>
+
+
+        <button
+            class="icon-btn"
+            type="button"
+        >
+            ●
+        </button>
+
+
+        <div class="profile">
+
+            <div class="avatar">
+                HH
+            </div>
+
+            <div class="profile-copy">
+
+                <strong>
+                    Haziq Hanif
+                </strong>
+
+                <span>
+                    Administrator
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<div class="content">
+
+
+<!-- =========================================================
+     HERO
+========================================================= -->
+
+<section class="hero">
+
+    <div class="hero-row">
+
+        <div>
+
+            <div class="eyebrow">
+                ResolveDesk Configuration
+            </div>
+
+
+            <h1>
+
+                Configure the system.
+
+                <span>
+                    Keep support consistent.
+                </span>
+
+            </h1>
+
+
+            <p>
+
+                Manage organization details,
+                ticket workflow,
+                SLA policies,
+                notification rules
+                and security controls
+                from one administrator workspace.
+
+            </p>
+
+        </div>
+
+
+        <button
+            class="save-all-button"
+            id="saveAllButton"
+            type="button"
+        >
+            Save All Changes
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     SYSTEM HEALTH
+========================================================= -->
+
+<section class="status-grid">
+
+    <article class="status-card">
+
+        <div class="status-head">
+
+            <small>
+                Application
+            </small>
+
+            <span class="status-dot"></span>
+
+        </div>
+
+        <strong>
+            Operational
+        </strong>
+
+        <p>
+            ResolveDesk web service
+        </p>
+
+    </article>
+
+
+    <article class="status-card">
+
+        <div class="status-head">
+
+            <small>
+                Database
+            </small>
+
+            <span class="status-dot"></span>
+
+        </div>
+
+        <strong>
+            Connected
+        </strong>
+
+        <p>
+            PostgreSQL service
+        </p>
+
+    </article>
+
+
+    <article class="status-card">
+
+        <div class="status-head">
+
+            <small>
+                SLA Engine
+            </small>
+
+            <span class="status-dot"></span>
+
+        </div>
+
+        <strong>
+            Monitoring
+        </strong>
+
+        <p>
+            Deadline tracking active
+        </p>
+
+    </article>
+
+
+    <article class="status-card">
+
+        <div class="status-head">
+
+            <small>
+                Audit Service
+            </small>
+
+            <span class="status-dot"></span>
+
+        </div>
+
+        <strong>
+            Recording
+        </strong>
+
+        <p>
+            Activity logging enabled
+        </p>
+
+    </article>
+
+</section>
+
+
+<!-- =========================================================
+     SETTINGS LAYOUT
+========================================================= -->
+
+<section class="settings-layout">
+
+
+<!-- =========================================================
+     TAB NAVIGATION
+========================================================= -->
+
+<aside class="settings-nav">
+
+    <button
+        class="settings-tab active"
+        data-tab="general"
+        type="button"
+    >
+        <span class="tab-icon">⌂</span>
+        General
+    </button>
+
+
+    <button
+        class="settings-tab"
+        data-tab="tickets"
+        type="button"
+    >
+        <span class="tab-icon">◫</span>
+        Tickets
+    </button>
+
+
+    <button
+        class="settings-tab"
+        data-tab="sla"
+        type="button"
+    >
+        <span class="tab-icon">⏱</span>
+        SLA Policies
+    </button>
+
+
+    <button
+        class="settings-tab"
+        data-tab="notifications"
+        type="button"
+    >
+        <span class="tab-icon">●</span>
+        Notifications
+    </button>
+
+
+    <button
+        class="settings-tab"
+        data-tab="security"
+        type="button"
+    >
+        <span class="tab-icon">◆</span>
+        Security
+    </button>
+
+
+    <button
+        class="settings-tab"
+        data-tab="system"
+        type="button"
+    >
+        <span class="tab-icon">⚙</span>
+        System
+    </button>
+
+</aside>
+
+
+<!-- =========================================================
+     SETTINGS CONTENT
+========================================================= -->
+
+<div class="settings-content">
+
+
+<!-- =========================================================
+     GENERAL
+========================================================= -->
+
+<section
+    class="settings-section active"
+    id="generalSection"
+>
+
+    <article class="panel">
+
+        <div class="panel-head">
+
+            <div class="panel-title">
+
+                <strong>
+                    Organization
+                </strong>
+
+                <span>
+                    Basic ResolveDesk
+                    organization information
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="panel-body">
+
+            <div class="form-grid">
+
+                <div class="field">
+
+                    <label>
+                        Organization Name
+                    </label>
+
+                    <input
+                        id="organizationName"
+                        value="" placeholder="Organization name"
+                    >
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>
+                        Support Email
+                    </label>
+
+                    <input
+                        id="supportEmail"
+                        type="email"
+                        value="" placeholder="support@example.com"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="form-grid">
+
+                <div class="field">
+
+                    <label>
+                        Help Desk Name
+                    </label>
+
+                    <input
+                        id="helpDeskName"
+                        value="" placeholder="Help desk name"
+                    >
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>
+                        Time Zone
+                    </label>
+
+                    <select id="timeZone">
+
+                        <option
+                            value="Asia/Kuala_Lumpur"
+                            selected
+                        >
+                            Asia/Kuala Lumpur
+                        </option>
+
+                        <option value="Asia/Singapore">
+                            Asia/Singapore
+                        </option>
+
+                        <option value="UTC">
+                            UTC
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    Support Portal Message
+                </label>
+
+                <textarea
+                    id="portalMessage"
+                >Need help? Submit a support request and our IT team will assist you as soon as possible.</textarea>
+
+            </div>
+
+        </div>
+
+    </article>
+
+
+    <article class="panel">
+
+        <div class="panel-head">
+
+            <div class="panel-title">
+
+                <strong>
+                    Business Hours
+                </strong>
+
+                <span>
+                    Default service desk
+                    operating schedule
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="panel-body">
+
+            <div class="form-grid three">
+
+                <div class="field">
+
+                    <label>
+                        Working Days
+                    </label>
+
+                    <select id="workingDays">
+
+                        <option selected>
+                            Monday – Friday
+                        </option>
+
+                        <option>
+                            Monday – Saturday
+                        </option>
+
+                        <option>
+                            Every Day
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>
+                        Start Time
+                    </label>
+
+                    <input
+                        id="businessStart"
+                        type="time"
+                        value="08:00"
+                    >
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>
+                        End Time
+                    </label>
+
+                    <input
+                        id="businessEnd"
+                        type="time"
+                        value="17:00"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="setting-list">
+
+                <div class="setting-row">
+
+                    <div class="setting-copy">
+
+                        <strong>
+                            Pause SLA outside business hours
+                        </strong>
+
+                        <span>
+                            SLA countdown stops when the service desk is outside configured operating hours.
+                        </span>
+
+                    </div>
+
+
+                    <label class="switch">
+
+                        <input
+                            id="pauseSlaOutsideHours"
+                            type="checkbox"
+                            checked
+                        >
+
+                        <span class="slider"></span>
+
+                    </label>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </article>
+
+</section>
+
+
+<!-- =========================================================
+     TICKET SETTINGS
+========================================================= -->
+
+<section
+    class="settings-section"
+    id="ticketsSection"
+>
+
+    <article class="panel">
+
+        <div class="panel-head">
+
+            <div class="panel-title">
+
+                <strong>
+                    Ticket Configuration
+                </strong>
+
+                <span>
+                    Numbering, defaults
+                    and workflow behaviour
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="panel-body">
+
+            <div class="form-grid three">
+
+                <div class="field">
+
+                    <label>
+                        Ticket Prefix
+                    </label>
+
+                    <input
+                        id="ticketPrefix"
+                        maxlength="6"
+                        value="RD"
+                    >
+
+                    <small>
+                        Example: RD-0142
+                    </small>
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>
+                        Starting Number
+                    </label>
+
+                    <input
+                        id="startingTicketNumber"
+                        type="number"
+                        min="1"
+                        value="1000"
+                    >
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>
+                        Default Priority
+                    </label>
+
+                    <select id="defaultPriority">
+
+                        <option value="LOW">
+                            Low
+                        </option>
+
+                        <option
+                            value="MEDIUM"
+                            selected
+                        >
+                            Medium
+                        </option>
+
+                        <option value="HIGH">
+                            High
+                        </option>
+
+                        <option value="CRITICAL">
+                            Critical
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <div class="setting-list">
+
+                <div class="setting-row">
+
+                    <div class="setting-copy">
+
+                        <strong>
+                            Automatic technician assignment
+                        </strong>
+
+                        <span>
+                            Route new tickets to available technicians based on category and workload.
+                        </span>
+
+                    </div>
+
+
+                    <label class="switch">
+
+                        <input
+                            id="autoAssignment"
+                            type="checkbox"
+                            checked
+                        >
+
+                        <span class="slider"></span>
+
+                    </label>
+
+                </div>
+
+
+                <div class="setting-row">
+
+                    <div class="setting-copy">
+
+                        <strong>
+                            Allow ticket reopening
+                        </strong>
+
+                        <span>
+                            Requesters may reopen a resolved ticket when the issue returns.
+                        </span>
+
+                    </div>
+
+
+                    <label class="switch">
+
+                        <input
+                            id="allowReopen"
+                            type="checkbox"
+                            checked
+                        >
+
+                        <span class="slider"></span>
+
+                    </label>
+
+                </div>
+
+
+                <div class="setting-row">
+
+                    <div class="setting-copy">
+
+                        <strong>
+                            Require resolution note
+                        </strong>
+
+                        <span>
+                            Technician must provide a resolution summary before marking a ticket as resolved.
+                        </span>
+
+                    </div>
+
+
+                    <label class="switch">
+
+                        <input
+                            id="requireResolution"
+                            type="checkbox"
+                            checked
+                        >
+
+                        <span class="slider"></span>
+
+                    </label>
+
+                </div>
+
+
+                <div class="setting-row">
+
+                    <div class="setting-copy">
+
+                        <strong>
+                            Auto-close resolved tickets
+                        </strong>
+
+                        <span>
+                            Automatically close resolved tickets after the configured waiting period.
+                        </span>
+
+                    </div>
+
+
+                    <label class="switch">
+
+                        <input
+                            id="autoClose"
+                            type="checkbox"
+                            checked
+                        >
+
+                        <span class="slider"></span>
+
+                    </label>
+
+                </div>
+
+            </div>
+
+
+            <div
+                class="form-grid"
+                style="
+                    margin-top:16px;
+                "
+            >
+
+                <div class="field">
+
+                    <label>
+                        Auto-Close After
+                    </label>
+
+                    <select id="autoCloseDays">
+
+                        <option value="1">
+                            1 day
+                        </option>
+
+                        <option
+                            value="3"
+                            selected
+                        >
+                            3 days
+                        </option>
+
+                        <option value="5">
+                            5 days
+                        </option>
+
+                        <option value="7">
+                            7 days
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>
+                        Maximum Attachment Size
+                    </label>
+
+                    <select id="attachmentLimit">
+
+                        <option value="5">
+                            5 MB
+                        </option>
+
+                        <option
+                            value="10"
+                            selected
+                        >
+                            10 MB
+                        </option>
+
+                        <option value="20">
+                            20 MB
+                        </option>
+
+                        <option value="50">
+                            50 MB
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </article>
+
+</section>
+
+
+<!-- =========================================================
+     SLA
+========================================================= -->
+
+<section
+    class="settings-section"
+    id="slaSection"
+>
+
+    <article class="panel">
+
+        <div class="panel-head">
+
+            <div class="panel-title">
+
+                <strong>
+                    SLA Policies
+                </strong>
+
+                <span>
+                    Response and resolution
+                    targets by priority
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="panel-body">
+
+            <div class="sla-grid">
+
+
+                <div class="sla-card">
+
+                    <div class="sla-title">
+
+                        <div class="sla-name">
+
+                            <span
+                                class="
+                                    sla-dot
+                                    critical
+                                "
+                            ></span>
+
+                            <strong>
+                                Critical
+                            </strong>
+
+                        </div>
+
+
+                        <span class="sla-badge">
+                            P1
+                        </span>
+
+                    </div>
+
+
+                    <div class="sla-fields">
+
+                        <div class="sla-field">
+
+                            <label>
+                                Response Minutes
+                            </label>
+
+                            <input
+                                id="criticalResponse"
+                                type="number"
+                                min="1"
+                                value="15"
+                            >
+
+                        </div>
+
+
+                        <div class="sla-field">
+
+                            <label>
+                                Resolution Minutes
+                            </label>
+
+                            <input
+                                id="criticalResolution"
+                                type="number"
+                                min="1"
+                                value="60"
+                            >
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="sla-card">
+
+                    <div class="sla-title">
+
+                        <div class="sla-name">
+
+                            <span
+                                class="
+                                    sla-dot
+                                    high
+                                "
+                            ></span>
+
+                            <strong>
+                                High
+                            </strong>
+
+                        </div>
+
+
+                        <span class="sla-badge">
+                            P2
+                        </span>
+
+                    </div>
+
+
+                    <div class="sla-fields">
+
+                        <div class="sla-field">
+
+                            <label>
+                                Response Minutes
+                            </label>
+
+                            <input
+                                id="highResponse"
+                                type="number"
+                                min="1"
+                                value="30"
+                            >
+
+                        </div>
+
+
+                        <div class="sla-field">
+
+                            <label>
+                                Resolution Minutes
+                            </label>
+
+                            <input
+                                id="highResolution"
+                                type="number"
+                                min="1"
+                                value="240"
+                            >
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="sla-card">
+
+                    <div class="sla-title">
+
+                        <div class="sla-name">
+
+                            <span
+                                class="
+                                    sla-dot
+                                    medium
+                                "
+                            ></span>
+
+                            <strong>
+                                Medium
+                            </strong>
+
+                        </div>
+
+
+                        <span class="sla-badge">
+                            P3
+                        </span>
+
+                    </div>
+
+
+                    <div class="sla-fields">
+
+                        <div class="sla-field">
+
+                            <label>
+                                Response Minutes
+                            </label>
+
+                            <input
+                                id="mediumResponse"
+                                type="number"
+                                min="1"
+                                value="120"
+                            >
+
+                        </div>
+
+
+                        <div class="sla-field">
+
+                            <label>
+                                Resolution Minutes
+                            </label>
+
+                            <input
+                                id="mediumResolution"
+                                type="number"
+                                min="1"
+                                value="480"
+                            >
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="sla-card">
+
+                    <div class="sla-title">
+
+                        <div class="sla-name">
+
+                            <span
+                                class="
+                                    sla-dot
+                                    low
+                                "
+                            ></span>
+
+                            <strong>
+                                Low
+                            </strong>
+
+                        </div>
+
+
+                        <span class="sla-badge">
+                            P4
+                        </span>
+
+                    </div>
+
+
+                    <div class="sla-fields">
+
+                        <div class="sla-field">
+
+                            <label>
+                                Response Minutes
+                            </label>
+
+                            <input
+                                id="lowResponse"
+                                type="number"
+                                min="1"
+                                value="240"
+                            >
+
+                        </div>
+
+
+                        <div class="sla-field">
+
+                            <label>
+                                Resolution Minutes
+                            </label>
+
+                            <input
+                                id="lowResolution"
+                                type="number"
+                                min="1"
+                                value="1440"
+                            >
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div
+                class="setting-list"
+                style="
+                    margin-top:18px;
+                "
+            >
+
+                <div class="setting-row">
+
+                    <div class="setting-copy">
+
+                        <strong>
+                            Enable SLA escalation
+                        </strong>
+
+                        <span>
+                            Notify technicians and administrators when a ticket approaches its resolution deadline.
+                        </span>
+
+                    </div>
+
+
+                    <label class="switch">
+
+                        <input
+                            id="slaEscalation"
+                            type="checkbox"
+                            checked
+                        >
+
+                        <span class="slider"></span>
+
+                    </label>
+
+                </div>
+
+
+                <div class="setting-row">
+
+                    <div class="setting-copy">
+
+                        <strong>
+                            Automatically flag SLA breach
+                        </strong>
+
+                        <span>
+                            Record a breach in the ticket history and audit log when the SLA timer reaches zero.
+                        </span>
+
+                    </div>
+
+
+                    <label class="switch">
+
+                        <input
+                            id="autoSlaBreach"
+                            type="checkbox"
+                            checked
+                        >
+
+                        <span class="slider"></span>
+
+                    </label>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </article>
+
+</section>
+
+
+<!-- =========================================================
+     NOTIFICATIONS
+========================================================= -->
+
+<section
+    class="settings-section"
+    id="notificationsSection"
+>
+
+    <article class="panel">
+
+        <div class="panel-head">
+
+            <div class="panel-title">
+
+                <strong>
+                    Email Notifications
+                </strong>
+
+                <span>
+                    Configure automatic
+                    support notifications
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="panel-body">
+
+            <div class="setting-list">
+
+
+                <div class="setting-row">
+
+                    <div class="setting-copy">
+
+                        <strong>
+                            New ticket notification
+                        </strong>
+
+                        <span>
+                            Notify support staff when a new ticket is submitted.
+                        </span>
+
+                    </div>
+
+
+                    <label class="switch">
+
+                        <input
+                            id="notifyNewTicket"
+                            type="checkbox"
+                            checked
+                        >
+
+                        <span class="slider"></span>
+
+                    </label>
+
+                </div>
+
+
+                <div class="setting-row">
+
+                    <div class="setting-copy">
+
+                        <strong>
+                            Technician assignment notification
+                        </strong>
+
+                        <span>
+                            Notify a technician immediately when a ticket is assigned to them.
+                        </span>
+
+                    </div>
+
+
+                    <label class="switch">
+
+                        <input
+                            id="notifyAssignment"
+                            type="checkbox"
+                            checked
+                        >
+
+                        <span class="slider"></span>
+
+                    </label>
+
+                </div>
+
+
+                <div class="setting-row">
+
+                    <div class="setting-copy">
+
+                        <strong>
+                            Requester reply notification
+                        </strong>
+
+                        <span>
+                            Email the requester whenever a public ticket reply is posted.
+                        </span>
+
+                    </div>
+
+
+                    <label class="switch">
+
+                        <input
+                            id="notifyReplies"
+                            type="checkbox"
+                            checked
+                        >
+
+                        <span class="slider"></span>
+
+                    </label>
+
+                </div>
+
+
+                <div class="setting-row">
+
+                    <div class="setting-copy">
+
+                        <strong>
+                            SLA warning notification
+                        </strong>
+
+                        <span>
+                            Send alerts when tickets enter an SLA risk threshold.
+                        </span>
+
+                    </div>
+
+
+                    <label class="switch">
+
+                        <input
+                            id="notifySla"
+                            type="checkbox"
+                            checked
+                        >
+
+                        <span class="slider"></span>
+
+                    </label>
+
+                </div>
+
+
+                <div class="setting-row">
+
+                    <div class="setting-copy">
+
+                        <strong>
+                            Ticket resolution notification
+                        </strong>
+
+                        <span>
+                            Notify the requester after a ticket is marked resolved.
+                        </span>
+
+                    </div>
+
+
+                    <label class="switch">
+
+                        <input
+                            id="notifyResolved"
+                            type="checkbox"
+                            checked
+                        >
+
+                        <span class="slider"></span>
+
+                    </label>
+
+                </div>
+
+            </div>
+
+
+            <div
+                class="panel-actions"
+            >
+
+                <button
+                    class="secondary-button"
+                    id="testNotification"
+                    type="button"
+                >
+                    Send Test Notification
+                </button>
+
+            </div>
+
+        </div>
+
+    </article>
+
+</section>
+
+
+<!-- =========================================================
+     SECURITY
+========================================================= -->
+
+<section
+    class="settings-section"
+    id="securitySection"
+>
+
+    <article class="panel">
+
+        <div class="panel-head">
+
+            <div class="panel-title">
+
+                <strong>
+                    Authentication Security
+                </strong>
+
+                <span>
+                    Account and session
+                    protection settings
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="panel-body">
+
+            <div class="security-notice">
+
+                <div class="security-icon">
+                    ◆
+                </div>
+
+                <div>
+
+                    <strong>
+                        Secure authentication
+                    </strong>
+
+                    <p>
+                        ResolveDesk will use hashed passwords, secure sessions and role-based access when the backend is connected.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="form-grid">
+
+                <div class="field">
+
+                    <label>
+                        Minimum Password Length
+                    </label>
+
+                    <select id="minimumPasswordLength">
+
+                        <option value="8">
+                            8 characters
+                        </option>
+
+                        <option
+                            value="10"
+                            selected
+                        >
+                            10 characters
+                        </option>
+
+                        <option value="12">
+                            12 characters
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>
+                        Session Timeout
+                    </label>
+
+                    <select id="sessionTimeout">
+
+                        <option value="30">
+                            30 minutes
+                        </option>
+
+                        <option
+                            value="60"
+                            selected
+                        >
+                            1 hour
+                        </option>
+
+                        <option value="240">
+                            4 hours
+                        </option>
+
+                        <option value="480">
+                            8 hours
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <div class="setting-list">
+
+
+                <div class="setting-row">
+
+                    <div class="setting-copy">
+
+                        <strong>
+                            Require uppercase password character
+                        </strong>
+
+                        <span>
+                            New passwords must contain at least one uppercase character.
+                        </span>
+
+                    </div>
+
+
+                    <label class="switch">
+
+                        <input
+                            id="uppercaseRequired"
+                            type="checkbox"
+                            checked
+                        >
+
+                        <span class="slider"></span>
+
+                    </label>
+
+                </div>
+
+
+                <div class="setting-row">
+
+                    <div class="setting-copy">
+
+                        <strong>
+                            Require numeric password character
+                        </strong>
+
+                        <span>
+                            New passwords must contain at least one number.
+                        </span>
+
+                    </div>
+
+
+                    <label class="switch">
+
+                        <input
+                            id="numberRequired"
+                            type="checkbox"
+                            checked
+                        >
+
+                        <span class="slider"></span>
+
+                    </label>
+
+                </div>
+
+
+                <div class="setting-row">
+
+                    <div class="setting-copy">
+
+                        <strong>
+                            Lock repeated failed sign-ins
+                        </strong>
+
+                        <span>
+                            Temporarily lock authentication attempts after repeated failed passwords.
+                        </span>
+
+                    </div>
+
+
+                    <label class="switch">
+
+                        <input
+                            id="loginLock"
+                            type="checkbox"
+                            checked
+                        >
+
+                        <span class="slider"></span>
+
+                    </label>
+
+                </div>
+
+
+                <div class="setting-row">
+
+                    <div class="setting-copy">
+
+                        <strong>
+                            Audit administrator changes
+                        </strong>
+
+                        <span>
+                            Record user, SLA, department and system configuration changes in the audit log.
+                        </span>
+
+                    </div>
+
+
+                    <label class="switch">
+
+                        <input
+                            id="auditAdminChanges"
+                            type="checkbox"
+                            checked
+                        >
+
+                        <span class="slider"></span>
+
+                    </label>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </article>
+
+</section>
+
+
+<!-- =========================================================
+     SYSTEM
+========================================================= -->
+
+<section
+    class="settings-section"
+    id="systemSection"
+>
+
+    <article class="panel">
+
+        <div class="panel-head">
+
+            <div class="panel-title">
+
+                <strong>
+                    System Behaviour
+                </strong>
+
+                <span>
+                    Application maintenance
+                    and administrative options
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="panel-body">
+
+            <div class="setting-list">
+
+                <div class="setting-row">
+
+                    <div class="setting-copy">
+
+                        <strong>
+                            Maintenance mode
+                        </strong>
+
+                        <span>
+                            Prevent normal staff access while administrators perform system maintenance.
+                        </span>
+
+                    </div>
+
+
+                    <label class="switch">
+
+                        <input
+                            id="maintenanceMode"
+                            type="checkbox"
+                        >
+
+                        <span class="slider"></span>
+
+                    </label>
+
+                </div>
+
+
+                <div class="setting-row">
+
+                    <div class="setting-copy">
+
+                        <strong>
+                            User self-registration
+                        </strong>
+
+                        <span>
+                            Allow staff to submit registration requests from the ResolveDesk registration page.
+                        </span>
+
+                    </div>
+
+
+                    <label class="switch">
+
+                        <input
+                            id="registrationEnabled"
+                            type="checkbox"
+                            checked
+                        >
+
+                        <span class="slider"></span>
+
+                    </label>
+
+                </div>
+
+
+                <div class="setting-row">
+
+                    <div class="setting-copy">
+
+                        <strong>
+                            Require admin registration approval
+                        </strong>
+
+                        <span>
+                            Newly registered staff remain pending until approved by an administrator.
+                        </span>
+
+                    </div>
+
+
+                    <label class="switch">
+
+                        <input
+                            id="registrationApproval"
+                            type="checkbox"
+                            checked
+                        >
+
+                        <span class="slider"></span>
+
+                    </label>
+
+                </div>
+
+
+                <div class="setting-row">
+
+                    <div class="setting-copy">
+
+                        <strong>
+                            Knowledge Base self-service suggestions
+                        </strong>
+
+                        <span>
+                            Suggest relevant articles while staff are preparing a new support ticket.
+                        </span>
+
+                    </div>
+
+
+                    <label class="switch">
+
+                        <input
+                            id="kbSuggestions"
+                            type="checkbox"
+                            checked
+                        >
+
+                        <span class="slider"></span>
+
+                    </label>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </article>
+
+
+    <article class="panel danger-panel">
+
+        <div class="panel-head">
+
+            <div class="panel-title">
+
+                <strong>
+                    Danger Zone
+                </strong>
+
+                <span>
+                    Administrative maintenance actions
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="panel-body">
+
+            <div class="danger-row">
+
+                <div class="danger-copy">
+
+                    <strong>
+                        Reset configuration
+                    </strong>
+
+                    <p>
+                        Restore ResolveDesk settings to the server defaults.
+                    </p>
+
+                </div>
+
+
+                <button
+                    class="danger-button"
+                    id="resetConfigurationButton"
+                    type="button"
+                >
+                    Reset Configuration
+                </button>
+
+            </div>
+
+        </div>
+
+    </article>
+
+</section>
+
+</div>
+
+</section>
+
+</div>
+
+</main>
+
+
+<!-- =========================================================
+     RESET CONFIRMATION
+========================================================= -->
+
+<div
+    class="modal-backdrop"
+    id="resetModal"
+>
+
+    <div class="modal">
+
+        <div class="modal-head">
+
+            <h2>
+                Reset Configuration
+            </h2>
+
+
+            <button
+                class="close-button"
+                id="closeResetModal"
+                type="button"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <div class="modal-body">
+
+            <p>
+
+                Restore ResolveDesk settings
+                to the server defaults?
+
+            </p>
+
+
+            <div class="modal-warning">
+
+                This resets the saved ResolveDesk configuration in PostgreSQL to the application defaults. Ticket, user and audit records are not deleted.
+
+            </div>
+
+
+            <div class="modal-actions">
+
+                <button
+                    class="secondary-button"
+                    id="cancelReset"
+                    type="button"
+                >
+                    Cancel
+                </button>
+
+
+                <button
+                    class="danger-button"
+                    id="confirmReset"
+                    type="button"
+                >
+                    Reset Settings
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<div
+    class="toast"
+    id="toast"
+></div>
+
+
+<script>
+
+/* =========================================================
+   SETTINGS TAB
+========================================================= */
+
+const tabs =
+    document.querySelectorAll(
+        ".settings-tab"
+    );
+
+
+const sections = {
+    general:
+        document.getElementById(
+            "generalSection"
+        ),
+
+    tickets:
+        document.getElementById(
+            "ticketsSection"
+        ),
+
+    sla:
+        document.getElementById(
+            "slaSection"
+        ),
+
+    notifications:
+        document.getElementById(
+            "notificationsSection"
+        ),
+
+    security:
+        document.getElementById(
+            "securitySection"
+        ),
+
+    system:
+        document.getElementById(
+            "systemSection"
+        )
+};
+
+
+tabs.forEach(
+    tab => {
+
+        tab.addEventListener(
+            "click",
+            () => {
+
+                const name =
+                    tab.dataset.tab;
+
+
+                tabs.forEach(
+                    item =>
+                        item.classList.remove(
+                            "active"
+                        )
+                );
+
+
+                document
+                    .querySelectorAll(
+                        ".settings-section"
+                    )
+                    .forEach(
+                        section =>
+                            section.classList.remove(
+                                "active"
+                            )
+                    );
+
+
+                tab.classList.add(
+                    "active"
+                );
+
+
+                sections[name]
+                    ?.classList
+                    .add(
+                        "active"
+                    );
+            }
+        );
+    }
+);
+
+
+/* =========================================================
+   LIVE SETTINGS
+   Collection, validation, saving and loading are handled by
+   /js/settings-live.js using PostgreSQL.
+========================================================= */
+
+/* =========================================================
+   RESET CONFIGURATION
+========================================================= */
+
+const resetModal =
+    document.getElementById(
+        "resetModal"
+    );
+
+
+document
+    .getElementById(
+        "resetConfigurationButton"
+    )
+    .addEventListener(
+        "click",
+        () => {
+
+            resetModal.classList.add(
+                "open"
+            );
+
+
+            document.body.style.overflow =
+                "hidden";
+        }
+    );
+
+
+function closeResetModal() {
+
+    resetModal.classList.remove(
+        "open"
+    );
+
+
+    document.body.style.overflow =
+        "";
+}
+
+
+document
+    .getElementById(
+        "closeResetModal"
+    )
+    .addEventListener(
+        "click",
+        closeResetModal
+    );
+
+
+document
+    .getElementById(
+        "cancelReset"
+    )
+    .addEventListener(
+        "click",
+        closeResetModal
+    );
+
+
+resetModal.addEventListener(
+    "click",
+    event => {
+
+        if (
+            event.target ===
+            resetModal
+        ) {
+
+            closeResetModal();
+        }
+    }
+);
+
+
+/* =========================================================
+   RESET / SYSTEM EVENTS
+   Live reset and system settings are handled by
+   /js/settings-live.js.
+========================================================= */
+
+/* =========================================================
+   TICKET PREFIX CLEANUP
+========================================================= */
+
+document
+    .getElementById(
+        "ticketPrefix"
+    )
+    .addEventListener(
+        "input",
+        event => {
+
+            event.target.value =
+                event.target
+                    .value
+                    .replace(
+                        /[^a-zA-Z0-9]/g,
+                        ""
+                    )
+                    .toUpperCase();
+        }
+    );
+
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+let toastTimer;
+
+
+function showToast(
+    message
+) {
+
+    const toast =
+        document.getElementById(
+            "toast"
+        );
+
+
+    toast.textContent =
+        message;
+
+
+    toast.classList.add(
+        "show"
+    );
+
+
+    clearTimeout(
+        toastTimer
+    );
+
+
+    toastTimer =
+        setTimeout(
+            () => {
+
+                toast.classList.remove(
+                    "show"
+                );
+
+            },
+            2400
+        );
+}
+
+
+/* =========================================================
+   MOBILE SIDEBAR
+========================================================= */
+
+const sidebar =
+    document.getElementById(
+        "sidebar"
+    );
+
+
+const backdrop =
+    document.getElementById(
+        "sidebarBackdrop"
+    );
+
+
+document
+    .getElementById(
+        "menuBtn"
+    )
+    .addEventListener(
+        "click",
+        () => {
+
+            sidebar.classList.toggle(
+                "open"
+            );
+
+
+            backdrop.classList.toggle(
+                "open"
+            );
+        }
+    );
+
+
+backdrop.addEventListener(
+    "click",
+    () => {
+
+        sidebar.classList.remove(
+            "open"
+        );
+
+
+        backdrop.classList.remove(
+            "open"
+        );
+    }
+);
+
+
+/* =========================================================
+   ESCAPE KEY
+========================================================= */
+
+document.addEventListener(
+    "keydown",
+    event => {
+
+        if (
+            event.key ===
+            "Escape"
+        ) {
+
+            closeResetModal();
+        }
+    }
+);
+
+
+/* =========================================================
+   INITIAL
+========================================================= */
+
+
+
+</script>
+
+
+<script src="/js/auth-session.js"></script>
+
+
+<script src="/js/settings-live.js"></script>
+<script src="/js/role-navigation.js"></script>
+</body>
+</html>

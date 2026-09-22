@@ -1,0 +1,3423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>ResolveDesk — Reports</title>
+
+<style>
+
+/* =========================================================
+   THEME
+========================================================= */
+
+:root {
+    --topaz: #67AECA;
+    --amethyst: #675682;
+    --jewel: #5F0F4E;
+    --rose: #E52A6F;
+
+    --bg: #08060b;
+    --bg2: #120b16;
+
+    --text: #ffffff;
+    --muted: #95899d;
+
+    --line: rgba(103,174,202,.14);
+    --line-soft: rgba(103,174,202,.07);
+
+    --sidebar: 250px;
+
+    --shadow:
+        0 30px 90px
+        rgba(25,5,30,.45);
+}
+
+
+/* =========================================================
+   RESET
+========================================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    min-height: 100vh;
+
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Inter,
+        Arial,
+        sans-serif;
+
+    color: var(--text);
+
+    background:
+        radial-gradient(
+            circle at 88% 5%,
+            rgba(103,174,202,.16),
+            transparent 25%
+        ),
+        radial-gradient(
+            circle at 10% 82%,
+            rgba(229,42,111,.08),
+            transparent 25%
+        ),
+        radial-gradient(
+            circle at 62% 94%,
+            rgba(103,86,130,.14),
+            transparent 30%
+        ),
+        linear-gradient(
+            180deg,
+            var(--bg),
+            var(--bg2) 55%,
+            var(--bg)
+        );
+
+    overflow-x: hidden;
+}
+
+body::before {
+    content: "";
+
+    position: fixed;
+    inset: 0;
+
+    z-index: -1;
+
+    pointer-events: none;
+
+    opacity: .13;
+
+    background-image:
+        linear-gradient(
+            rgba(103,174,202,.035) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            90deg,
+            rgba(103,174,202,.035) 1px,
+            transparent 1px
+        );
+
+    background-size:
+        64px 64px;
+
+    mask-image:
+        linear-gradient(
+            #000,
+            transparent 90%
+        );
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+button,
+input,
+select {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+
+/* =========================================================
+   SIDEBAR
+========================================================= */
+
+.sidebar {
+    position: fixed;
+
+    inset:
+        0 auto 0 0;
+
+    width: var(--sidebar);
+
+    z-index: 50;
+
+    padding:
+        18px 14px;
+
+    background:
+        rgba(8,5,11,.94);
+
+    border-right:
+        1px solid
+        rgba(103,174,202,.09);
+
+    backdrop-filter: blur(20px);
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    padding:
+        7px 9px 22px;
+}
+
+.brand-mark {
+    width: 42px;
+    height: 42px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 12px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--topaz),
+            var(--amethyst) 58%,
+            var(--rose)
+        );
+
+    font-size: 20px;
+    font-weight: 950;
+
+    box-shadow:
+        0 14px 34px
+        rgba(103,86,130,.25);
+}
+
+.brand strong {
+    display: block;
+    font-size: 16px;
+}
+
+.brand span {
+    display: block;
+
+    margin-top: 3px;
+
+    color: #7d7085;
+
+    font-size: 9px;
+    font-weight: 900;
+
+    letter-spacing: .12em;
+
+    text-transform: uppercase;
+}
+
+.nav-label {
+    margin:
+        12px 10px 8px;
+
+    color: #615568;
+
+    font-size: 9px;
+    font-weight: 950;
+
+    letter-spacing: .14em;
+
+    text-transform: uppercase;
+}
+
+.nav {
+    display: grid;
+    gap: 4px;
+}
+
+.nav a {
+    min-height: 45px;
+
+    padding:
+        0 12px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 11px;
+
+    border:
+        1px solid transparent;
+
+    border-radius: 12px;
+
+    color: #988ba0;
+
+    font-size: 13px;
+    font-weight: 760;
+
+    transition: .18s ease;
+}
+
+.nav a:hover {
+    color: #fff;
+
+    background:
+        rgba(103,174,202,.05);
+}
+
+.nav a.active {
+    color: #fff;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(103,174,202,.13),
+            rgba(103,86,130,.10)
+        );
+
+    border-color:
+        rgba(103,174,202,.18);
+}
+
+.nav-icon {
+    width: 28px;
+    height: 28px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 8px;
+
+    background:
+        rgba(103,86,130,.08);
+
+    border:
+        1px solid
+        rgba(103,174,202,.09);
+
+    font-size: 12px;
+}
+
+.nav a.active .nav-icon {
+    background:
+        linear-gradient(
+            135deg,
+            var(--topaz),
+            var(--amethyst)
+        );
+}
+
+.sidebar-bottom {
+    position: absolute;
+
+    left: 14px;
+    right: 14px;
+    bottom: 16px;
+}
+
+.system-card {
+    padding: 14px;
+
+    border:
+        1px solid
+        rgba(103,174,202,.11);
+
+    border-radius: 15px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(103,86,130,.11),
+            rgba(10,6,13,.9)
+        );
+}
+
+.system-card small {
+    color: #746779;
+
+    font-size: 9px;
+    font-weight: 900;
+
+    letter-spacing: .10em;
+
+    text-transform: uppercase;
+}
+
+.system-card strong {
+    display: block;
+
+    margin-top: 7px;
+
+    font-size: 12px;
+}
+
+.system-card p {
+    margin-top: 5px;
+
+    color: #81748a;
+
+    font-size: 10px;
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   MAIN
+========================================================= */
+
+.main {
+    margin-left: var(--sidebar);
+
+    min-height: 100vh;
+}
+
+
+/* =========================================================
+   TOPBAR
+========================================================= */
+
+.topbar {
+    position: sticky;
+    top: 0;
+
+    z-index: 40;
+
+    height: 74px;
+
+    padding:
+        0 24px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 16px;
+
+    background:
+        rgba(9,6,12,.8);
+
+    border-bottom:
+        1px solid
+        rgba(103,174,202,.08);
+
+    backdrop-filter: blur(18px);
+}
+
+.mobile-btn {
+    display: none;
+
+    width: 42px;
+    height: 42px;
+
+    border:
+        1px solid var(--line);
+
+    border-radius: 11px;
+
+    background:
+        rgba(103,86,130,.08);
+
+    color: #fff;
+}
+
+.top-search {
+    width:
+        min(
+            470px,
+            46vw
+        );
+}
+
+.top-search input {
+    width: 100%;
+    height: 42px;
+
+    padding:
+        0 14px;
+
+    border:
+        1px solid var(--line);
+
+    border-radius: 11px;
+
+    background:
+        rgba(12,8,16,.82);
+
+    color: #fff;
+
+    outline: none;
+}
+
+.top-search input:focus {
+    border-color: var(--topaz);
+}
+
+.top-search input::placeholder {
+    color: #73667b;
+}
+
+.top-actions {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+}
+
+.icon-btn {
+    width: 40px;
+    height: 40px;
+
+    border:
+        1px solid var(--line);
+
+    border-radius: 11px;
+
+    background:
+        rgba(103,86,130,.07);
+
+    color: #c5bacb;
+}
+
+.profile {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    padding:
+        5px 8px 5px 5px;
+
+    border:
+        1px solid var(--line);
+
+    border-radius: 12px;
+
+    background:
+        rgba(103,86,130,.07);
+}
+
+.avatar {
+    width: 32px;
+    height: 32px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 9px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--topaz),
+            var(--amethyst)
+        );
+
+    font-size: 10px;
+    font-weight: 950;
+}
+
+.profile strong {
+    display: block;
+
+    font-size: 11px;
+}
+
+.profile span {
+    display: block;
+
+    margin-top: 2px;
+
+    color: #82758c;
+
+    font-size: 9px;
+}
+
+
+/* =========================================================
+   CONTENT
+========================================================= */
+
+.content {
+    padding: 26px;
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.hero {
+    position: relative;
+
+    overflow: hidden;
+
+    padding: 28px;
+
+    border:
+        1px solid var(--line);
+
+    border-radius: 26px;
+
+    background:
+        radial-gradient(
+            circle at 88% 10%,
+            rgba(103,174,202,.16),
+            transparent 27%
+        ),
+        radial-gradient(
+            circle at 8% 100%,
+            rgba(229,42,111,.08),
+            transparent 27%
+        ),
+        linear-gradient(
+            135deg,
+            rgba(20,12,25,.98),
+            rgba(10,7,13,.98)
+        );
+
+    box-shadow: var(--shadow);
+}
+
+.hero-row {
+    position: relative;
+
+    z-index: 2;
+
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+
+    gap: 22px;
+}
+
+.eyebrow {
+    display: inline-flex;
+    align-items: center;
+
+    gap: 8px;
+
+    padding:
+        7px 10px;
+
+    border:
+        1px solid
+        rgba(103,174,202,.16);
+
+    border-radius: 999px;
+
+    background:
+        rgba(103,174,202,.06);
+
+    color: #b9dce8;
+
+    font-size: 9px;
+    font-weight: 950;
+
+    letter-spacing: .11em;
+
+    text-transform: uppercase;
+}
+
+.eyebrow::before {
+    content: "";
+
+    width: 7px;
+    height: 7px;
+
+    border-radius: 50%;
+
+    background: var(--topaz);
+
+    box-shadow:
+        0 0 16px
+        rgba(103,174,202,.6);
+}
+
+.hero h1 {
+    margin-top: 13px;
+
+    font-size:
+        clamp(
+            34px,
+            4vw,
+            52px
+        );
+
+    letter-spacing: -2.3px;
+}
+
+.hero h1 span {
+    background:
+        linear-gradient(
+            90deg,
+            var(--topaz),
+            #b79ac9,
+            var(--rose)
+        );
+
+    -webkit-background-clip: text;
+    background-clip: text;
+
+    color: transparent;
+}
+
+.hero p {
+    max-width: 720px;
+
+    margin-top: 11px;
+
+    color: #95899d;
+
+    font-size: 12.5px;
+    line-height: 1.7;
+}
+
+.hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+
+    gap: 9px;
+}
+
+.primary-button,
+.secondary-button {
+    min-height: 44px;
+
+    padding:
+        0 15px;
+
+    border-radius: 11px;
+
+    font-size: 9.5px;
+    font-weight: 900;
+}
+
+.primary-button {
+    border: 0;
+
+    color: #fff;
+
+    background:
+        linear-gradient(
+            100deg,
+            var(--topaz),
+            var(--amethyst) 56%,
+            var(--rose)
+        );
+
+    box-shadow:
+        0 13px 30px
+        rgba(103,86,130,.26);
+}
+
+.secondary-button {
+    border:
+        1px solid var(--line);
+
+    color: #c4b9ca;
+
+    background:
+        rgba(103,86,130,.08);
+}
+
+
+/* =========================================================
+   FILTER BAR
+========================================================= */
+
+.filters {
+    margin-top: 16px;
+
+    padding: 13px;
+
+    display: grid;
+
+    grid-template-columns:
+        190px
+        190px
+        190px
+        auto;
+
+    gap: 10px;
+
+    border:
+        1px solid var(--line);
+
+    border-radius: 17px;
+
+    background:
+        rgba(13,8,16,.82);
+}
+
+.filters select {
+    width: 100%;
+    height: 42px;
+
+    padding:
+        0 12px;
+
+    border:
+        1px solid var(--line);
+
+    border-radius: 10px;
+
+    outline: none;
+
+    background:
+        rgba(103,86,130,.07);
+
+    color: #fff;
+}
+
+.filters select:focus {
+    border-color: var(--topaz);
+}
+
+.refresh-button {
+    min-height: 42px;
+
+    padding:
+        0 14px;
+
+    border:
+        1px solid var(--line);
+
+    border-radius: 10px;
+
+    background:
+        rgba(103,86,130,.08);
+
+    color: #c4b8ca;
+
+    font-size: 9px;
+    font-weight: 900;
+}
+
+
+/* =========================================================
+   STATS
+========================================================= */
+
+.stats {
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            4,
+            1fr
+        );
+
+    gap: 13px;
+
+    margin-top: 16px;
+}
+
+.stat {
+    position: relative;
+
+    overflow: hidden;
+
+    padding: 17px;
+
+    border:
+        1px solid var(--line);
+
+    border-radius: 17px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(103,86,130,.10),
+            rgba(10,7,13,.96)
+        );
+}
+
+.stat small {
+    display: block;
+
+    color: #766a80;
+
+    font-size: 8.5px;
+    font-weight: 950;
+
+    letter-spacing: .09em;
+
+    text-transform: uppercase;
+}
+
+.stat strong {
+    display: block;
+
+    margin-top: 7px;
+
+    font-size: 27px;
+
+    letter-spacing: -1px;
+}
+
+.stat p {
+    margin-top: 5px;
+
+    color: #776b80;
+
+    font-size: 9px;
+}
+
+.stat::after {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    height: 1px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            var(--topaz),
+            var(--rose),
+            transparent
+        );
+}
+
+
+/* =========================================================
+   PANEL
+========================================================= */
+
+.panel {
+    overflow: hidden;
+
+    border:
+        1px solid var(--line);
+
+    border-radius: 20px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(103,86,130,.09),
+            rgba(9,6,12,.97)
+        );
+}
+
+.panel-head {
+    padding:
+        16px 18px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 14px;
+
+    border-bottom:
+        1px solid var(--line-soft);
+}
+
+.panel-title strong {
+    display: block;
+
+    font-size: 13px;
+}
+
+.panel-title span {
+    display: block;
+
+    margin-top: 4px;
+
+    color: #74677d;
+
+    font-size: 9.5px;
+}
+
+.panel-badge {
+    padding:
+        6px 9px;
+
+    border:
+        1px solid
+        rgba(103,174,202,.12);
+
+    border-radius: 999px;
+
+    background:
+        rgba(103,174,202,.055);
+
+    color: #a7d4e4;
+
+    font-size: 8px;
+    font-weight: 900;
+}
+
+
+/* =========================================================
+   MAIN REPORT GRID
+========================================================= */
+
+.report-grid {
+    display: grid;
+
+    grid-template-columns:
+        minmax(
+            0,
+            1.3fr
+        )
+        minmax(
+            300px,
+            .7fr
+        );
+
+    gap: 16px;
+
+    margin-top: 16px;
+}
+
+.stack {
+    display: grid;
+    gap: 16px;
+}
+
+
+/* =========================================================
+   LINE CHART
+========================================================= */
+
+.chart-wrap {
+    padding: 18px;
+}
+
+.chart {
+    position: relative;
+
+    height: 300px;
+
+    overflow: hidden;
+
+    border-radius: 16px;
+
+    background:
+        linear-gradient(
+            rgba(103,174,202,.04) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            90deg,
+            rgba(103,174,202,.04) 1px,
+            transparent 1px
+        );
+
+    background-size:
+        100% 20%,
+        14.28% 100%;
+}
+
+.chart svg {
+    width: 100%;
+    height: 100%;
+}
+
+.chart-labels {
+    display: flex;
+    justify-content: space-between;
+
+    margin-top: 10px;
+
+    color: #75697e;
+
+    font-size: 8.5px;
+}
+
+.legend {
+    display: flex;
+    flex-wrap: wrap;
+
+    gap: 14px;
+
+    margin-top: 12px;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+
+    gap: 6px;
+
+    color: #887c91;
+
+    font-size: 8.5px;
+}
+
+.legend-dot {
+    width: 8px;
+    height: 8px;
+
+    border-radius: 50%;
+}
+
+.legend-dot.created {
+    background: var(--topaz);
+}
+
+.legend-dot.resolved {
+    background: var(--rose);
+}
+
+
+/* =========================================================
+   DONUT
+========================================================= */
+
+.donut-layout {
+    padding: 18px;
+
+    display: grid;
+
+    grid-template-columns:
+        150px 1fr;
+
+    align-items: center;
+
+    gap: 20px;
+}
+
+.donut-wrap {
+    position: relative;
+
+    display: grid;
+    place-items: center;
+}
+
+.donut {
+    width: 140px;
+    height: 140px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 50%;
+
+    background:
+        conic-gradient(
+            var(--topaz) 0 39%,
+            var(--amethyst) 39% 63%,
+            var(--rose) 63% 83%,
+            var(--jewel) 83% 100%
+        );
+}
+
+.donut::after {
+    content: "";
+
+    width: 90px;
+    height: 90px;
+
+    border-radius: 50%;
+
+    background: #0d0910;
+
+    border:
+        1px solid var(--line-soft);
+}
+
+.donut-center {
+    position: absolute;
+
+    text-align: center;
+}
+
+.donut-center strong {
+    display: block;
+
+    font-size: 23px;
+}
+
+.donut-center span {
+    display: block;
+
+    margin-top: 3px;
+
+    color: #75697e;
+
+    font-size: 8px;
+}
+
+.donut-legend {
+    display: grid;
+    gap: 10px;
+}
+
+.donut-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 10px;
+
+    color: #94889c;
+
+    font-size: 9px;
+}
+
+.donut-label {
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+}
+
+.donut-label i {
+    width: 8px;
+    height: 8px;
+
+    border-radius: 50%;
+}
+
+
+/* =========================================================
+   SLA COMPLIANCE
+========================================================= */
+
+.sla-body {
+    padding: 17px;
+}
+
+.sla-big {
+    display: flex;
+    align-items: flex-end;
+
+    gap: 7px;
+}
+
+.sla-big strong {
+    font-size: 38px;
+
+    letter-spacing: -2px;
+}
+
+.sla-big span {
+    margin-bottom: 7px;
+
+    color: #83768c;
+
+    font-size: 9px;
+}
+
+.sla-track {
+    height: 8px;
+
+    margin-top: 13px;
+
+    overflow: hidden;
+
+    border-radius: 999px;
+
+    background:
+        rgba(255,255,255,.06);
+}
+
+.sla-track span {
+    display: block;
+
+    width: 92%;
+
+    height: 100%;
+
+    border-radius: inherit;
+
+    background:
+        linear-gradient(
+            90deg,
+            var(--topaz),
+            var(--amethyst),
+            var(--rose)
+        );
+}
+
+.sla-breakdown {
+    display: grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap: 9px;
+
+    margin-top: 16px;
+}
+
+.sla-item {
+    padding: 11px;
+
+    border:
+        1px solid var(--line-soft);
+
+    border-radius: 11px;
+
+    background:
+        rgba(103,86,130,.045);
+}
+
+.sla-item small {
+    display: block;
+
+    color: #695d71;
+
+    font-size: 7px;
+
+    font-weight: 900;
+
+    text-transform: uppercase;
+}
+
+.sla-item strong {
+    display: block;
+
+    margin-top: 5px;
+
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   PRIORITY BARS
+========================================================= */
+
+.priority-list {
+    padding: 16px;
+}
+
+.priority-row {
+    margin-bottom: 14px;
+}
+
+.priority-row:last-child {
+    margin-bottom: 0;
+}
+
+.priority-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 10px;
+}
+
+.priority-name {
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+}
+
+.priority-dot {
+    width: 8px;
+    height: 8px;
+
+    border-radius: 50%;
+}
+
+.priority-dot.critical {
+    background: var(--rose);
+}
+
+.priority-dot.high {
+    background: var(--jewel);
+}
+
+.priority-dot.medium {
+    background: var(--topaz);
+}
+
+.priority-dot.low {
+    background: var(--amethyst);
+}
+
+.priority-head span {
+    color: #96899e;
+
+    font-size: 9px;
+}
+
+.priority-head strong {
+    font-size: 9.5px;
+}
+
+.bar {
+    height: 6px;
+
+    margin-top: 7px;
+
+    overflow: hidden;
+
+    border-radius: 999px;
+
+    background:
+        rgba(255,255,255,.06);
+}
+
+.bar span {
+    display: block;
+
+    height: 100%;
+
+    border-radius: inherit;
+
+    background:
+        linear-gradient(
+            90deg,
+            var(--topaz),
+            var(--amethyst),
+            var(--rose)
+        );
+}
+
+
+/* =========================================================
+   TECHNICIAN TABLE
+========================================================= */
+
+.table-panel {
+    margin-top: 16px;
+}
+
+.table-wrap {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+
+    min-width: 900px;
+
+    border-collapse: collapse;
+}
+
+th {
+    padding:
+        12px 14px;
+
+    text-align: left;
+
+    color: #75697e;
+
+    font-size: 8px;
+    font-weight: 950;
+
+    letter-spacing: .08em;
+
+    text-transform: uppercase;
+
+    border-bottom:
+        1px solid var(--line-soft);
+
+    background:
+        rgba(7,5,9,.38);
+}
+
+td {
+    padding:
+        13px 14px;
+
+    color: #c5b9ca;
+
+    font-size: 9.5px;
+
+    border-bottom:
+        1px solid
+        rgba(103,174,202,.055);
+}
+
+tbody tr:hover {
+    background:
+        rgba(103,174,202,.03);
+}
+
+tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+.tech-cell {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+}
+
+.tech-avatar {
+    width: 34px;
+    height: 34px;
+
+    display: grid;
+    place-items: center;
+
+    flex-shrink: 0;
+
+    border-radius: 10px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(103,174,202,.18),
+            rgba(103,86,130,.20)
+        );
+
+    border:
+        1px solid var(--line);
+
+    font-size: 8px;
+    font-weight: 950;
+}
+
+.tech-cell strong {
+    display: block;
+
+    color: #fff;
+
+    font-size: 10px;
+}
+
+.tech-cell span {
+    display: block;
+
+    margin-top: 3px;
+
+    color: #776b80;
+
+    font-size: 8px;
+}
+
+.performance {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 6px;
+}
+
+.performance-dot {
+    width: 6px;
+    height: 6px;
+
+    border-radius: 50%;
+
+    background: var(--topaz);
+}
+
+.performance.warning .performance-dot {
+    background: var(--rose);
+}
+
+
+/* =========================================================
+   SUMMARY CARDS
+========================================================= */
+
+.summary-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            3,
+            1fr
+        );
+
+    gap: 16px;
+
+    margin-top: 16px;
+}
+
+.summary-body {
+    padding: 17px;
+}
+
+.summary-number {
+    font-size: 27px;
+
+    font-weight: 950;
+
+    letter-spacing: -1px;
+}
+
+.summary-copy {
+    margin-top: 6px;
+
+    color: #81758a;
+
+    font-size: 9px;
+    line-height: 1.55;
+}
+
+.summary-change {
+    display: inline-flex;
+
+    margin-top: 12px;
+
+    padding:
+        5px 8px;
+
+    border-radius: 999px;
+
+    background:
+        rgba(103,174,202,.06);
+
+    border:
+        1px solid
+        rgba(103,174,202,.11);
+
+    color: #a8d4e4;
+
+    font-size: 8px;
+
+    font-weight: 900;
+}
+
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+.toast {
+    position: fixed;
+
+    right: 24px;
+    bottom: 24px;
+
+    z-index: 200;
+
+    min-width: 250px;
+
+    padding:
+        13px 15px;
+
+    border:
+        1px solid
+        rgba(103,174,202,.17);
+
+    border-radius: 12px;
+
+    background:
+        rgba(13,9,16,.97);
+
+    color: #dfd4e3;
+
+    box-shadow:
+        0 20px 60px
+        rgba(0,0,0,.45);
+
+    font-size: 10px;
+
+    opacity: 0;
+
+    transform:
+        translateY(10px);
+
+    pointer-events: none;
+
+    transition: .2s ease;
+}
+
+.toast.show {
+    opacity: 1;
+    transform: none;
+}
+
+
+/* =========================================================
+   PRINT
+========================================================= */
+
+@media print {
+
+    .sidebar,
+    .topbar,
+    .hero-actions,
+    .filters {
+        display: none !important;
+    }
+
+    .main {
+        margin-left: 0;
+    }
+
+    body {
+        background: #fff;
+
+        color: #111;
+    }
+
+    .panel,
+    .stat,
+    .hero {
+        break-inside: avoid;
+
+        box-shadow: none;
+    }
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+.sidebar-backdrop {
+    display: none;
+}
+
+@media (max-width: 1150px) {
+
+    .stats {
+        grid-template-columns:
+            1fr 1fr;
+    }
+
+    .report-grid {
+        grid-template-columns:
+            1fr;
+    }
+
+    .summary-grid {
+        grid-template-columns:
+            1fr 1fr;
+    }
+}
+
+@media (max-width: 900px) {
+
+    .sidebar {
+        transform:
+            translateX(-100%);
+
+        transition: .2s ease;
+    }
+
+    .sidebar.open {
+        transform: none;
+    }
+
+    .sidebar-backdrop {
+        position: fixed;
+
+        inset: 0;
+
+        z-index: 45;
+
+        background:
+            rgba(0,0,0,.64);
+    }
+
+    .sidebar-backdrop.open {
+        display: block;
+    }
+
+    .main {
+        margin-left: 0;
+    }
+
+    .mobile-btn {
+        display: grid;
+        place-items: center;
+    }
+
+    .hero-row {
+        flex-direction: column;
+
+        align-items: flex-start;
+    }
+
+    .filters {
+        grid-template-columns:
+            1fr 1fr;
+    }
+}
+
+@media (max-width: 650px) {
+
+    .content {
+        padding: 16px;
+    }
+
+    .topbar {
+        padding:
+            0 14px;
+    }
+
+    .top-search {
+        display: none;
+    }
+
+    .profile-copy {
+        display: none;
+    }
+
+    .hero {
+        padding: 21px;
+    }
+
+    .hero h1 {
+        font-size: 37px;
+    }
+
+    .stats,
+    .filters,
+    .summary-grid {
+        grid-template-columns:
+            1fr;
+    }
+
+    .donut-layout {
+        grid-template-columns:
+            1fr;
+
+        justify-items: center;
+    }
+
+    .donut-legend {
+        width: 100%;
+    }
+
+    .sla-breakdown {
+        grid-template-columns:
+            1fr;
+    }
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     SIDEBAR
+========================================================= -->
+
+<aside
+    class="sidebar"
+    id="sidebar"
+>
+
+    <div class="brand">
+
+        <div class="brand-mark">
+            R
+        </div>
+
+        <div>
+
+            <strong>
+                ResolveDesk
+            </strong>
+
+            <span>
+                IT Service Management
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <div class="nav-label">
+        Workspace
+    </div>
+
+
+    <nav class="nav">
+
+        <a href="/dashboard.html">
+            <span class="nav-icon">⌂</span>
+            Dashboard
+        </a>
+
+        <a href="/tickets.html">
+            <span class="nav-icon">◫</span>
+            Tickets
+        </a>
+
+        <a href="/my-queue.html">
+            <span class="nav-icon">◎</span>
+            My Queue
+        </a>
+
+        <a href="/sla-monitor.html">
+            <span class="nav-icon">⏱</span>
+            SLA Monitor
+        </a>
+
+        <a href="/knowledge-base.html">
+            <span class="nav-icon">▤</span>
+            Knowledge Base
+        </a>
+
+    </nav>
+
+
+    <div class="nav-label">
+        Management
+    </div>
+
+
+    <nav class="nav">
+
+        <a href="/users.html">
+            <span class="nav-icon">♙</span>
+            Users
+        </a>
+
+        <a href="/technicians.html">
+            <span class="nav-icon">♟</span>
+            Technicians
+        </a>
+
+        <a href="/departments.html">
+            <span class="nav-icon">▦</span>
+            Departments
+        </a>
+
+        <a
+            class="active"
+            href="/reports.html"
+        >
+            <span class="nav-icon">▥</span>
+            Reports
+        </a>
+
+        <a href="/activity-log.html">
+            <span class="nav-icon">◷</span>
+            Audit Log
+        </a>
+
+        <a href="/settings.html">
+            <span class="nav-icon">⚙</span>
+            Settings
+        </a>
+
+    </nav>
+
+
+    <div class="sidebar-bottom">
+
+        <div class="system-card">
+
+            <small>
+                Analytics Engine
+            </small>
+
+            <strong>
+                Reporting active
+            </strong>
+
+            <p>
+                Ticket and SLA
+                metrics are ready
+                for reporting.
+            </p>
+
+        </div>
+
+    </div>
+
+</aside>
+
+
+<div
+    class="sidebar-backdrop"
+    id="sidebarBackdrop"
+></div>
+
+
+<!-- =========================================================
+     MAIN
+========================================================= -->
+
+<main class="main">
+
+
+<!-- =========================================================
+     TOPBAR
+========================================================= -->
+
+<header class="topbar">
+
+    <div
+        style="
+            display:flex;
+            align-items:center;
+            gap:12px;
+        "
+    >
+
+        <button
+            class="mobile-btn"
+            id="menuBtn"
+            type="button"
+        >
+            ☰
+        </button>
+
+
+        <div class="top-search">
+
+            <input
+                id="topSearch"
+                type="search"
+                placeholder="
+                    Search reports...
+                "
+            >
+
+        </div>
+
+    </div>
+
+
+    <div class="top-actions">
+
+        <button
+            class="icon-btn"
+            type="button"
+        >
+            ?
+        </button>
+
+        <button
+            class="icon-btn"
+            type="button"
+        >
+            ●
+        </button>
+
+
+        <div class="profile">
+
+            <div class="avatar">
+                HH
+            </div>
+
+            <div class="profile-copy">
+
+                <strong>
+                    Haziq Hanif
+                </strong>
+
+                <span>
+                    Administrator
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<div class="content">
+
+
+<!-- =========================================================
+     HERO
+========================================================= -->
+
+<section class="hero">
+
+    <div class="hero-row">
+
+        <div>
+
+            <div class="eyebrow">
+                Service Analytics
+            </div>
+
+
+            <h1>
+
+                Turn support data
+
+                <span>
+                    into insight.
+                </span>
+
+            </h1>
+
+
+            <p>
+
+                Track ticket demand,
+                SLA performance,
+                resolution efficiency,
+                support categories
+                and technician productivity
+                across ResolveDesk.
+
+            </p>
+
+        </div>
+
+
+        <div class="hero-actions">
+
+            <button
+                class="secondary-button"
+                id="printButton"
+                type="button"
+            >
+                Print Report
+            </button>
+
+
+            <button
+                class="primary-button"
+                id="exportButton"
+                type="button"
+            >
+                ↓ Export CSV
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     FILTERS
+========================================================= -->
+
+<section class="filters">
+
+    <select id="periodFilter">
+
+        <option value="30">
+            Last 30 Days
+        </option>
+
+        <option value="7">
+            Last 7 Days
+        </option>
+
+        <option value="90">
+            Last 90 Days
+        </option>
+
+        <option value="365">
+            This Year
+        </option>
+
+    </select>
+
+
+    <select id="departmentFilter">
+
+        <option value="">
+            All Departments
+        </option>
+
+        <option>
+            Information Technology
+        </option>
+
+        <option>
+            Finance
+        </option>
+
+        <option>
+            Human Resources
+        </option>
+
+        <option>
+            Operations
+        </option>
+
+        <option>
+            Sales
+        </option>
+
+        <option>
+            Management
+        </option>
+
+    </select>
+
+
+    <select id="categoryFilter">
+
+        <option value="">
+            All Categories
+        </option>
+
+        <option>
+            Network
+        </option>
+
+        <option>
+            Software
+        </option>
+
+        <option>
+            Hardware
+        </option>
+
+        <option>
+            Access
+        </option>
+
+        <option>
+            Email
+        </option>
+
+        <option>
+            Security
+        </option>
+
+    </select>
+
+
+    <button
+        class="refresh-button"
+        id="refreshButton"
+        type="button"
+    >
+        ↻ Refresh Report
+    </button>
+
+</section>
+
+
+<!-- =========================================================
+     KPI
+========================================================= -->
+
+<section class="stats">
+
+    <article class="stat">
+
+        <small>
+            Total Tickets
+        </small>
+
+        <strong id="totalTicketStat">
+            —
+        </strong>
+
+        <p>
+            Loading live report...
+        </p>
+
+    </article>
+
+
+    <article class="stat">
+
+        <small>
+            Resolved
+        </small>
+
+        <strong id="resolvedStat">
+            —
+        </strong>
+
+        <p>
+            Loading live report...
+        </p>
+
+    </article>
+
+
+    <article class="stat">
+
+        <small>
+            Avg Resolution
+        </small>
+
+        <strong id="resolutionStat">
+            —
+        </strong>
+
+        <p>
+            Loading live report...
+        </p>
+
+    </article>
+
+
+    <article class="stat">
+
+        <small>
+            SLA Compliance
+        </small>
+
+        <strong id="slaStat">
+            —
+        </strong>
+
+        <p>
+            Loading live report...
+        </p>
+
+    </article>
+
+</section>
+
+
+<!-- =========================================================
+     REPORT GRID
+========================================================= -->
+
+<section class="report-grid">
+
+
+<div class="stack">
+
+
+<!-- =========================================================
+     TICKET TREND
+========================================================= -->
+
+<article class="panel">
+
+    <div class="panel-head">
+
+        <div class="panel-title">
+
+            <strong>
+                Ticket Trend
+            </strong>
+
+            <span>
+                Created vs resolved tickets
+            </span>
+
+        </div>
+
+
+        <span class="panel-badge">
+            30 day trend
+        </span>
+
+    </div>
+
+
+    <div class="chart-wrap">
+
+        <div class="chart">
+
+            <svg
+                viewBox="0 0 800 300"
+                preserveAspectRatio="none"
+            >
+
+                <defs>
+
+                    <linearGradient
+                        id="createdFill"
+                        x1="0"
+                        y1="0"
+                        x2="0"
+                        y2="1"
+                    >
+
+                        <stop
+                            offset="0%"
+                            stop-color="#67AECA"
+                            stop-opacity=".18"
+                        />
+
+                        <stop
+                            offset="100%"
+                            stop-color="#67AECA"
+                            stop-opacity="0"
+                        />
+
+                    </linearGradient>
+
+
+                    <linearGradient
+                        id="resolvedFill"
+                        x1="0"
+                        y1="0"
+                        x2="0"
+                        y2="1"
+                    >
+
+                        <stop
+                            offset="0%"
+                            stop-color="#E52A6F"
+                            stop-opacity=".13"
+                        />
+
+                        <stop
+                            offset="100%"
+                            stop-color="#E52A6F"
+                            stop-opacity="0"
+                        />
+
+                    </linearGradient>
+
+                </defs>
+
+
+                <path
+                    d="
+                        M0,220
+                        C75,195
+                        100,130
+                        160,145
+                        S260,230
+                        330,170
+                        S420,80
+                        490,120
+                        S590,200
+                        650,130
+                        S735,60
+                        800,90
+                        L800,300
+                        L0,300
+                        Z
+                    "
+                    fill="url(#createdFill)"
+                />
+
+
+                <path
+                    d="
+                        M0,220
+                        C75,195
+                        100,130
+                        160,145
+                        S260,230
+                        330,170
+                        S420,80
+                        490,120
+                        S590,200
+                        650,130
+                        S735,60
+                        800,90
+                    "
+                    fill="none"
+                    stroke="#67AECA"
+                    stroke-width="4"
+                    stroke-linecap="round"
+                />
+
+
+                <path
+                    d="
+                        M0,250
+                        C70,230
+                        110,175
+                        160,185
+                        S260,255
+                        330,205
+                        S430,125
+                        490,150
+                        S590,215
+                        650,165
+                        S730,110
+                        800,120
+                        L800,300
+                        L0,300
+                        Z
+                    "
+                    fill="url(#resolvedFill)"
+                />
+
+
+                <path
+                    d="
+                        M0,250
+                        C70,230
+                        110,175
+                        160,185
+                        S260,255
+                        330,205
+                        S430,125
+                        490,150
+                        S590,215
+                        650,165
+                        S730,110
+                        800,120
+                    "
+                    fill="none"
+                    stroke="#E52A6F"
+                    stroke-width="3"
+                    stroke-linecap="round"
+                />
+
+            </svg>
+
+        </div>
+
+
+        <div class="chart-labels">
+
+            <span>Week 1</span>
+            <span>Week 2</span>
+            <span>Week 3</span>
+            <span>Week 4</span>
+
+        </div>
+
+
+        <div class="legend">
+
+            <div class="legend-item">
+
+                <span
+                    class="
+                        legend-dot
+                        created
+                    "
+                ></span>
+
+                Tickets Created
+
+            </div>
+
+
+            <div class="legend-item">
+
+                <span
+                    class="
+                        legend-dot
+                        resolved
+                    "
+                ></span>
+
+                Tickets Resolved
+
+            </div>
+
+        </div>
+
+    </div>
+
+</article>
+
+
+<!-- =========================================================
+     TECH PERFORMANCE
+========================================================= -->
+
+<article class="panel">
+
+    <div class="panel-head">
+
+        <div class="panel-title">
+
+            <strong>
+                Technician Performance
+            </strong>
+
+            <span>
+                Resolution and SLA metrics
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <div class="table-wrap">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Technician
+                    </th>
+
+                    <th>
+                        Resolved
+                    </th>
+
+                    <th>
+                        Active
+                    </th>
+
+                    <th>
+                        Avg Resolution
+                    </th>
+
+                    <th>
+                        SLA
+                    </th>
+
+                    <th>
+                        Performance
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody id="technicianRows">
+            </tbody>
+
+        </table>
+
+    </div>
+
+</article>
+
+</div>
+
+
+<!-- =========================================================
+     RIGHT SIDE
+========================================================= -->
+
+<div class="stack">
+
+
+<!-- =========================================================
+     CATEGORY DISTRIBUTION
+========================================================= -->
+
+<article class="panel">
+
+    <div class="panel-head">
+
+        <div class="panel-title">
+
+            <strong>
+                Ticket Categories
+            </strong>
+
+            <span>
+                Distribution by issue type
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <div class="donut-layout">
+
+        <div class="donut-wrap">
+
+            <div class="donut"></div>
+
+
+            <div class="donut-center">
+
+                <strong>
+                    126
+                </strong>
+
+                <span>
+                    Tickets
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="donut-legend">
+
+            <div class="donut-row">
+
+                <div class="donut-label">
+
+                    <i
+                        style="
+                            background:
+                            var(--topaz);
+                        "
+                    ></i>
+
+                    Network
+
+                </div>
+
+                <strong>
+                    39%
+                </strong>
+
+            </div>
+
+
+            <div class="donut-row">
+
+                <div class="donut-label">
+
+                    <i
+                        style="
+                            background:
+                            var(--amethyst);
+                        "
+                    ></i>
+
+                    Software
+
+                </div>
+
+                <strong>
+                    24%
+                </strong>
+
+            </div>
+
+
+            <div class="donut-row">
+
+                <div class="donut-label">
+
+                    <i
+                        style="
+                            background:
+                            var(--rose);
+                        "
+                    ></i>
+
+                    Hardware
+
+                </div>
+
+                <strong>
+                    20%
+                </strong>
+
+            </div>
+
+
+            <div class="donut-row">
+
+                <div class="donut-label">
+
+                    <i
+                        style="
+                            background:
+                            var(--jewel);
+                        "
+                    ></i>
+
+                    Access
+
+                </div>
+
+                <strong>
+                    17%
+                </strong>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</article>
+
+
+<!-- =========================================================
+     SLA
+========================================================= -->
+
+<article class="panel">
+
+    <div class="panel-head">
+
+        <div class="panel-title">
+
+            <strong>
+                SLA Compliance
+            </strong>
+
+            <span>
+                Resolution target performance
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <div class="sla-body">
+
+        <div class="sla-big">
+
+            <strong>
+                92%
+            </strong>
+
+            <span>
+                compliance
+            </span>
+
+        </div>
+
+
+        <div class="sla-track">
+
+            <span></span>
+
+        </div>
+
+
+        <div class="sla-breakdown">
+
+            <div class="sla-item">
+
+                <small>
+                    Within SLA
+                </small>
+
+                <strong>
+                    116
+                </strong>
+
+            </div>
+
+
+            <div class="sla-item">
+
+                <small>
+                    Breached
+                </small>
+
+                <strong>
+                    10
+                </strong>
+
+            </div>
+
+
+            <div class="sla-item">
+
+                <small>
+                    Response SLA
+                </small>
+
+                <strong>
+                    95%
+                </strong>
+
+            </div>
+
+
+            <div class="sla-item">
+
+                <small>
+                    Resolution SLA
+                </small>
+
+                <strong>
+                    90%
+                </strong>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</article>
+
+
+<!-- =========================================================
+     PRIORITY
+========================================================= -->
+
+<article class="panel">
+
+    <div class="panel-head">
+
+        <div class="panel-title">
+
+            <strong>
+                Priority Breakdown
+            </strong>
+
+            <span>
+                Ticket volume by severity
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <div class="priority-list">
+
+
+        <div class="priority-row">
+
+            <div class="priority-head">
+
+                <div class="priority-name">
+
+                    <span
+                        class="
+                            priority-dot
+                            critical
+                        "
+                    ></span>
+
+                    <span>
+                        Critical
+                    </span>
+
+                </div>
+
+                <strong>
+                    12
+                </strong>
+
+            </div>
+
+
+            <div class="bar">
+
+                <span
+                    style="width:18%"
+                ></span>
+
+            </div>
+
+        </div>
+
+
+        <div class="priority-row">
+
+            <div class="priority-head">
+
+                <div class="priority-name">
+
+                    <span
+                        class="
+                            priority-dot
+                            high
+                        "
+                    ></span>
+
+                    <span>
+                        High
+                    </span>
+
+                </div>
+
+                <strong>
+                    31
+                </strong>
+
+            </div>
+
+
+            <div class="bar">
+
+                <span
+                    style="width:48%"
+                ></span>
+
+            </div>
+
+        </div>
+
+
+        <div class="priority-row">
+
+            <div class="priority-head">
+
+                <div class="priority-name">
+
+                    <span
+                        class="
+                            priority-dot
+                            medium
+                        "
+                    ></span>
+
+                    <span>
+                        Medium
+                    </span>
+
+                </div>
+
+                <strong>
+                    58
+                </strong>
+
+            </div>
+
+
+            <div class="bar">
+
+                <span
+                    style="width:82%"
+                ></span>
+
+            </div>
+
+        </div>
+
+
+        <div class="priority-row">
+
+            <div class="priority-head">
+
+                <div class="priority-name">
+
+                    <span
+                        class="
+                            priority-dot
+                            low
+                        "
+                    ></span>
+
+                    <span>
+                        Low
+                    </span>
+
+                </div>
+
+                <strong>
+                    25
+                </strong>
+
+            </div>
+
+
+            <div class="bar">
+
+                <span
+                    style="width:38%"
+                ></span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</article>
+
+</div>
+
+</section>
+
+
+<!-- =========================================================
+     SUMMARY
+========================================================= -->
+
+<section class="summary-grid">
+
+
+    <article class="panel">
+
+        <div class="panel-head">
+
+            <div class="panel-title">
+
+                <strong>
+                    First Response
+                </strong>
+
+                <span>
+                    Average support response
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="summary-body">
+
+            <div class="summary-number">
+                18m
+            </div>
+
+            <div class="summary-copy">
+
+                Average time before
+                a technician responds
+                to a newly created ticket.
+
+            </div>
+
+            <span class="summary-change">
+                Live comparison pending
+            </span>
+
+        </div>
+
+    </article>
+
+
+    <article class="panel">
+
+        <div class="panel-head">
+
+            <div class="panel-title">
+
+                <strong>
+                    Reopen Rate
+                </strong>
+
+                <span>
+                    Resolved tickets reopened
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="summary-body">
+
+            <div class="summary-number">
+                4.2%
+            </div>
+
+            <div class="summary-copy">
+
+                Percentage of resolved
+                tickets reopened because
+                the issue returned.
+
+            </div>
+
+            <span class="summary-change">
+                Live comparison pending
+            </span>
+
+        </div>
+
+    </article>
+
+
+    <article class="panel">
+
+        <div class="panel-head">
+
+            <div class="panel-title">
+
+                <strong>
+                    Self-Service
+                </strong>
+
+                <span>
+                    Knowledge Base impact
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="summary-body">
+
+            <div class="summary-number">
+                37%
+            </div>
+
+            <div class="summary-copy">
+
+                Common support issues
+                solved through Knowledge Base
+                before a ticket is submitted.
+
+            </div>
+
+            <span class="summary-change">
+                Live comparison pending
+            </span>
+
+        </div>
+
+    </article>
+
+</section>
+
+</div>
+
+</main>
+
+
+<div
+    class="toast"
+    id="toast"
+></div>
+
+
+<script>
+
+/* =========================================================
+   REPORT DATA
+   Live data is loaded by /js/reports-live.js
+========================================================= */
+
+/* =========================================================
+   ESCAPE HTML
+========================================================= */
+
+function escapeHtml(
+    value
+) {
+
+    return String(
+        value ?? ""
+    )
+        .replaceAll(
+            "&",
+            "&amp;"
+        )
+        .replaceAll(
+            "<",
+            "&lt;"
+        )
+        .replaceAll(
+            ">",
+            "&gt;"
+        )
+        .replaceAll(
+            '"',
+            "&quot;"
+        )
+        .replaceAll(
+            "'",
+            "&#039;"
+        );
+}
+
+
+/* =========================================================
+   INITIALS
+========================================================= */
+
+function initials(
+    name
+) {
+
+    return String(
+        name || ""
+    )
+        .split(
+            " "
+        )
+        .filter(
+            Boolean
+        )
+        .slice(
+            0,
+            2
+        )
+        .map(
+            word =>
+                word[0]
+        )
+        .join(
+            ""
+        )
+        .toUpperCase();
+}
+
+
+/* =========================================================
+   TECHNICIAN TABLE
+   Live renderer is in /js/reports-live.js
+========================================================= */
+
+/* =========================================================
+   REPORT REFRESH
+   Live API refresh is handled by /js/reports-live.js
+========================================================= */
+
+/* =========================================================
+   FORMAT DURATION
+========================================================= */
+
+function formatDuration(
+    minutes
+) {
+
+    const hours =
+        Math.floor(
+            minutes /
+            60
+        );
+
+
+    const mins =
+        minutes %
+        60;
+
+
+    return `${hours}h ${mins}m`;
+}
+
+
+/* =========================================================
+   REPORT FILTER EVENTS
+   Live filter events are handled by /js/reports-live.js
+========================================================= */
+
+/* =========================================================
+   PRINT
+========================================================= */
+
+document
+    .getElementById(
+        "printButton"
+    )
+    .addEventListener(
+        "click",
+        () => {
+
+            window.print();
+        }
+    );
+
+
+/* =========================================================
+   EXPORT CSV
+   Live export is handled by /js/reports-live.js
+========================================================= */
+
+/* =========================================================
+   REPORT SEARCH
+   Live search is handled by /js/reports-live.js
+========================================================= */
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+let toastTimer;
+
+
+function showToast(
+    message
+) {
+
+    const toast =
+        document.getElementById(
+            "toast"
+        );
+
+
+    toast.textContent =
+        message;
+
+
+    toast.classList.add(
+        "show"
+    );
+
+
+    clearTimeout(
+        toastTimer
+    );
+
+
+    toastTimer =
+        setTimeout(
+            () => {
+
+                toast.classList.remove(
+                    "show"
+                );
+            },
+            2300
+        );
+}
+
+
+/* =========================================================
+   SIDEBAR
+========================================================= */
+
+const sidebar =
+    document.getElementById(
+        "sidebar"
+    );
+
+
+const backdrop =
+    document.getElementById(
+        "sidebarBackdrop"
+    );
+
+
+document
+    .getElementById(
+        "menuBtn"
+    )
+    .addEventListener(
+        "click",
+        () => {
+
+            sidebar
+                .classList
+                .toggle(
+                    "open"
+                );
+
+
+            backdrop
+                .classList
+                .toggle(
+                    "open"
+                );
+        }
+    );
+
+
+backdrop
+    .addEventListener(
+        "click",
+        () => {
+
+            sidebar
+                .classList
+                .remove(
+                    "open"
+                );
+
+
+            backdrop
+                .classList
+                .remove(
+                    "open"
+                );
+        }
+    );
+
+
+/* =========================================================
+   INITIAL LOAD
+   /js/reports-live.js performs the live initial render.
+========================================================= */
+
+</script>
+
+
+<script src="/js/auth-session.js"></script>
+
+
+<script src="/js/reports-live.js"></script>
+<script src="/js/role-navigation.js"></script>
+</body>
+</html>
