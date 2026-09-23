@@ -34,6 +34,45 @@ const router =
    SECURITY
 ========================================================= */
 
+
+/* PUBLIC BRANDING */
+router.get(
+    "/branding",
+    async (req, res, next) => {
+
+        try {
+
+            const config =
+                await readConfiguration();
+
+            const organization =
+                config.organization || {};
+
+            return res.json({
+                success: true,
+
+                branding: {
+                    organizationName:
+                        String(
+                            organization.name ||
+                            "ResolveDesk"
+                        ),
+
+                    helpDeskName:
+                        String(
+                            organization.helpDeskName ||
+                            "ResolveDesk IT Support"
+                        )
+                }
+            });
+
+        } catch (error) {
+
+            next(error);
+        }
+    }
+);
+
 router.use(
     requireAuth,
     requireAdmin

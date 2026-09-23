@@ -1014,6 +1014,21 @@ button {
     text-transform: uppercase;
 }
 
+.department-status.inactive {
+    color: #d8a4b7;
+
+    border-color:
+        rgba(229,42,111,.18);
+
+    background:
+        rgba(229,42,111,.07);
+}
+
+.department-status.inactive::before {
+    background: var(--rose);
+}
+
+
 .department-status::before {
     content: "";
 
@@ -1923,29 +1938,6 @@ button {
 
     </nav>
 
-
-    <div class="sidebar-bottom">
-
-        <div class="system-card">
-
-            <small>
-                Routing Engine
-            </small>
-
-            <strong>
-                Department rules active
-            </strong>
-
-            <p>
-                Ticket categories can
-                be routed automatically
-                to support teams.
-            </p>
-
-        </div>
-
-    </div>
-
 </aside>
 
 
@@ -1998,12 +1990,7 @@ button {
 
     <div class="top-actions">
 
-        <button
-            class="icon-btn"
-            type="button"
-        >
-            ?
-        </button>
+
 
         <button
             class="icon-btn"
@@ -2344,6 +2331,46 @@ button {
                 <div class="field">
 
                     <label>
+                        Description
+                    </label>
+
+                    <input
+                        id="departmentDescription"
+                        type="text"
+                        placeholder="Department purpose or responsibility"
+                    >
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>
+                        Department Status
+                    </label>
+
+                    <select id="departmentStatus">
+
+                        <option value="active">
+                            Active
+                        </option>
+
+                        <option value="inactive">
+                            Inactive
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <div class="form-grid">
+
+                <div class="field">
+
+                    <label>
                         Department Head
                     </label>
 
@@ -2383,7 +2410,7 @@ button {
                 <div class="field">
 
                     <label>
-                        Current Members
+                        Current Members (Automatic)
                     </label>
 
                     <input
@@ -2399,7 +2426,7 @@ button {
                 <div class="field">
 
                     <label>
-                        SLA Compliance
+                        SLA Compliance (Automatic)
                     </label>
 
                     <input
@@ -2421,86 +2448,17 @@ button {
                     Automatic Ticket Routing
                 </label>
 
-
-                <div class="checkbox-grid">
-
-                    <label class="check-option">
-
-                        <input
-                            type="checkbox"
-                            name="routing"
-                            value="Network"
-                        >
-
-                        Network
-
-                    </label>
-
-
-                    <label class="check-option">
-
-                        <input
-                            type="checkbox"
-                            name="routing"
-                            value="Software"
-                        >
-
-                        Software
-
-                    </label>
-
-
-                    <label class="check-option">
-
-                        <input
-                            type="checkbox"
-                            name="routing"
-                            value="Hardware"
-                        >
-
-                        Hardware
-
-                    </label>
-
-
-                    <label class="check-option">
-
-                        <input
-                            type="checkbox"
-                            name="routing"
-                            value="Access"
-                        >
-
-                        Access
-
-                    </label>
-
-
-                    <label class="check-option">
-
-                        <input
-                            type="checkbox"
-                            name="routing"
-                            value="Email"
-                        >
-
-                        Email
-
-                    </label>
-
-
-                    <label class="check-option">
-
-                        <input
-                            type="checkbox"
-                            name="routing"
-                            value="Security"
-                        >
-
-                        Security
-
-                    </label>
-
+                <div
+                    class="check-option"
+                    style="
+                        line-height:1.6;
+                        cursor:default;
+                    "
+                >
+                    Routing is calculated from the
+                    categories currently mapped to this
+                    department. Manage category mappings
+                    to change routing behaviour.
                 </div>
 
             </div>
@@ -2816,9 +2774,17 @@ function renderDepartments() {
                         <span
                             class="
                                 department-status
+                                ${
+                                    department.isActive === false
+                                        ? "inactive"
+                                        : ""
+                                }
                             "
                         >
-                            Active
+                            ${escapeHtml(
+                                department.status ||
+                                "active"
+                            )}
                         </span>
 
                     </div>
@@ -2991,7 +2957,11 @@ function updateStats() {
     document.getElementById(
         "departmentCount"
     ).textContent =
-        departments.length;
+        departments.filter(
+            department =>
+                department.isActive !==
+                false
+        ).length;
 
 
     const totalMembers =
@@ -3031,16 +3001,21 @@ function updateStats() {
 
 
     const average =
-        departments.reduce(
-            (
-                total,
-                department
-            ) =>
-                total +
-                department.sla,
-            0
-        ) /
-        departments.length;
+        departments.length > 0
+            ? departments.reduce(
+                (
+                    total,
+                    department
+                ) =>
+                    total +
+                    Number(
+                        department.sla ||
+                        0
+                    ),
+                0
+            ) /
+            departments.length
+            : 0;
 
 
     document.getElementById(
@@ -3147,8 +3122,7 @@ function editDepartment(
     const department =
         departments.find(
             item =>
-                item.id ===
-                id
+                String(item.id) === String(id)
         );
 
 
@@ -3208,20 +3182,6 @@ function editDepartment(
         department.sla;
 
 
-    document
-        .querySelectorAll(
-            'input[name="routing"]'
-        )
-        .forEach(
-            checkbox => {
-
-                checkbox.checked =
-                    department.routing.includes(
-                        checkbox.value
-                    );
-            }
-        );
-
 
     openDepartmentModal();
 }
@@ -3229,198 +3189,8 @@ function editDepartment(
 
 /* =========================================================
    SAVE DEPARTMENT
+   Handled by /js/departments-live.js
 ========================================================= */
-
-document
-    .getElementById(
-        "departmentForm"
-    )
-    .addEventListener(
-        "submit",
-        event => {
-
-            event.preventDefault();
-
-
-            const editingId =
-                document
-                    .getElementById(
-                        "editingDepartmentId"
-                    )
-                    .value;
-
-
-            const name =
-                document
-                    .getElementById(
-                        "departmentName"
-                    )
-                    .value
-                    .trim();
-
-
-            const code =
-                document
-                    .getElementById(
-                        "departmentCode"
-                    )
-                    .value
-                    .trim()
-                    .toUpperCase();
-
-
-            const head =
-                document
-                    .getElementById(
-                        "departmentHead"
-                    )
-                    .value
-                    .trim();
-
-
-            const email =
-                document
-                    .getElementById(
-                        "departmentEmail"
-                    )
-                    .value
-                    .trim();
-
-
-            const members =
-                Number(
-                    document
-                        .getElementById(
-                            "departmentMembers"
-                        )
-                        .value
-                ) || 0;
-
-
-            const sla =
-                Number(
-                    document
-                        .getElementById(
-                            "departmentSla"
-                        )
-                        .value
-                ) || 0;
-
-
-            const routing =
-                [
-                    ...document
-                        .querySelectorAll(
-                            'input[name="routing"]:checked'
-                        )
-                ]
-                    .map(
-                        checkbox =>
-                            checkbox.value
-                    );
-
-
-            if (
-                editingId
-            ) {
-
-                const department =
-                    departments.find(
-                        item =>
-                            item.id ===
-                            Number(
-                                editingId
-                            )
-                    );
-
-
-                if (
-                    department
-                ) {
-
-                    department.name =
-                        name;
-
-                    department.code =
-                        code;
-
-                    department.head =
-                        head;
-
-                    department.email =
-                        email;
-
-                    department.members =
-                        members;
-
-                    department.sla =
-                        Math.min(
-                            100,
-                            Math.max(
-                                0,
-                                sla
-                            )
-                        );
-
-                    department.routing =
-                        routing;
-                }
-
-
-                showToast(
-                    "Department updated."
-                );
-
-            } else {
-
-                departments.unshift(
-                    {
-                        id:
-                            Date.now(),
-
-                        name,
-
-                        code,
-
-                        head,
-
-                        email,
-
-                        members,
-
-                        openTickets:
-                            0,
-
-                        totalTickets:
-                            0,
-
-                        sla:
-                            Math.min(
-                                100,
-                                Math.max(
-                                    0,
-                                    sla
-                                )
-                            ),
-
-                        routing
-                    }
-                );
-
-
-                showToast(
-                    "Department created."
-                );
-            }
-
-
-            closeDepartmentModal();
-
-            renderDepartments();
-
-            updateStats();
-        }
-    );
 
 
 /* =========================================================
@@ -3440,8 +3210,7 @@ function viewDepartment(
     const department =
         departments.find(
             item =>
-                item.id ===
-                id
+                String(item.id) === String(id)
         );
 
 
@@ -3926,5 +3695,6 @@ updateStats();
 
 <script src="/js/departments-live.js"></script>
 <script src="/js/role-navigation.js"></script>
+<script src="/js/branding.js"></script>
 </body>
 </html>

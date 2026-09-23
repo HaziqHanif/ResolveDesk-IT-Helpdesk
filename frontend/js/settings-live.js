@@ -539,6 +539,11 @@
                         data.settings || settings
                     );
 
+
+                    await window
+                        .ResolveDeskBranding
+                        ?.refresh?.();
+
                     localStorage.removeItem(
                         "resolvedesk_demo_settings"
                     );
@@ -590,6 +595,11 @@
                     apply(
                         data.settings || {}
                     );
+
+
+                    await window
+                        .ResolveDeskBranding
+                        ?.refresh?.();
 
                     localStorage.removeItem(
                         "resolvedesk_demo_settings"

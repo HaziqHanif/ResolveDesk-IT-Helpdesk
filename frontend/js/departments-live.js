@@ -355,6 +355,15 @@
         }
 
 
+        if (
+            typeof updateStats ===
+            "function"
+        ) {
+
+            updateStats();
+        }
+
+
         console.log(
             "✅ Live departments:",
             departments
@@ -410,6 +419,33 @@
                 "departmentCode"
             ).value =
                 department.code;
+
+
+            const description =
+                get(
+                    "departmentDescription"
+                );
+
+            if (description) {
+
+                description.value =
+                    department.description ||
+                    "";
+            }
+
+
+            const status =
+                get(
+                    "departmentStatus"
+                );
+
+            if (status) {
+
+                status.value =
+                    department.isActive === false
+                        ? "inactive"
+                        : "active";
+            }
 
 
             installHeadSelect();
@@ -496,6 +532,20 @@
                 null;
 
 
+            const description =
+                get(
+                    "departmentDescription"
+                )?.value.trim() ||
+                "";
+
+
+            const isActive =
+                get(
+                    "departmentStatus"
+                )?.value !==
+                "inactive";
+
+
             if (
                 !name ||
                 !code
@@ -538,8 +588,9 @@
                                         )
                                         : null,
 
-                                isActive:
-                                    true
+                                description,
+
+                                isActive
 
                             })
 
@@ -602,6 +653,55 @@
                         "departmentHead"
                     ).value =
                         "";
+
+
+                    const description =
+                        get(
+                            "departmentDescription"
+                        );
+
+                    if (description) {
+
+                        description.value =
+                            "";
+                    }
+
+
+                    const status =
+                        get(
+                            "departmentStatus"
+                        );
+
+                    if (status) {
+
+                        status.value =
+                            "active";
+                    }
+
+
+                    const members =
+                        get(
+                            "departmentMembers"
+                        );
+
+                    if (members) {
+
+                        members.value =
+                            "0";
+                    }
+
+
+                    const sla =
+                        get(
+                            "departmentSla"
+                        );
+
+                    if (sla) {
+
+                        sla.value =
+                            "0";
+                    }
+
 
                     updateHeadEmail();
 

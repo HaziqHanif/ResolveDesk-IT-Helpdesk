@@ -341,6 +341,29 @@
 
 
         /*
+            My Queue is TECHNICIAN only.
+        */
+        if (
+            role !==
+            "TECHNICIAN"
+        ) {
+            hideLinkByPath(
+                "/my-queue.html"
+            );
+
+            if (
+                window.location.pathname ===
+                "/my-queue.html"
+            ) {
+                window.location.replace(
+                    "/dashboard.html"
+                );
+                return;
+            }
+        }
+
+
+        /*
             Management is ADMIN only.
         */
 

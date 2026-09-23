@@ -550,7 +550,7 @@ const initialStatus =
     runtimeSettings.security.numberRequired
         ? ", contain a number"
         : ""
-} and contain a special character.`        
+} and contain a special character.`
                     });
             }
 

@@ -2,6 +2,248 @@
 
     "use strict";
 
+    /* =========================================================
+       FRIENDLY AUDIT METADATA
+    ========================================================= */
+
+    function formatMetadataText(
+        metadata,
+        log = {}
+    ) {
+
+        if (
+            !metadata ||
+            typeof metadata !== "object"
+        ) {
+
+            return "No additional details";
+        }
+
+
+        const entity =
+            String(
+                log.entityType ||
+                log.entity_type ||
+                ""
+            ).toUpperCase();
+
+
+        function labelFor(key) {
+
+            if (
+                entity === "DEPARTMENT"
+            ) {
+
+                const labels = {
+
+                    name:
+                        "Department Name",
+
+                    code:
+                        "Department Code",
+
+                    headUserId:
+                        "Department Head",
+
+                    description:
+                        "Description",
+
+                    isActive:
+                        "Status"
+
+                };
+
+
+                if (
+                    labels[key]
+                ) {
+
+                    return labels[key];
+                }
+            }
+
+
+            const labels = {
+
+                assignedTo:
+                    "Assigned Technician",
+
+                technicianId:
+                    "Technician",
+
+                requesterId:
+                    "Requester",
+
+                departmentId:
+                    "Department",
+
+                categoryId:
+                    "Category",
+
+                ticketNumber:
+                    "Ticket Number",
+
+                oldStatus:
+                    "Previous Status",
+
+                newStatus:
+                    "New Status",
+
+                priority:
+                    "Priority"
+
+            };
+
+
+            if (
+                labels[key]
+            ) {
+
+                return labels[key];
+            }
+
+
+            return String(key)
+
+                .replace(
+                    /([a-z0-9])([A-Z])/g,
+                    "$1 $2"
+                )
+
+                .replace(
+                    /_/g,
+                    " "
+                )
+
+                .replace(
+                    /Id/g,
+                    "ID"
+                )
+
+                .replace(
+                    /\w/g,
+                    char =>
+                        char.toUpperCase()
+                );
+        }
+
+
+        function valueFor(
+            key,
+            value
+        ) {
+
+            if (
+                key === "isActive"
+            ) {
+
+                return value
+                    ? "Active"
+                    : "Inactive";
+            }
+
+
+            if (
+                value === null ||
+                value === undefined ||
+                value === ""
+            ) {
+
+                if (
+                    /head|assign|technician/i.test(
+                        key
+                    )
+                ) {
+
+                    return "Unassigned";
+                }
+
+
+                return "Not set";
+            }
+
+
+            if (
+                typeof value ===
+                "boolean"
+            ) {
+
+                return value
+                    ? "Yes"
+                    : "No";
+            }
+
+
+            if (
+                Array.isArray(value)
+            ) {
+
+                return value.length
+                    ? value.join(", ")
+                    : "None";
+            }
+
+
+            if (
+                typeof value ===
+                "object"
+            ) {
+
+                return Object.entries(value)
+                    .map(
+                        ([childKey, childValue]) =>
+                            `${labelFor(childKey)}: ${
+                                valueFor(
+                                    childKey,
+                                    childValue
+                                )
+                            }`
+                    )
+                    .join(" · ");
+            }
+
+
+            return String(value);
+        }
+
+
+        const hiddenKeys =
+            new Set([
+                "password",
+                "passwordHash",
+                "token",
+                "secret",
+                "session",
+                "sessionId"
+            ]);
+
+
+        const rows =
+            Object.entries(metadata)
+                .filter(
+                    ([key]) =>
+                        !hiddenKeys.has(
+                            key
+                        )
+                )
+                .map(
+                    ([key, value]) =>
+                        `${labelFor(key)}: ${
+                            valueFor(
+                                key,
+                                value
+                            )
+                        }`
+                );
+
+
+        return rows.length
+            ? rows.join("\n")
+            : "No additional details";
+    }
+
+
+
 
     /* =========================================================
        STATE
@@ -1524,10 +1766,9 @@
                             margin:0;
                             font:inherit;
                         ">${escapeHtml(
-                            JSON.stringify(
+                            formatMetadataText(
                                 log.metadata,
-                                null,
-                                2
+                                log
                             )
                         )}</pre>
                     </strong>
@@ -1635,9 +1876,12 @@
 
                     log.ip,
 
-                    JSON.stringify(
-                        log.metadata ||
-                        {}
+                    formatMetadataText(
+                        log.metadata,
+                        log
+                    ).replace(
+                        /\n/g,
+                        " | "
                     )
 
                 ]

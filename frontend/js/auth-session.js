@@ -262,7 +262,7 @@
         1px solid
         rgba(103,174,202,.08);
 }
-        
+
         .sidebar {
     overflow-y: auto;
     overflow-x: hidden;

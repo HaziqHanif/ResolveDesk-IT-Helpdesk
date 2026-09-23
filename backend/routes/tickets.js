@@ -1099,8 +1099,7 @@ function addRoleAccess(
 
     /*
         TECHNICIAN:
-        Assigned tickets plus
-        unassigned tickets in their department.
+        Assigned tickets only.
     */
 
     if (
@@ -1112,46 +1111,11 @@ function addRoleAccess(
             req.user.id
         );
 
+        conditions.push(
+            `t.assigned_to = $${values.length}`
+        );
 
-        const userPosition =
-            values.length;
-
-
-        if (
-            req.user.departmentId
-        ) {
-
-            values.push(
-                req.user.departmentId
-            );
-
-
-            const departmentPosition =
-                values.length;
-
-
-            conditions.push(`
-                (
-                    t.assigned_to =
-                        $${userPosition}
-
-                    OR
-
-                    (
-                        t.assigned_to IS NULL
-                        AND
-                        t.department_id =
-                            $${departmentPosition}
-                    )
-                )
-            `);
-
-        } else {
-
-            conditions.push(
-                `t.assigned_to = $${userPosition}`
-            );
-        }
+        return;
     }
 
     /*
@@ -1402,6 +1366,22 @@ router.get(
 
         try {
 
+            /* MY QUEUE TECHNICIAN ONLY */
+            if (
+                req.user.role !==
+                "TECHNICIAN"
+            ) {
+                return res
+                    .status(403)
+                    .json({
+                        success: false,
+                        code: "ACCESS_DENIED",
+                        message:
+                            "You do not have permission to perform this action."
+                    });
+            }
+
+
             await syncSlaBreaches();
             await syncSlaWarnings();
 
@@ -1528,6 +1508,28 @@ router.post(
     ) => {
 
         try {
+            /*
+                TECHNICIANS DO NOT CREATE TICKETS.
+                ADMIN and STAFF may create tickets.
+            */
+
+            if (
+                req.user.role ===
+                "TECHNICIAN"
+            ) {
+
+                return res
+                    .status(403)
+                    .json({
+                        success: false,
+                        code:
+                            "TECHNICIAN_CREATE_DISABLED",
+                        message:
+                            "Technicians cannot create tickets."
+                    });
+            }
+
+
 
             const subject =
                 safeText(
@@ -3423,6 +3425,28 @@ router.patch(
     ) => {
 
         try {
+            /*
+                Ticket assignment is
+                ADMIN ONLY.
+            */
+
+            if (
+                req.user.role !==
+                "ADMIN"
+            ) {
+
+                return res
+                    .status(403)
+                    .json({
+                        success: false,
+                        code:
+                            "ADMIN_REQUIRED",
+                        message:
+                            "Only administrators can assign or reassign tickets."
+                    });
+            }
+
+
 
             if (
                 !validId(

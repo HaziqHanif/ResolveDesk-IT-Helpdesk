@@ -931,6 +931,14 @@ const {
     );
 
 
+const {
+    startDailySummaryScheduler
+} =
+    require(
+        "./utils/daily-summary"
+    );
+
+
 /* =========================================================
    START
 ========================================================= */
@@ -980,6 +988,7 @@ async function startServer() {
             () => {
 
                  startAutoCloseWorker();
+                startDailySummaryScheduler();
 
                 console.log(
                     "\n========================================"

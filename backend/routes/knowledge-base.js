@@ -363,30 +363,137 @@ function accessCondition(
 ========================================================= */
 
 function knowledgeSelect(
-    role
+    role,
+    userId
 ) {
+
+    const safeUserId =
+        Number(
+            userId
+        ) || 0;
+
+
+    if (
+        role ===
+        "ADMIN"
+    ) {
+
+        return `
+            SELECT
+                kb.id,
+                kb.title,
+                kb.slug,
+                kb.summary,
+                kb.content,
+                kb.category_id,
+                c.name AS category_name,
+                kb.author_id,
+                author.full_name AS author_name,
+                author.email AS author_email,
+                kb.status,
+                kb.visibility,
+                kb.views,
+                kb.helpful_yes,
+                kb.helpful_no,
+                kb.published_at,
+                kb.created_at,
+                kb.updated_at
+
+            FROM knowledge_base kb
+
+            LEFT JOIN categories c
+                ON c.id =
+                    kb.category_id
+
+            LEFT JOIN users author
+                ON author.id =
+                    kb.author_id
+
+            WHERE
+                kb.status <>
+                    'ARCHIVED'
+        `;
+    }
+
+
+    if (
+        role ===
+        "TECHNICIAN"
+    ) {
+
+        return `
+            SELECT
+                kb.id,
+                kb.title,
+                kb.slug,
+                kb.summary,
+                kb.content,
+                kb.category_id,
+                c.name AS category_name,
+                kb.author_id,
+                author.full_name AS author_name,
+                author.email AS author_email,
+                kb.status,
+                kb.visibility,
+                kb.views,
+                kb.helpful_yes,
+                kb.helpful_no,
+                kb.published_at,
+                kb.created_at,
+                kb.updated_at
+
+            FROM knowledge_base kb
+
+            LEFT JOIN categories c
+                ON c.id =
+                    kb.category_id
+
+            LEFT JOIN users author
+                ON author.id =
+                    kb.author_id
+
+            WHERE
+                (
+                    (
+                        kb.status =
+                            'PUBLISHED'
+
+                        AND
+
+                        kb.visibility IN (
+                            'ALL_STAFF',
+                            'TECHNICIANS_ONLY'
+                        )
+                    )
+
+                    OR
+
+                    (
+                        kb.status =
+                            'DRAFT'
+
+                        AND
+
+                        kb.author_id =
+                            ${safeUserId}
+                    )
+                )
+        `;
+    }
+
 
     return `
         SELECT
-
             kb.id,
             kb.title,
             kb.slug,
             kb.summary,
             kb.content,
             kb.category_id,
-
-            c.name
-                AS category_name,
-
+            c.name AS category_name,
             kb.author_id,
-
-            author.full_name
-                AS author_name,
-
-            author.email
-                AS author_email,
-
+            author.full_name AS author_name,
+            author.email AS author_email,
             kb.status,
             kb.visibility,
             kb.views,
@@ -411,9 +518,9 @@ function knowledgeSelect(
                 'PUBLISHED'
 
             AND
-            ${accessCondition(
-                role
-            )}
+
+            kb.visibility =
+                'ALL_STAFF'
     `;
 }
 
@@ -523,9 +630,7 @@ router.get(
 
                     query(`
                         ${
-                            knowledgeSelect(
-                                req.user.role
-                            )
+                            knowledgeSelect(req.user.role, req.user.id)
                         }
 
                         ORDER BY
@@ -708,9 +813,7 @@ router.get(
                 await query(
                     `
                         ${
-                            knowledgeSelect(
-                                req.user.role
-                            )
+                            knowledgeSelect(req.user.role, req.user.id)
                         }
 
                         AND
@@ -794,12 +897,11 @@ router.get(
    CREATE ARTICLE
 
    POST /api/knowledge-base
-   ADMIN ONLY
+   ADMIN / TECHNICIAN
 ========================================================= */
 
 router.post(
     "/",
-    requireAdmin,
     async (
         req,
         res,
@@ -807,6 +909,44 @@ router.post(
     ) => {
 
         try {
+
+            const canCreateKnowledge =
+                req.user.role ===
+                    "ADMIN" ||
+                req.user.role ===
+                    "TECHNICIAN";
+
+
+            if (
+                !canCreateKnowledge
+            ) {
+
+                return res
+                    .status(403)
+                    .json({
+                        success:
+                            false,
+
+                        code:
+                            "KNOWLEDGE_WRITE_DENIED",
+
+                        message:
+                            "Only administrators and technicians can create knowledge articles."
+                    });
+            }
+
+
+            const createStatus =
+                "PUBLISHED";
+
+
+            const createPublishedAt =
+                createStatus ===
+                    "PUBLISHED"
+                    ? new Date()
+                    : null;
+
+
 
             const title =
                 clean(
@@ -853,9 +993,12 @@ router.post(
 
 
             const visibility =
-                normalizeVisibility(
-                    req.body?.visibility
-                );
+                req.user.role ===
+                    "TECHNICIAN"
+                    ? "ALL_STAFF"
+                    : normalizeVisibility(
+                        req.body?.visibility
+                    );
 
 
             const slug =
@@ -882,37 +1025,29 @@ router.post(
                         )
 
                         VALUES (
-
                             $1,
                             $2,
                             $3,
                             $4,
                             $5,
                             $6,
-                            'PUBLISHED',
                             $7,
-                            NOW()
-
+                            $8,
+                            $9
                         )
 
                         RETURNING id
                     `,
                     [
-
                         title,
-
                         slug,
-
                         summary,
-
                         content,
-
                         categoryId,
-
                         req.user.id,
-
-                        visibility
-
+                        createStatus,
+                        visibility,
+                        createPublishedAt
                     ]
                 );
 
@@ -959,7 +1094,10 @@ router.post(
                         true,
 
                     message:
-                        "Knowledge article published.",
+                        createStatus ===
+                            "DRAFT"
+                            ? "Knowledge article saved as draft."
+                            : "Knowledge article published.",
 
                     id
 
@@ -999,12 +1137,11 @@ router.post(
    UPDATE ARTICLE
 
    PUT /api/knowledge-base/:id
-   ADMIN ONLY
+   ADMIN / TECHNICIAN OWNER
 ========================================================= */
 
 router.put(
     "/:id",
-    requireAdmin,
     async (
         req,
         res,
@@ -1074,6 +1211,47 @@ router.put(
                 current.rows[0];
 
 
+            const isAdmin =
+                req.user.role ===
+                    "ADMIN";
+
+
+            const isTechnicianOwner =
+                req.user.role ===
+                    "TECHNICIAN" &&
+
+                String(
+                    old.author_id
+                ) ===
+                String(
+                    req.user.id
+                ) &&
+
+                old.status ===
+                    "DRAFT";
+
+
+            if (
+                !isAdmin &&
+                !isTechnicianOwner
+            ) {
+
+                return res
+                    .status(403)
+                    .json({
+                        success:
+                            false,
+
+                        code:
+                            "KNOWLEDGE_EDIT_DENIED",
+
+                        message:
+                            "You cannot edit this knowledge article."
+                    });
+            }
+
+
+
             const title =
                 clean(
                     req.body?.title
@@ -1125,10 +1303,13 @@ router.put(
 
 
             const status =
+                isAdmin &&
                 ALLOWED_STATUS.includes(
                     requestedStatus
                 )
+
                     ? requestedStatus
+
                     : old.status;
 
 
@@ -1454,9 +1635,7 @@ router.post(
                 await query(
                     `
                         ${
-                            knowledgeSelect(
-                                req.user.role
-                            )
+                            knowledgeSelect(req.user.role, req.user.id)
                         }
 
                         AND

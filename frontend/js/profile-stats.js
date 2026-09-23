@@ -15,10 +15,10 @@
     ];
 
     const descriptions = [
-        document.getElementById("profileStat1Description"),
-        document.getElementById("profileStat2Description"),
-        document.getElementById("profileStat3Description"),
-        document.getElementById("profileStat4Description")
+        document.getElementById("profileStat1Note"),
+        document.getElementById("profileStat2Note"),
+        document.getElementById("profileStat3Note"),
+        document.getElementById("profileStat4Note")
     ];
 
 

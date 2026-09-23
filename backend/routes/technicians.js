@@ -586,15 +586,10 @@ router.get(
                             'CLOSED'
                         )
 
+                        AND
+                        t.assigned_to IS NULL
+
                     ORDER BY
-
-                        CASE
-                            WHEN t.assigned_to
-                                IS NULL
-                                THEN 1
-                            ELSE 2
-                        END,
-
                         CASE t.priority
                             WHEN 'CRITICAL'
                                 THEN 1
@@ -771,6 +766,86 @@ router.post(
                         message:
                             "Technician is not active."
 
+                    });
+            }
+
+
+            const assignmentContext =
+                await query(
+                    `
+                        SELECT
+                            t.department_id
+                                AS ticket_department_id,
+                            t.assigned_to,
+                            u.department_id
+                                AS technician_department_id
+                        FROM tickets t
+                        JOIN users u
+                            ON u.id = $2
+                        WHERE
+                            t.id = $1
+                        LIMIT 1
+                    `,
+                    [
+                        ticketId,
+                        technicianId
+                    ]
+                );
+
+
+            if (
+                assignmentContext.rowCount ===
+                0
+            ) {
+
+                return res
+                    .status(404)
+                    .json({
+                        success:
+                            false,
+                        message:
+                            "Ticket not found."
+                    });
+            }
+
+
+            const assignment =
+                assignmentContext.rows[0];
+
+
+            if (
+                assignment.assigned_to
+            ) {
+
+                return res
+                    .status(409)
+                    .json({
+                        success:
+                            false,
+                        message:
+                            "Ticket is already assigned. Use ticket details to reassign it."
+                    });
+            }
+
+
+            if (
+                assignment.ticket_department_id &&
+                assignment.technician_department_id &&
+                Number(
+                    assignment.ticket_department_id
+                ) !==
+                Number(
+                    assignment.technician_department_id
+                )
+            ) {
+
+                return res
+                    .status(409)
+                    .json({
+                        success:
+                            false,
+                        message:
+                            "Technician must belong to the same department as the ticket."
                     });
             }
 
@@ -1011,7 +1086,7 @@ if (
             `/ticket-detail.html?id=${ticketId}`
 
     });
-}  
+}
 
 
             await writeAudit({

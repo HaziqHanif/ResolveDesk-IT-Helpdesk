@@ -125,6 +125,11 @@ CREATE TABLE users (
     profile_photo TEXT,
 
     last_login_at TIMESTAMPTZ,
+    failed_login_attempts INTEGER
+        NOT NULL
+        DEFAULT 0,
+    locked_until TIMESTAMPTZ,
+    last_failed_login_at TIMESTAMPTZ,
 
     approved_at TIMESTAMPTZ,
 
@@ -720,7 +725,16 @@ CREATE TABLE knowledge_base (
         NOT NULL
         DEFAULT 'DRAFT',
 
+    visibility VARCHAR(30)
+        NOT NULL
+        DEFAULT 'ALL_STAFF',
     views INTEGER
+        NOT NULL
+        DEFAULT 0,
+    helpful_yes INTEGER
+        NOT NULL
+        DEFAULT 0,
+    helpful_no INTEGER
         NOT NULL
         DEFAULT 0,
 

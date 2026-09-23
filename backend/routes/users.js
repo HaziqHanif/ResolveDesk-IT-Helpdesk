@@ -1142,7 +1142,7 @@ router.put(
                         SET
                             full_name = $1,
                             role = $2,
-                            status = $3,
+                            status = $3::VARCHAR,
                             department_id = $4,
                             phone = $5,
                             job_title = $6,
@@ -1151,7 +1151,7 @@ router.put(
                             approved_at =
                                 CASE
                                     WHEN
-                                        $3 = 'ACTIVE'
+                                        $3::VARCHAR = 'ACTIVE'
                                         AND approved_at IS NULL
                                     THEN NOW()
 
@@ -1161,7 +1161,7 @@ router.put(
                             approved_by =
                                 CASE
                                     WHEN
-                                        $3 = 'ACTIVE'
+                                        $3::VARCHAR = 'ACTIVE'
                                         AND approved_by IS NULL
                                     THEN $8
 

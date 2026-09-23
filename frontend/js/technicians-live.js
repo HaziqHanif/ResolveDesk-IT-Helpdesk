@@ -156,6 +156,10 @@
                                 value="${escapeHtml(
                                     ticket.id
                                 )}"
+                                data-department="${escapeHtml(
+                                    ticket.department ||
+                                    ""
+                                )}"
                             >
                                 ${escapeHtml(
                                     ticket.ticketNumber
@@ -290,6 +294,15 @@
         ) {
 
             renderTechnicians();
+        }
+
+
+        if (
+            typeof updateStats ===
+            "function"
+        ) {
+
+            updateStats();
         }
 
 
@@ -438,6 +451,36 @@
 
     setInterval(
         () => {
+
+            const assignModalOpen =
+                document
+                    .getElementById(
+                        "assignModal"
+                    )
+                    ?.classList
+                    .contains(
+                        "open"
+                    );
+
+            const techModalOpen =
+                document
+                    .getElementById(
+                        "techModal"
+                    )
+                    ?.classList
+                    .contains(
+                        "open"
+                    );
+
+
+            if (
+                assignModalOpen ||
+                techModalOpen
+            ) {
+
+                return;
+            }
+
 
             loadLive()
                 .catch(

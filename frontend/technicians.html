@@ -1166,7 +1166,7 @@ button {
         var(--rose);
 }
 
-.availability.away {
+.availability.offline {
 
     color: #c5b1d0;
 
@@ -1178,7 +1178,7 @@ button {
         rgba(103,86,130,.22);
 }
 
-.availability.away::before {
+.availability.offline::before {
 
     background:
         var(--amethyst);
@@ -2199,29 +2199,6 @@ button {
 
     </nav>
 
-
-    <div class="sidebar-bottom">
-
-        <div class="system-card">
-
-            <small>
-                Support Team
-            </small>
-
-            <strong>
-                4 technicians online
-            </strong>
-
-            <p>
-                Workload and SLA
-                performance are
-                being monitored.
-            </p>
-
-        </div>
-
-    </div>
-
 </aside>
 
 
@@ -2278,12 +2255,7 @@ button {
 
     <div class="top-actions">
 
-        <button
-            class="icon-btn"
-            type="button"
-        >
-            ?
-        </button>
+
 
         <button
             class="icon-btn"
@@ -2480,8 +2452,8 @@ button {
             Busy
         </option>
 
-        <option value="away">
-            Away
+        <option value="offline">
+            Offline
         </option>
 
     </select>
@@ -3188,16 +3160,21 @@ function updateStats() {
 
 
     const slaAverage =
-        technicians.reduce(
-            (
-                total,
-                technician
-            ) =>
-                total +
-                technician.slaCompliance,
-            0
-        ) /
-        technicians.length;
+        technicians.length > 0
+            ? technicians.reduce(
+                (
+                    total,
+                    technician
+                ) =>
+                    total +
+                    Number(
+                        technician.slaCompliance ||
+                        0
+                    ),
+                0
+            ) /
+            technicians.length
+            : 0;
 
 
     document.getElementById(
@@ -3206,6 +3183,31 @@ function updateStats() {
         `${Math.round(
             slaAverage
         )}%`;
+
+
+    const onlineCount =
+        technicians.filter(
+            technician =>
+                technician.availability !==
+                "offline"
+        ).length;
+
+
+    const onlineElement =
+        document.getElementById(
+            "onlineTechnicianCount"
+        );
+
+
+    if (onlineElement) {
+
+        onlineElement.textContent =
+            `${onlineCount} technician${
+                onlineCount === 1
+                    ? ""
+                    : "s"
+            } online`;
+    }
 }
 
 
@@ -3226,8 +3228,12 @@ function viewTechnician(
     const technician =
         technicians.find(
             item =>
-                item.id ===
-                id
+                String(
+                    item.id
+                ) ===
+                String(
+                    id
+                )
         );
 
 
@@ -3460,29 +3466,84 @@ function populateTechnicians() {
         );
 
 
-    select.innerHTML =
-        technicians
-            .map(
-                technician => `
+    if (!select) {
+        return;
+    }
 
-                <option
-                    value="${technician.id}"
-                >
 
-                    ${escapeHtml(
-                        technician.name
-                    )}
-                    —
-                    ${technician.activeTickets}
-                    active
+    const ticketSelect =
+        document.getElementById(
+            "assignTicket"
+        );
 
-                </option>
 
-                `
-            )
-            .join(
-                ""
-            );
+    const selectedDepartment =
+        ticketSelect
+            ?.selectedOptions?.[0]
+            ?.dataset?.department ||
+        "";
+
+
+    const current =
+        select.value;
+
+
+    const eligibleTechnicians =
+        technicians.filter(
+            technician =>
+                technician.availability !==
+                    "offline" &&
+                (
+                    !selectedDepartment ||
+                    technician.department ===
+                        selectedDepartment
+                )
+        );
+
+
+    select.innerHTML = `
+        <option value="">
+            Select technician
+        </option>
+
+        ${
+            eligibleTechnicians
+                .map(
+                    technician => `
+
+                    <option
+                        value="${technician.id}"
+                    >
+                        ${escapeHtml(
+                            technician.name
+                        )}
+                        —
+                        ${technician.activeTickets}
+                        active
+                    </option>
+
+                    `
+                )
+                .join("")
+        }
+    `;
+
+
+    if (
+        eligibleTechnicians.some(
+            technician =>
+                String(
+                    technician.id
+                ) ===
+                String(
+                    current
+                )
+        )
+    ) {
+
+        select.value =
+            current;
+    }
 }
 
 
@@ -3542,96 +3603,8 @@ function quickAssign(
 
 /* =========================================================
    ASSIGN SUBMIT
+   Handled by /js/technicians-live.js
 ========================================================= */
-
-document
-    .getElementById(
-        "assignForm"
-    )
-    .addEventListener(
-        "submit",
-        event => {
-
-            event.preventDefault();
-
-
-            const ticket =
-                document
-                    .getElementById(
-                        "assignTicket"
-                    )
-                    .value;
-
-
-            const technicianId =
-                Number(
-                    document
-                        .getElementById(
-                            "assignTechnician"
-                        )
-                        .value
-                );
-
-
-            const technician =
-                technicians.find(
-                    item =>
-                        item.id ===
-                        technicianId
-                );
-
-
-            if (
-                !technician
-            ) {
-
-                return;
-            }
-
-
-            if (
-                technician.activeTickets >=
-                technician.maxTickets
-            ) {
-
-                showToast(
-                    `${technician.name} is at maximum workload.`
-                );
-
-                return;
-            }
-
-
-            technician.activeTickets++;
-
-
-            technician.tickets.unshift(
-                {
-                    id:
-                        ticket,
-
-                    subject:
-                        "New assigned support ticket",
-
-                    priority:
-                        "medium"
-                }
-            );
-
-
-            closeAssignModal();
-
-
-            renderTechnicians();
-
-            updateStats();
-
-
-            showToast(
-                `${ticket} assigned to ${technician.name}.`
-            );
-        }
-    );
 
 
 /* =========================================================
@@ -3927,5 +3900,6 @@ populateTechnicians();
 
 <script src="/js/technicians-live.js"></script>
 <script src="/js/role-navigation.js"></script>
+<script src="/js/branding.js"></script>
 </body>
 </html>

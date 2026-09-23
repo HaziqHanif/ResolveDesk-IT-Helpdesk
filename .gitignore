@@ -1,11 +1,14 @@
-node_modules/
-.env
-.DS_Store
-*.log
 
-backend/uploads/*
 !backend/uploads/.gitkeep
-backups/
+.DS_Store
+.env
 .vscode/
-npm-debug.log*
+*.before-*.html
+*.before-*.js
+*.log
+# Local development backup files
+backend/uploads/*
+backups/
 coverage/
+node_modules/
+npm-debug.log*

@@ -436,13 +436,30 @@
 
 
         if (
-            createButton &&
-            currentUser.role !==
-                "ADMIN"
+            createButton
         ) {
 
+            const canCreateArticle =
+                currentUser.role ===
+                    "ADMIN" ||
+                currentUser.role ===
+                    "TECHNICIAN";
+
+
             createButton.style.display =
-                "none";
+                canCreateArticle
+                    ? ""
+                    : "none";
+
+
+            if (
+                currentUser.role ===
+                "TECHNICIAN"
+            ) {
+
+                createButton.textContent =
+                    "＋ Create Article";
+            }
         }
     }
 
@@ -956,13 +973,19 @@
             event.stopImmediatePropagation();
 
 
+            const canCreateArticle =
+                currentUser?.role ===
+                    "ADMIN" ||
+                currentUser?.role ===
+                    "TECHNICIAN";
+
+
             if (
-                currentUser?.role !==
-                "ADMIN"
+                !canCreateArticle
             ) {
 
                 showLiveToast(
-                    "Administrator access required."
+                    "You do not have permission to create knowledge articles."
                 );
 
                 return;
@@ -1000,7 +1023,7 @@
             ) {
 
                 showLiveToast(
-                    "Complete the article before publishing."
+                    "Complete the article before saving."
                 );
 
                 return;
@@ -1087,7 +1110,10 @@
 
 
                 showLiveToast(
-                    "Knowledge article published."
+                    currentUser?.role ===
+                        "TECHNICIAN"
+                        ? "Draft saved for administrator review."
+                        : "Knowledge article published."
                 );
 
             } catch (

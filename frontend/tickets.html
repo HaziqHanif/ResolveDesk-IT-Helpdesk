@@ -2923,29 +2923,6 @@ tbody tr:last-child td {
 
     </nav>
 
-
-    <div class="sidebar-bottom">
-
-        <div class="system-card">
-
-            <small>
-                Ticket Service
-            </small>
-
-            <strong>
-                Queue operational
-            </strong>
-
-            <p>
-                Ticket intake and SLA
-                monitoring services
-                are online.
-            </p>
-
-        </div>
-
-    </div>
-
 </aside>
 
 
@@ -2998,12 +2975,7 @@ tbody tr:last-child td {
 
     <div class="top-actions">
 
-        <button
-            class="icon-btn"
-            type="button"
-        >
-            ?
-        </button>
+
 
 
         <button
@@ -3016,21 +2988,26 @@ tbody tr:last-child td {
 
         <div class="profile">
 
-            <div class="avatar">
-                HH
+
+            <div
+                class="avatar"
+                id="ticketsUserAvatar"
+            >
+                RD
             </div>
 
             <div class="profile-copy">
 
-                <strong>
-                    Haziq Hanif
+                <strong id="ticketsUserName">
+                    Loading...
                 </strong>
 
-                <span>
-                    Administrator
+                <span id="ticketsUserRole">
+                    ResolveDesk
                 </span>
 
             </div>
+
 
         </div>
 
@@ -4386,5 +4363,88 @@ renderTickets();
 
 <script src="/js/tickets-live.js"></script>
 <script src="/js/role-navigation.js"></script>
+<script src="/js/topbar-live.js"></script>
+<script src="/js/branding.js"></script>
+<script src="/js/assignment-role-guard.js"></script>
+
+<script src="/js/create-ticket-role-guard.js"></script>
+
+
+<script>
+(async () => {
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/auth/me",
+                {
+                    credentials: "include"
+                }
+            );
+
+        const data =
+            await response.json();
+
+        if (
+            !data.loggedIn ||
+            !data.user
+        ) {
+            return;
+        }
+
+        const user =
+            data.user;
+
+        const name =
+            user.fullName ||
+            "ResolveDesk User";
+
+        const roleMap = {
+            ADMIN: "Administrator",
+            TECHNICIAN: "Technician",
+            STAFF: "Staff"
+        };
+
+        const initials =
+            name
+                .split(" ")
+                .filter(Boolean)
+                .slice(0, 2)
+                .map(
+                    part =>
+                        part[0]
+                )
+                .join("")
+                .toUpperCase();
+
+        document.getElementById(
+            "ticketsUserName"
+        ).textContent =
+            name;
+
+        document.getElementById(
+            "ticketsUserRole"
+        ).textContent =
+            roleMap[user.role] ||
+            user.role ||
+            "User";
+
+        document.getElementById(
+            "ticketsUserAvatar"
+        ).textContent =
+            initials || "RD";
+
+    } catch (error) {
+
+        console.error(
+            "Tickets profile load failed:",
+            error
+        );
+    }
+
+})();
+</script>
+
 </body>
 </html>
