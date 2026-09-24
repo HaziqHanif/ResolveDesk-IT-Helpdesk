@@ -3617,65 +3617,43 @@ function setupDepartment() {
 ========================================================= */
 
 function setupPriority() {
+    const category = document.getElementById("category");
 
-    const category =
-        document.getElementById(
-            "category"
-        );
+    const priorityInputs = document.querySelectorAll(
+        'input[name="priority"]'
+    );
 
+    if (category) {
+        category.addEventListener("change", () => {
+            const selected =
+                category.options[category.selectedIndex];
 
-    const priority =
-        document.getElementById(
-            "priority"
-        );
+            const defaultPriority = String(
+                selected?.dataset?.priority || ""
+            ).toUpperCase();
 
+            if (defaultPriority) {
+                const matchingRadio = Array.from(
+                    priorityInputs
+                ).find(input =>
+                    input.value.toUpperCase() === defaultPriority
+                );
 
-    if (
-        category
-    ) {
-
-        category.addEventListener(
-            "change",
-            () => {
-
-                const selected =
-                    category.options[
-                        category.selectedIndex
-                    ];
-
-
-                const defaultPriority =
-                    selected?.dataset
-                        ?.priority;
-
-
-                if (
-                    priority &&
-                    defaultPriority
-                ) {
-
-                    priority.value =
-                        String(
-                            defaultPriority
-                        ).toUpperCase();
+                if (matchingRadio) {
+                    matchingRadio.checked = true;
                 }
-
-
-                updateSlaPreview();
             }
-        );
+
+            updateSlaPreview();
+        });
     }
 
-
-    if (
-        priority
-    ) {
-
-        priority.addEventListener(
+    priorityInputs.forEach(input => {
+        input.addEventListener(
             "change",
             updateSlaPreview
         );
-    }
+    });
 }
 
 
@@ -3684,108 +3662,68 @@ function setupPriority() {
 ========================================================= */
 
 function updateSlaPreview() {
-
-    const priority =
-    String(
+    const priority = String(
         document.querySelector(
             'input[name="priority"]:checked'
-        )?.value ||
-        "MEDIUM"
+        )?.value || "MEDIUM"
     ).toUpperCase();
 
-
-    const policy =
-        slaPolicies.find(
-            item =>
-                String(
-                    item.priority
-                ).toUpperCase() ===
-                priority
-        );
-
+    const policy = slaPolicies.find(item =>
+        String(item.priority || "").toUpperCase() === priority
+    );
 
     const defaults = {
-
-        CRITICAL: {
-            response: 15,
-            resolution: 60
-        },
-
-        HIGH: {
-            response: 30,
-            resolution: 240
-        },
-
-        MEDIUM: {
-            response: 120,
-            resolution: 480
-        },
-
-        LOW: {
-            response: 240,
-            resolution: 1440
-        }
-
+        CRITICAL: { response: 15, resolution: 60 },
+        HIGH:     { response: 30, resolution: 240 },
+        MEDIUM:   { response: 120, resolution: 480 },
+        LOW:      { response: 240, resolution: 1440 }
     };
 
+    const fallback = defaults[priority] || defaults.MEDIUM;
 
-    const fallback =
-        defaults[
-            priority
-        ] ||
-        defaults.MEDIUM;
+    const policyResponse = Number(
+        policy?.firstResponseMinutes ??
+        policy?.first_response_minutes
+    );
 
+    const policyResolution = Number(
+        policy?.resolutionMinutes ??
+        policy?.resolution_minutes
+    );
 
     const responseMinutes =
-        Number(
-            policy?.firstResponseMinutes
-        ) ||
-        fallback.response;
-
+        Number.isFinite(policyResponse) && policyResponse > 0
+            ? policyResponse
+            : fallback.response;
 
     const resolutionMinutes =
-        Number(
-            policy?.resolutionMinutes
-        ) ||
-        fallback.resolution;
-
-
-    /*
-        Supports several likely IDs from
-        the premium UI.
-    */
+        Number.isFinite(policyResolution) && policyResolution > 0
+            ? policyResolution
+            : fallback.resolution;
 
     setText(
-        [
-            "responseSla",
-            "responseTime",
-            "responseTarget"
-        ],
-        formatDuration(
-            responseMinutes
-        )
+        ["slaPriority"],
+        `${formatText(priority)} Priority`
     );
 
-
     setText(
-        [
-            "resolutionSla",
-            "resolutionTime",
-            "resolutionTarget"
-        ],
-        formatDuration(
-            resolutionMinutes
-        )
+        ["slaMain"],
+        formatDuration(resolutionMinutes)
     );
 
+    setText(
+        ["responseSla", "responseTime", "responseTarget"],
+        formatDuration(responseMinutes)
+    );
 
     setText(
-        [
-            "slaPolicyName",
-            "slaPolicy"
-        ],
-        policy?.name ||
-        `${formatText(priority)} Priority SLA`
+        ["resolutionSla", "resolutionTime", "resolutionTarget"],
+        formatDuration(resolutionMinutes)
+    );
+
+    setText(
+        ["slaPolicyName", "slaPolicy"],
+        policy?.name || `${formatText(priority)} Priority SLA`
     );
 }
 
