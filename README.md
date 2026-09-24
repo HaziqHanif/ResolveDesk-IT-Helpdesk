@@ -175,44 +175,50 @@ Install dependencies:
 npm install
 ```
 
-Create an environment configuration:
+Create an environment configuration. **Do not overwrite an existing `.env` file:**
 
 ```bash
-cp .env.example .env
+[ -f .env ] || cp .env.example .env
 ```
 
 Configure the PostgreSQL connection and required environment variables inside `.env`.
 
 ## Database Setup
 
+**Important:** These instructions are for a **new, empty setup database only**. `database/schema.sql` contains destructive table-reset commands. Never run it against an existing database containing project data.
+
+The example below uses `resolvedesk_setup` to keep it separate from the existing `resolvedesk` development database. Set `DB_NAME=resolvedesk_setup` in the new `.env`, and configure the PostgreSQL credentials, `SESSION_SECRET`, and admin credentials before starting the application.
+
+**Stop if `resolvedesk_setup` already exists.** Do not rerun the schema against it.
+
 Create the PostgreSQL database:
 
 ```bash
-createdb resolvedesk
+createdb resolvedesk_setup
 ```
 
 Create the database schema:
 
 ```bash
-psql -d resolvedesk -f database/schema.sql
+test "$(psql -d resolvedesk_setup -Atqc "SELECT COUNT(*) FROM pg_tables WHERE schemaname='public'")" = "0" && psql -v ON_ERROR_STOP=1 -d resolvedesk_setup -f database/schema.sql
 ```
 
 Load the base seed data:
 
 ```bash
-psql -d resolvedesk -f database/seed.sql
+psql -v ON_ERROR_STOP=1 -d resolvedesk_setup -f database/seed.sql
 ```
 
-Optional demonstration data can be loaded with:
+After starting the server and confirming that the default admin account exists, optional demonstration data can be loaded with:
 
 ```bash
-psql -d resolvedesk -f database/sample-data.sql
+psql -v ON_ERROR_STOP=1 -d resolvedesk_setup -f database/sample-data.sql
 ```
 
 Knowledge Base sample data can be loaded with:
 
 ```bash
-psql -d resolvedesk -f database/knowledge-base-data.sql
+psql -v ON_ERROR_STOP=1 -d resolvedesk_setup -f database/knowledge-base-data.sql
 ```
 
 ## Running ResolveDesk
