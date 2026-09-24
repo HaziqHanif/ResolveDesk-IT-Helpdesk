@@ -1877,6 +1877,12 @@ router.put(
                 ).trim();
 
 
+            const photoProvided =
+                Object.prototype.hasOwnProperty.call(
+                    req.body,
+                    "profilePhoto"
+                );
+
             let profilePhoto =
                 req.body.profilePhoto;
 
@@ -1976,16 +1982,17 @@ router.put(
                         phone = NULLIF($2, ''),
                         job_title = NULLIF($3, ''),
                         bio = NULLIF($4, ''),
-                        profile_photo = $5,
+                        profile_photo = CASE WHEN $5::boolean THEN $6::text ELSE profile_photo END,
                         updated_at = NOW()
 
-                    WHERE id = $6
+                    WHERE id = $7
                 `,
                 [
                     fullName,
                     phone,
                     jobTitle,
                     bio,
+                    photoProvided,
                     profilePhoto,
                     userId
                 ]

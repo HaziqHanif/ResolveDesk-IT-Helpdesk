@@ -204,7 +204,7 @@ const apiLimiter =
                 1000,
 
             limit:
-                300,
+                (process.env.NODE_ENV === "production" ? 300 : 2000),
 
             standardHeaders:
                 "draft-7",
